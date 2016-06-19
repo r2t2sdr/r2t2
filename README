@@ -1,0 +1,15 @@
+This is the source for R2T2 bootloader, u-boot, linux kernel and FPGA image.
+
+For translating you need Vivado version 2015.2 from Xilinx with SDK and a licence 
+for WebPack and for the DebugCore (ILA).
+
+There is a Makefile to translate all targets. First you need to set the environment and
+all paths. A sample is included: setenv_r2t2
+
+
+
+
+
+
+
+
