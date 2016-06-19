@@ -1,0 +1,16 @@
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.2 (lin64) Build 1266856 Fri Jun 26 16:35:25 MDT 2015
+| Date         : Fri Nov  6 09:27:24 2015
+| Host         : beta running 64-bit unknown
+| Command      : upgrade_ip
+| Device       : xc7z020clg484-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'ps_adc_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the update of ps_adc_0_0 (dl2stg:r2t2:adc:1.0 (Rev. 1)) to current project options.
+

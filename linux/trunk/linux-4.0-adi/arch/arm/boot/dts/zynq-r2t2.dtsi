@@ -1,0 +1,83 @@
+/include/ "zynq.dtsi"
+
+/ {
+	model = "Xilinx Zynq R2T2";
+	memory {
+		device_type = "memory";
+		reg = <0x000000000 0x20000000>;
+	};
+
+	chosen {
+		bootargs = "console=ttyPS0,115200 root=/dev/mmcblk0p2 rw earlyprintk rootfstype=ext4 rootwait";
+		linux,stdout-path = "/amba@0/uart@E0001000";
+	};
+
+	aliases {
+		mio = &axi_gpio_0;
+	};
+
+	memory {
+		device_type = "memory";
+		reg = <0x0 0x38000000>;
+	};
+
+    framebuffer0: framebuffer@38000000 {
+				  compatible = "simple-framebuffer";
+				  reg = <0x38000000 (1280 * 720 * 4)>;
+				  width = <1280>;
+				  height = <720>;
+				  stride = <(1280 * 4)>;
+				  format = "a8b8g8r8";
+  };
+};
+
+
+&eth {
+	phy-handle = <&phy0>;
+	phy-mode = "rgmii-id";
+
+	phy0: phy@0 {
+		compatible = "marvell,88e1512";
+		device_type = "ethernet-phy";
+		reg = <0x0>;
+		marvell,reg-init=<3 16 0xff00 0x1e 3 17 0xfff0 0x0a>;
+	};
+};
+
+
+&i2c0 {
+	clock-frequency = <100000>;
+	status = "okay";
+};
+
+&i2c1 {
+	clock-frequency = <100000>;
+	status = "okay";
+
+	i2c-switch@74 {
+		compatible = "nxp,pca9545";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x70>;
+
+		i2c@1 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <1>;
+
+			adau1761: adau1761@38 {
+				 compatible = "adi,adau1761";
+				 reg = <0x38>;
+			};
+		};
+
+		i2c@2 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <2>;
+
+		};
+	};
+
+};
+

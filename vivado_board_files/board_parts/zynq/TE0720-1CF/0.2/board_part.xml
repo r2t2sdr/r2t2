@@ -1,0 +1,638 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<board_part board_name="TE0720-02-1CF" board_revision="0.2" board_part="part0" schema_version="1.0" vendor="trenz.biz" version="1.0">
+
+  <part_info part_name="xc7z020clg484-1" jtag_position="1" silicon_version="1.0" />
+
+  <board_info description="ZYNQ-7 TE0720 XC7Z020-1CLG484C" display_name="ZYNQ-7 TE0720-02-1CF" url="wiki.trenz-electronic.de/display/TE0720"/>
+
+  <interfaces>
+
+    <interface mode="master" name="ps7_fixedio" type="xilinx.com:display_processing_system7:fixedio_rtl:1.0">
+      <preset_file name="ps7.tcl"/>
+    </interface>
+
+ 
+<interface mode="master" name="P1" type="xilinx.com:interface:gpio_rtl:1.0">
+      <port_maps>
+        <port_map logical_port="TRI_I" physical_port="P1_i"/>
+        <port_map logical_port="TRI_O" physical_port="P1_o"/>
+        <port_map logical_port="TRI_T" physical_port="P1_t"/>
+      </port_maps>
+    </interface>
+
+<interface mode="master" name="P2" type="xilinx.com:interface:gpio_rtl:1.0">
+      <port_maps>
+        <port_map logical_port="TRI_I" physical_port="P2_i"/>
+        <port_map logical_port="TRI_O" physical_port="P2_o"/>
+        <port_map logical_port="TRI_T" physical_port="P2_t"/>
+      </port_maps>
+    </interface>
+    
+    <interface mode="master" name="P3" type="xilinx.com:interface:gpio_rtl:1.0">
+      <port_maps>
+        <port_map logical_port="TRI_I" physical_port="P3_i"/>
+        <port_map logical_port="TRI_O" physical_port="P3_o"/>
+        <port_map logical_port="TRI_T" physical_port="P3_t"/>
+      </port_maps>
+    </interface>
+
+<interface mode="master" name="P4" type="xilinx.com:interface:gpio_rtl:1.0">
+      <port_maps>
+        <port_map logical_port="TRI_I" physical_port="P4_i"/>
+        <port_map logical_port="TRI_O" physical_port="P4_o"/>
+        <port_map logical_port="TRI_T" physical_port="P4_t"/>
+      </port_maps>
+    </interface>
+    
+<interface mode="master" name="P5" type="xilinx.com:interface:gpio_rtl:1.0">
+      <port_maps>
+        <port_map logical_port="TRI_I" physical_port="P5_i"/>
+        <port_map logical_port="TRI_O" physical_port="P5_o"/>
+        <port_map logical_port="TRI_T" physical_port="P5_t"/>
+      </port_maps>
+    </interface>
+ 
+ <interface mode="master" name="P6" type="xilinx.com:interface:gpio_rtl:1.0">
+      <port_maps>
+        <port_map logical_port="TRI_I" physical_port="P6_i"/>
+        <port_map logical_port="TRI_O" physical_port="P6_o"/>
+        <port_map logical_port="TRI_T" physical_port="P6_t"/>
+      </port_maps>
+    </interface>
+
+<interface mode="master" name="P7" type="xilinx.com:interface:gpio_rtl:1.0">
+      <port_maps>
+        <port_map logical_port="TRI_I" physical_port="P7_i"/>
+        <port_map logical_port="TRI_O" physical_port="P7_o"/>
+        <port_map logical_port="TRI_T" physical_port="P7_t"/>
+      </port_maps>
+    </interface>
+      
+  </interfaces>
+
+<ports>
+
+<port dir="in" left="31" name="P1_i" right="0">
+  <pins>
+    <pin index="0" iostandard="LVCMOS33" loc="A19"/>
+    <pin index="1" iostandard="LVCMOS33" loc="A18"/>
+    <pin index="2" iostandard="LVCMOS33" loc="A17"/>
+    <pin index="3" iostandard="LVCMOS33" loc="A16"/>
+    <pin index="4" iostandard="LVCMOS33" loc="B15"/>
+    <pin index="5" iostandard="LVCMOS33" loc="C15"/>
+    <pin index="6" iostandard="LVCMOS33" loc="D17"/>
+    <pin index="7" iostandard="LVCMOS33" loc="D16"/>
+    <pin index="8" iostandard="LVCMOS33" loc="B17"/>
+    <pin index="9" iostandard="LVCMOS33" loc="B16"/>
+    <pin index="10" iostandard="LVCMOS33" loc="E20"/>
+    <pin index="11" iostandard="LVCMOS33" loc="E19"/>
+    <pin index="12" iostandard="LVCMOS33" loc="C18"/>
+    <pin index="13" iostandard="LVCMOS33" loc="C17"/>
+    <pin index="14" iostandard="LVCMOS33" loc="F22"/>
+    <pin index="15" iostandard="LVCMOS33" loc="F21"/>
+    <pin index="16" iostandard="LVCMOS33" loc="E18"/>
+    <pin index="17" iostandard="LVCMOS33" loc="F18"/>
+    <pin index="18" iostandard="LVCMOS33" loc="D15"/>
+    <pin index="19" iostandard="LVCMOS33" loc="E15"/>
+    <pin index="20" iostandard="LVCMOS33" loc="F17"/>
+    <pin index="21" iostandard="LVCMOS33" loc="G17"/>
+    <pin index="22" iostandard="LVCMOS33" loc="E16"/>
+    <pin index="23" iostandard="LVCMOS33" loc="F16"/>
+    <pin index="24" iostandard="LVCMOS33" loc="H20"/>
+    <pin index="25" iostandard="LVCMOS33" loc="H19"/>
+    <pin index="26" iostandard="LVCMOS33" loc="C22"/>
+    <pin index="27" iostandard="LVCMOS33" loc="D22"/>
+    <pin index="28" iostandard="LVCMOS33" loc="G22"/>
+    <pin index="29" iostandard="LVCMOS33" loc="H22"/>
+    <pin index="30" iostandard="LVCMOS33" loc="B22"/>
+    <pin index="31" iostandard="LVCMOS33" loc="B21"/>
+  </pins>
+</port>
+
+<port dir="out" left="31" name="P1_o" right="0">
+  <pins>
+    <pin index="0" iostandard="LVCMOS33" loc="A19"/>
+    <pin index="1" iostandard="LVCMOS33" loc="A18"/>
+    <pin index="2" iostandard="LVCMOS33" loc="A17"/>
+    <pin index="3" iostandard="LVCMOS33" loc="A16"/>
+    <pin index="4" iostandard="LVCMOS33" loc="B15"/>
+    <pin index="5" iostandard="LVCMOS33" loc="C15"/>
+    <pin index="6" iostandard="LVCMOS33" loc="D17"/>
+    <pin index="7" iostandard="LVCMOS33" loc="D16"/>
+    <pin index="8" iostandard="LVCMOS33" loc="B17"/>
+    <pin index="9" iostandard="LVCMOS33" loc="B16"/>
+    <pin index="10" iostandard="LVCMOS33" loc="E20"/>
+    <pin index="11" iostandard="LVCMOS33" loc="E19"/>
+    <pin index="12" iostandard="LVCMOS33" loc="C18"/>
+    <pin index="13" iostandard="LVCMOS33" loc="C17"/>
+    <pin index="14" iostandard="LVCMOS33" loc="F22"/>
+    <pin index="15" iostandard="LVCMOS33" loc="F21"/>
+    <pin index="16" iostandard="LVCMOS33" loc="E18"/>
+    <pin index="17" iostandard="LVCMOS33" loc="F18"/>
+    <pin index="18" iostandard="LVCMOS33" loc="D15"/>
+    <pin index="19" iostandard="LVCMOS33" loc="E15"/>
+    <pin index="20" iostandard="LVCMOS33" loc="F17"/>
+    <pin index="21" iostandard="LVCMOS33" loc="G17"/>
+    <pin index="22" iostandard="LVCMOS33" loc="E16"/>
+    <pin index="23" iostandard="LVCMOS33" loc="F16"/>
+    <pin index="24" iostandard="LVCMOS33" loc="H20"/>
+    <pin index="25" iostandard="LVCMOS33" loc="H19"/>
+    <pin index="26" iostandard="LVCMOS33" loc="C22"/>
+    <pin index="27" iostandard="LVCMOS33" loc="D22"/>
+    <pin index="28" iostandard="LVCMOS33" loc="G22"/>
+    <pin index="29" iostandard="LVCMOS33" loc="H22"/>
+    <pin index="30" iostandard="LVCMOS33" loc="B22"/>
+    <pin index="31" iostandard="LVCMOS33" loc="B21"/>
+  </pins>
+</port>
+
+<port dir="out" left="31" name="P1_t" right="0">
+  <pins>
+    <pin index="0" iostandard="LVCMOS33" loc="A19"/>
+    <pin index="1" iostandard="LVCMOS33" loc="A18"/>
+    <pin index="2" iostandard="LVCMOS33" loc="A17"/>
+    <pin index="3" iostandard="LVCMOS33" loc="A16"/>
+    <pin index="4" iostandard="LVCMOS33" loc="B15"/>
+    <pin index="5" iostandard="LVCMOS33" loc="C15"/>
+    <pin index="6" iostandard="LVCMOS33" loc="D17"/>
+    <pin index="7" iostandard="LVCMOS33" loc="D16"/>
+    <pin index="8" iostandard="LVCMOS33" loc="B17"/>
+    <pin index="9" iostandard="LVCMOS33" loc="B16"/>
+    <pin index="10" iostandard="LVCMOS33" loc="E20"/>
+    <pin index="11" iostandard="LVCMOS33" loc="E19"/>
+    <pin index="12" iostandard="LVCMOS33" loc="C18"/>
+    <pin index="13" iostandard="LVCMOS33" loc="C17"/>
+    <pin index="14" iostandard="LVCMOS33" loc="F22"/>
+    <pin index="15" iostandard="LVCMOS33" loc="F21"/>
+    <pin index="16" iostandard="LVCMOS33" loc="E18"/>
+    <pin index="17" iostandard="LVCMOS33" loc="F18"/>
+    <pin index="18" iostandard="LVCMOS33" loc="D15"/>
+    <pin index="19" iostandard="LVCMOS33" loc="E15"/>
+    <pin index="20" iostandard="LVCMOS33" loc="F17"/>
+    <pin index="21" iostandard="LVCMOS33" loc="G17"/>
+    <pin index="22" iostandard="LVCMOS33" loc="E16"/>
+    <pin index="23" iostandard="LVCMOS33" loc="F16"/>
+    <pin index="24" iostandard="LVCMOS33" loc="H20"/>
+    <pin index="25" iostandard="LVCMOS33" loc="H19"/>
+    <pin index="26" iostandard="LVCMOS33" loc="C22"/>
+    <pin index="27" iostandard="LVCMOS33" loc="D22"/>
+    <pin index="28" iostandard="LVCMOS33" loc="G22"/>
+    <pin index="29" iostandard="LVCMOS33" loc="H22"/>
+    <pin index="30" iostandard="LVCMOS33" loc="B22"/>
+    <pin index="31" iostandard="LVCMOS33" loc="B21"/>
+  </pins>
+</port>
+
+<port dir="in" left="15" name="P2_i" right="0">
+  <pins>
+   <pin index="0" iostandard="LVCMOS33" loc="A22"/>
+   <pin index="1" iostandard="LVCMOS33" loc="A21"/>
+   <pin index="2" iostandard="LVCMOS33" loc="G21"/>
+   <pin index="3" iostandard="LVCMOS33" loc="G20"/>
+   <pin index="4" iostandard="LVCMOS33" loc="D21"/>
+   <pin index="5" iostandard="LVCMOS33" loc="E21"/>
+   <pin index="6" iostandard="LVCMOS33" loc="B20"/>
+   <pin index="7" iostandard="LVCMOS33" loc="B19"/>
+   <pin index="8" iostandard="LVCMOS33" loc="C20"/>
+   <pin index="9" iostandard="LVCMOS33" loc="D20"/>
+   <pin index="10" iostandard="LVCMOS33" loc="G16"/>
+   <pin index="11" iostandard="LVCMOS33" loc="G15"/>
+   <pin index="12" iostandard="LVCMOS33" loc="C19"/>
+   <pin index="13" iostandard="LVCMOS33" loc="D18"/>
+   <pin index="14" iostandard="LVCMOS33" loc="F19"/>
+   <pin index="15" iostandard="LVCMOS33" loc="G19"/>
+  </pins>
+</port>
+
+<port dir="out" left="15" name="P2_o" right="0">
+  <pins>
+   <pin index="0" iostandard="LVCMOS33" loc="A22"/>
+   <pin index="1" iostandard="LVCMOS33" loc="A21"/>
+   <pin index="2" iostandard="LVCMOS33" loc="G21"/>
+   <pin index="3" iostandard="LVCMOS33" loc="G20"/>
+   <pin index="4" iostandard="LVCMOS33" loc="D21"/>
+   <pin index="5" iostandard="LVCMOS33" loc="E21"/>
+   <pin index="6" iostandard="LVCMOS33" loc="B20"/>
+   <pin index="7" iostandard="LVCMOS33" loc="B19"/>
+   <pin index="8" iostandard="LVCMOS33" loc="C20"/>
+   <pin index="9" iostandard="LVCMOS33" loc="D20"/>
+   <pin index="10" iostandard="LVCMOS33" loc="G16"/>
+   <pin index="11" iostandard="LVCMOS33" loc="G15"/>
+   <pin index="12" iostandard="LVCMOS33" loc="C19"/>
+   <pin index="13" iostandard="LVCMOS33" loc="D18"/>
+   <pin index="14" iostandard="LVCMOS33" loc="F19"/>
+   <pin index="15" iostandard="LVCMOS33" loc="G19"/>
+  </pins>
+</port>
+
+<port dir="out" left="15" name="P2_t" right="0">
+  <pins>
+   <pin index="0" iostandard="LVCMOS33" loc="A22"/>
+   <pin index="1" iostandard="LVCMOS33" loc="A21"/>
+   <pin index="2" iostandard="LVCMOS33" loc="G21"/>
+   <pin index="3" iostandard="LVCMOS33" loc="G20"/>
+   <pin index="4" iostandard="LVCMOS33" loc="D21"/>
+   <pin index="5" iostandard="LVCMOS33" loc="E21"/>
+   <pin index="6" iostandard="LVCMOS33" loc="B20"/>
+   <pin index="7" iostandard="LVCMOS33" loc="B19"/>
+   <pin index="8" iostandard="LVCMOS33" loc="C20"/>
+   <pin index="9" iostandard="LVCMOS33" loc="D20"/>
+   <pin index="10" iostandard="LVCMOS33" loc="G16"/>
+   <pin index="11" iostandard="LVCMOS33" loc="G15"/>
+   <pin index="12" iostandard="LVCMOS33" loc="C19"/>
+   <pin index="13" iostandard="LVCMOS33" loc="D18"/>
+   <pin index="14" iostandard="LVCMOS33" loc="F19"/>
+   <pin index="15" iostandard="LVCMOS33" loc="G19"/>
+  </pins>
+</port>
+
+<port dir="in" left="31" name="P3_i" right="0">
+  <pins>
+    <pin index="0" iostandard="LVCMOS33" loc="U12"/>
+    <pin index="1" iostandard="LVCMOS33" loc="U11"/>
+    <pin index="2" iostandard="LVCMOS33" loc="U10"/>
+    <pin index="3" iostandard="LVCMOS33" loc="U9"/>
+    <pin index="4" iostandard="LVCMOS33" loc="V10"/>
+    <pin index="5" iostandard="LVCMOS33" loc="V9"/>
+    <pin index="6" iostandard="LVCMOS33" loc="Y9"/>
+    <pin index="7" iostandard="LVCMOS33" loc="Y8"/>
+    <pin index="8" iostandard="LVCMOS33" loc="AA7"/>
+    <pin index="9" iostandard="LVCMOS33" loc="AA6"/>
+    <pin index="10" iostandard="LVCMOS33" loc="Y6"/>
+    <pin index="11" iostandard="LVCMOS33" loc="Y5"/>
+    <pin index="12" iostandard="LVCMOS33" loc="V12"/>
+    <pin index="13" iostandard="LVCMOS33" loc="W12"/>
+    <pin index="14" iostandard="LVCMOS33" loc="W11"/>
+    <pin index="15" iostandard="LVCMOS33" loc="W10"/>
+    <pin index="16" iostandard="LVCMOS33" loc="Y11"/>
+    <pin index="17" iostandard="LVCMOS33" loc="Y10"/>
+    <pin index="18" iostandard="LVCMOS33" loc="V8"/>
+    <pin index="19" iostandard="LVCMOS33" loc="W8"/>
+    <pin index="20" iostandard="LVCMOS33" loc="V7"/>
+    <pin index="21" iostandard="LVCMOS33" loc="W7"/>
+    <pin index="22" iostandard="LVCMOS33" loc="W6"/>
+    <pin index="23" iostandard="LVCMOS33" loc="W5"/>
+    <pin index="24" iostandard="LVCMOS33" loc="R6"/>
+    <pin index="25" iostandard="LVCMOS33" loc="T6"/>
+    <pin index="26" iostandard="LVCMOS33" loc="U6"/>
+    <pin index="27" iostandard="LVCMOS33" loc="U5"/>
+    <pin index="28" iostandard="LVCMOS33" loc="AA12"/>
+    <pin index="29" iostandard="LVCMOS33" loc="AB12"/>
+    <pin index="30" iostandard="LVCMOS33" loc="AA11"/>
+    <pin index="31" iostandard="LVCMOS33" loc="AB11"/>
+  </pins>
+</port>
+
+<port dir="out" left="31" name="P3_o" right="0">
+  <pins>
+    <pin index="0" iostandard="LVCMOS33" loc="U12"/>
+    <pin index="1" iostandard="LVCMOS33" loc="U11"/>
+    <pin index="2" iostandard="LVCMOS33" loc="U10"/>
+    <pin index="3" iostandard="LVCMOS33" loc="U9"/>
+    <pin index="4" iostandard="LVCMOS33" loc="V10"/>
+    <pin index="5" iostandard="LVCMOS33" loc="V9"/>
+    <pin index="6" iostandard="LVCMOS33" loc="Y9"/>
+    <pin index="7" iostandard="LVCMOS33" loc="Y8"/>
+    <pin index="8" iostandard="LVCMOS33" loc="AA7"/>
+    <pin index="9" iostandard="LVCMOS33" loc="AA6"/>
+    <pin index="10" iostandard="LVCMOS33" loc="Y6"/>
+    <pin index="11" iostandard="LVCMOS33" loc="Y5"/>
+    <pin index="12" iostandard="LVCMOS33" loc="V12"/>
+    <pin index="13" iostandard="LVCMOS33" loc="W12"/>
+    <pin index="14" iostandard="LVCMOS33" loc="W11"/>
+    <pin index="15" iostandard="LVCMOS33" loc="W10"/>
+    <pin index="16" iostandard="LVCMOS33" loc="Y11"/>
+    <pin index="17" iostandard="LVCMOS33" loc="Y10"/>
+    <pin index="18" iostandard="LVCMOS33" loc="V8"/>
+    <pin index="19" iostandard="LVCMOS33" loc="W8"/>
+    <pin index="20" iostandard="LVCMOS33" loc="V7"/>
+    <pin index="21" iostandard="LVCMOS33" loc="W7"/>
+    <pin index="22" iostandard="LVCMOS33" loc="W6"/>
+    <pin index="23" iostandard="LVCMOS33" loc="W5"/>
+    <pin index="24" iostandard="LVCMOS33" loc="R6"/>
+    <pin index="25" iostandard="LVCMOS33" loc="T6"/>
+    <pin index="26" iostandard="LVCMOS33" loc="U6"/>
+    <pin index="27" iostandard="LVCMOS33" loc="U5"/>
+    <pin index="28" iostandard="LVCMOS33" loc="AA12"/>
+    <pin index="29" iostandard="LVCMOS33" loc="AB12"/>
+    <pin index="30" iostandard="LVCMOS33" loc="AA11"/>
+    <pin index="31" iostandard="LVCMOS33" loc="AB11"/>
+  </pins>
+</port>
+
+<port dir="out" left="31" name="P3_t" right="0">
+  <pins>
+    <pin index="0" iostandard="LVCMOS33" loc="U12"/>
+    <pin index="1" iostandard="LVCMOS33" loc="U11"/>
+    <pin index="2" iostandard="LVCMOS33" loc="U10"/>
+    <pin index="3" iostandard="LVCMOS33" loc="U9"/>
+    <pin index="4" iostandard="LVCMOS33" loc="V10"/>
+    <pin index="5" iostandard="LVCMOS33" loc="V9"/>
+    <pin index="6" iostandard="LVCMOS33" loc="Y9"/>
+    <pin index="7" iostandard="LVCMOS33" loc="Y8"/>
+    <pin index="8" iostandard="LVCMOS33" loc="AA7"/>
+    <pin index="9" iostandard="LVCMOS33" loc="AA6"/>
+    <pin index="10" iostandard="LVCMOS33" loc="Y6"/>
+    <pin index="11" iostandard="LVCMOS33" loc="Y5"/>
+    <pin index="12" iostandard="LVCMOS33" loc="V12"/>
+    <pin index="13" iostandard="LVCMOS33" loc="W12"/>
+    <pin index="14" iostandard="LVCMOS33" loc="W11"/>
+    <pin index="15" iostandard="LVCMOS33" loc="W10"/>
+    <pin index="16" iostandard="LVCMOS33" loc="Y11"/>
+    <pin index="17" iostandard="LVCMOS33" loc="Y10"/>
+    <pin index="18" iostandard="LVCMOS33" loc="V8"/>
+    <pin index="19" iostandard="LVCMOS33" loc="W8"/>
+    <pin index="20" iostandard="LVCMOS33" loc="V7"/>
+    <pin index="21" iostandard="LVCMOS33" loc="W7"/>
+    <pin index="22" iostandard="LVCMOS33" loc="W6"/>
+    <pin index="23" iostandard="LVCMOS33" loc="W5"/>
+    <pin index="24" iostandard="LVCMOS33" loc="R6"/>
+    <pin index="25" iostandard="LVCMOS33" loc="T6"/>
+    <pin index="26" iostandard="LVCMOS33" loc="U6"/>
+    <pin index="27" iostandard="LVCMOS33" loc="U5"/>
+    <pin index="28" iostandard="LVCMOS33" loc="AA12"/>
+    <pin index="29" iostandard="LVCMOS33" loc="AB12"/>
+    <pin index="30" iostandard="LVCMOS33" loc="AA11"/>
+    <pin index="31" iostandard="LVCMOS33" loc="AB11"/>
+  </pins>
+</port>
+
+<port dir="in" left="17" name="P4_i" right="0">
+  <pins>
+   <pin index="0" iostandard="LVCMOS33" loc="AA9"/>
+   <pin index="1" iostandard="LVCMOS33" loc="AA8"/>
+   <pin index="2" iostandard="LVCMOS33" loc="AB10"/>
+   <pin index="3" iostandard="LVCMOS33" loc="AB9"/>
+   <pin index="4" iostandard="LVCMOS33" loc="T4"/>
+   <pin index="5" iostandard="LVCMOS33" loc="U4"/>
+   <pin index="6" iostandard="LVCMOS33" loc="AB7"/>
+   <pin index="7" iostandard="LVCMOS33" loc="AB6"/>
+   <pin index="8" iostandard="LVCMOS33" loc="AB5"/>
+   <pin index="9" iostandard="LVCMOS33" loc="AB4"/>
+   <pin index="10" iostandard="LVCMOS33" loc="Y4"/>
+   <pin index="11" iostandard="LVCMOS33" loc="AA4"/>
+   <pin index="12" iostandard="LVCMOS33" loc="AB2"/>
+   <pin index="13" iostandard="LVCMOS33" loc="AB1"/>
+   <pin index="14" iostandard="LVCMOS33" loc="V5"/>
+   <pin index="15" iostandard="LVCMOS33" loc="V4"/>
+   <pin index="16" iostandard="LVCMOS33" loc="R7"/>
+   <pin index="17" iostandard="LVCMOS33" loc="U7"/>
+  </pins>
+</port>
+
+<port dir="out" left="17" name="P4_o" right="0">
+  <pins>
+   <pin index="0" iostandard="LVCMOS33" loc="AA9"/>
+   <pin index="1" iostandard="LVCMOS33" loc="AA8"/>
+   <pin index="2" iostandard="LVCMOS33" loc="AB10"/>
+   <pin index="3" iostandard="LVCMOS33" loc="AB9"/>
+   <pin index="4" iostandard="LVCMOS33" loc="T4"/>
+   <pin index="5" iostandard="LVCMOS33" loc="U4"/>
+   <pin index="6" iostandard="LVCMOS33" loc="AB7"/>
+   <pin index="7" iostandard="LVCMOS33" loc="AB6"/>
+   <pin index="8" iostandard="LVCMOS33" loc="AB5"/>
+   <pin index="9" iostandard="LVCMOS33" loc="AB4"/>
+   <pin index="10" iostandard="LVCMOS33" loc="Y4"/>
+   <pin index="11" iostandard="LVCMOS33" loc="AA4"/>
+   <pin index="12" iostandard="LVCMOS33" loc="AB2"/>
+   <pin index="13" iostandard="LVCMOS33" loc="AB1"/>
+   <pin index="14" iostandard="LVCMOS33" loc="V5"/>
+   <pin index="15" iostandard="LVCMOS33" loc="V4"/>
+   <pin index="16" iostandard="LVCMOS33" loc="R7"/>
+   <pin index="17" iostandard="LVCMOS33" loc="U7"/>
+  </pins>
+</port>
+
+<port dir="out" left="17" name="P4_t" right="0">
+  <pins>
+   <pin index="0" iostandard="LVCMOS33" loc="AA9"/>
+   <pin index="1" iostandard="LVCMOS33" loc="AA8"/>
+   <pin index="2" iostandard="LVCMOS33" loc="AB10"/>
+   <pin index="3" iostandard="LVCMOS33" loc="AB9"/>
+   <pin index="4" iostandard="LVCMOS33" loc="T4"/>
+   <pin index="5" iostandard="LVCMOS33" loc="U4"/>
+   <pin index="6" iostandard="LVCMOS33" loc="AB7"/>
+   <pin index="7" iostandard="LVCMOS33" loc="AB6"/>
+   <pin index="8" iostandard="LVCMOS33" loc="AB5"/>
+   <pin index="9" iostandard="LVCMOS33" loc="AB4"/>
+   <pin index="10" iostandard="LVCMOS33" loc="Y4"/>
+   <pin index="11" iostandard="LVCMOS33" loc="AA4"/>
+   <pin index="12" iostandard="LVCMOS33" loc="AB2"/>
+   <pin index="13" iostandard="LVCMOS33" loc="AB1"/>
+   <pin index="14" iostandard="LVCMOS33" loc="V5"/>
+   <pin index="15" iostandard="LVCMOS33" loc="V4"/>
+   <pin index="16" iostandard="LVCMOS33" loc="R7"/>
+   <pin index="17" iostandard="LVCMOS33" loc="U7"/>
+  </pins>
+</port>
+
+<port dir="in" left="17" name="P5_i" right="0">
+  <pins>
+    <pin index="0" iostandard="LVCMOS33" loc="W20"/>"
+    <pin index="1" iostandard="LVCMOS33" loc="W21"/>"
+    <pin index="2" iostandard="LVCMOS33" loc="W17"/>"
+    <pin index="3" iostandard="LVCMOS33" loc="W18"/>"
+    <pin index="4" iostandard="LVCMOS33" loc="W16"/>"
+    <pin index="5" iostandard="LVCMOS33" loc="Y16"/>"
+    <pin index="6" iostandard="LVCMOS33" loc="AA22"/>"
+    <pin index="7" iostandard="LVCMOS33" loc="AB22"/>"
+    <pin index="8" iostandard="LVCMOS33" loc="AA21"/>"
+    <pin index="9" iostandard="LVCMOS33" loc="AB21"/>"
+    <pin index="10" iostandard="LVCMOS33" loc="Y19"/>"
+    <pin index="11" iostandard="LVCMOS33" loc="AA19"/>"
+    <pin index="12" iostandard="LVCMOS33" loc="Y18"/>"
+    <pin index="13" iostandard="LVCMOS33" loc="AA18"/>"
+    <pin index="14" iostandard="LVCMOS33" loc="AA17"/>"
+    <pin index="15" iostandard="LVCMOS33" loc="AB17"/>"
+    <pin index="16" iostandard="LVCMOS33" loc="AA16"/>"
+    <pin index="17" iostandard="LVCMOS33" loc="AB16"/>"
+  </pins>
+</port>
+
+<port dir="out" left="17" name="P5_o" right="0">
+  <pins>
+    <pin index="0" iostandard="LVCMOS33" loc="W20"/>"
+    <pin index="1" iostandard="LVCMOS33" loc="W21"/>"
+    <pin index="2" iostandard="LVCMOS33" loc="W17"/>"
+    <pin index="3" iostandard="LVCMOS33" loc="W18"/>"
+    <pin index="4" iostandard="LVCMOS33" loc="W16"/>"
+    <pin index="5" iostandard="LVCMOS33" loc="Y16"/>"
+    <pin index="6" iostandard="LVCMOS33" loc="AA22"/>"
+    <pin index="7" iostandard="LVCMOS33" loc="AB22"/>"
+    <pin index="8" iostandard="LVCMOS33" loc="AA21"/>"
+    <pin index="9" iostandard="LVCMOS33" loc="AB21"/>"
+    <pin index="10" iostandard="LVCMOS33" loc="Y19"/>"
+    <pin index="11" iostandard="LVCMOS33" loc="AA19"/>"
+    <pin index="12" iostandard="LVCMOS33" loc="Y18"/>"
+    <pin index="13" iostandard="LVCMOS33" loc="AA18"/>"
+    <pin index="14" iostandard="LVCMOS33" loc="AA17"/>"
+    <pin index="15" iostandard="LVCMOS33" loc="AB17"/>"
+    <pin index="16" iostandard="LVCMOS33" loc="AA16"/>"
+    <pin index="17" iostandard="LVCMOS33" loc="AB16"/>"
+  </pins>
+</port>
+
+<port dir="out" left="17" name="P5_t" right="0">
+  <pins>
+    <pin index="0" iostandard="LVCMOS33" loc="W20"/>"
+    <pin index="1" iostandard="LVCMOS33" loc="W21"/>"
+    <pin index="2" iostandard="LVCMOS33" loc="W17"/>"
+    <pin index="3" iostandard="LVCMOS33" loc="W18"/>"
+    <pin index="4" iostandard="LVCMOS33" loc="W16"/>"
+    <pin index="5" iostandard="LVCMOS33" loc="Y16"/>"
+    <pin index="6" iostandard="LVCMOS33" loc="AA22"/>"
+    <pin index="7" iostandard="LVCMOS33" loc="AB22"/>"
+    <pin index="8" iostandard="LVCMOS33" loc="AA21"/>"
+    <pin index="9" iostandard="LVCMOS33" loc="AB21"/>"
+    <pin index="10" iostandard="LVCMOS33" loc="Y19"/>"
+    <pin index="11" iostandard="LVCMOS33" loc="AA19"/>"
+    <pin index="12" iostandard="LVCMOS33" loc="Y18"/>"
+    <pin index="13" iostandard="LVCMOS33" loc="AA18"/>"
+    <pin index="14" iostandard="LVCMOS33" loc="AA17"/>"
+    <pin index="15" iostandard="LVCMOS33" loc="AB17"/>"
+    <pin index="16" iostandard="LVCMOS33" loc="AA16"/>"
+    <pin index="17" iostandard="LVCMOS33" loc="AB16"/>"
+  </pins>
+</port>
+
+<port dir="in" left="31" name="P6_i" right="0">
+  <pins>
+    <pin index="0" iostandard="LVCMOS33" loc="T16"/>
+    <pin index="1" iostandard="LVCMOS33" loc="T17"/>
+    <pin index="2" iostandard="LVCMOS33" loc="M21"/>
+    <pin index="3" iostandard="LVCMOS33" loc="M22"/>
+    <pin index="4" iostandard="LVCMOS33" loc="R20"/>
+    <pin index="5" iostandard="LVCMOS33" loc="R21"/>
+    <pin index="6" iostandard="LVCMOS33" loc="R18"/>
+    <pin index="7" iostandard="LVCMOS33" loc="T18"/>
+    <pin index="8" iostandard="LVCMOS33" loc="J21"/>
+    <pin index="9" iostandard="LVCMOS33" loc="J22"/>
+    <pin index="10" iostandard="LVCMOS33" loc="J20"/>
+    <pin index="11" iostandard="LVCMOS33" loc="K21"/>
+    <pin index="12" iostandard="LVCMOS33" loc="N19"/>
+    <pin index="13" iostandard="LVCMOS33" loc="N20"/>
+    <pin index="14" iostandard="LVCMOS33" loc="R19"/>
+    <pin index="15" iostandard="LVCMOS33" loc="T19"/>
+    <pin index="16" iostandard="LVCMOS33" loc="J15"/>
+    <pin index="17" iostandard="LVCMOS33" loc="K15"/>
+    <pin index="18" iostandard="LVCMOS33" loc="P20"/>
+    <pin index="19" iostandard="LVCMOS33" loc="P21"/>
+    <pin index="20" iostandard="LVCMOS33" loc="P17"/>
+    <pin index="21" iostandard="LVCMOS33" loc="P18"/>
+    <pin index="22" iostandard="LVCMOS33" loc="L21"/>
+    <pin index="23" iostandard="LVCMOS33" loc="L22"/>
+    <pin index="24" iostandard="LVCMOS33" loc="J18"/>
+    <pin index="25" iostandard="LVCMOS33" loc="K18"/>
+    <pin index="26" iostandard="LVCMOS33" loc="J16"/>
+    <pin index="27" iostandard="LVCMOS33" loc="J17"/>
+    <pin index="28" iostandard="LVCMOS33" loc="L17"/>
+    <pin index="29" iostandard="LVCMOS33" loc="M17"/>
+    <pin index="30" iostandard="LVCMOS33" loc="N17"/>
+    <pin index="31" iostandard="LVCMOS33" loc="N18"/>
+  </pins>
+</port>
+
+<port dir="out" left="31" name="P6_o" right="0">
+  <pins>
+    <pin index="0" iostandard="LVCMOS33" loc="T16"/>
+    <pin index="1" iostandard="LVCMOS33" loc="T17"/>
+    <pin index="2" iostandard="LVCMOS33" loc="M21"/>
+    <pin index="3" iostandard="LVCMOS33" loc="M22"/>
+    <pin index="4" iostandard="LVCMOS33" loc="R20"/>
+    <pin index="5" iostandard="LVCMOS33" loc="R21"/>
+    <pin index="6" iostandard="LVCMOS33" loc="R18"/>
+    <pin index="7" iostandard="LVCMOS33" loc="T18"/>
+    <pin index="8" iostandard="LVCMOS33" loc="J21"/>
+    <pin index="9" iostandard="LVCMOS33" loc="J22"/>
+    <pin index="10" iostandard="LVCMOS33" loc="J20"/>
+    <pin index="11" iostandard="LVCMOS33" loc="K21"/>
+    <pin index="12" iostandard="LVCMOS33" loc="N19"/>
+    <pin index="13" iostandard="LVCMOS33" loc="N20"/>
+    <pin index="14" iostandard="LVCMOS33" loc="R19"/>
+    <pin index="15" iostandard="LVCMOS33" loc="T19"/>
+    <pin index="16" iostandard="LVCMOS33" loc="J15"/>
+    <pin index="17" iostandard="LVCMOS33" loc="K15"/>
+    <pin index="18" iostandard="LVCMOS33" loc="P20"/>
+    <pin index="19" iostandard="LVCMOS33" loc="P21"/>
+    <pin index="20" iostandard="LVCMOS33" loc="P17"/>
+    <pin index="21" iostandard="LVCMOS33" loc="P18"/>
+    <pin index="22" iostandard="LVCMOS33" loc="L21"/>
+    <pin index="23" iostandard="LVCMOS33" loc="L22"/>
+    <pin index="24" iostandard="LVCMOS33" loc="J18"/>
+    <pin index="25" iostandard="LVCMOS33" loc="K18"/>
+    <pin index="26" iostandard="LVCMOS33" loc="J16"/>
+    <pin index="27" iostandard="LVCMOS33" loc="J17"/>
+    <pin index="28" iostandard="LVCMOS33" loc="L17"/>
+    <pin index="29" iostandard="LVCMOS33" loc="M17"/>
+    <pin index="30" iostandard="LVCMOS33" loc="N17"/>
+    <pin index="31" iostandard="LVCMOS33" loc="N18"/>
+  </pins>
+</port>
+
+<port dir="out" left="31" name="P6_t" right="0">
+  <pins>
+    <pin index="0" iostandard="LVCMOS33" loc="T16"/>
+    <pin index="1" iostandard="LVCMOS33" loc="T17"/>
+    <pin index="2" iostandard="LVCMOS33" loc="M21"/>
+    <pin index="3" iostandard="LVCMOS33" loc="M22"/>
+    <pin index="4" iostandard="LVCMOS33" loc="R20"/>
+    <pin index="5" iostandard="LVCMOS33" loc="R21"/>
+    <pin index="6" iostandard="LVCMOS33" loc="R18"/>
+    <pin index="7" iostandard="LVCMOS33" loc="T18"/>
+    <pin index="8" iostandard="LVCMOS33" loc="J21"/>
+    <pin index="9" iostandard="LVCMOS33" loc="J22"/>
+    <pin index="10" iostandard="LVCMOS33" loc="J20"/>
+    <pin index="11" iostandard="LVCMOS33" loc="K21"/>
+    <pin index="12" iostandard="LVCMOS33" loc="N19"/>
+    <pin index="13" iostandard="LVCMOS33" loc="N20"/>
+    <pin index="14" iostandard="LVCMOS33" loc="R19"/>
+    <pin index="15" iostandard="LVCMOS33" loc="T19"/>
+    <pin index="16" iostandard="LVCMOS33" loc="J15"/>
+    <pin index="17" iostandard="LVCMOS33" loc="K15"/>
+    <pin index="18" iostandard="LVCMOS33" loc="P20"/>
+    <pin index="19" iostandard="LVCMOS33" loc="P21"/>
+    <pin index="20" iostandard="LVCMOS33" loc="P17"/>
+    <pin index="21" iostandard="LVCMOS33" loc="P18"/>
+    <pin index="22" iostandard="LVCMOS33" loc="L21"/>
+    <pin index="23" iostandard="LVCMOS33" loc="L22"/>
+    <pin index="24" iostandard="LVCMOS33" loc="J18"/>
+    <pin index="25" iostandard="LVCMOS33" loc="K18"/>
+    <pin index="26" iostandard="LVCMOS33" loc="J16"/>
+    <pin index="27" iostandard="LVCMOS33" loc="J17"/>
+    <pin index="28" iostandard="LVCMOS33" loc="L17"/>
+    <pin index="29" iostandard="LVCMOS33" loc="M17"/>
+    <pin index="30" iostandard="LVCMOS33" loc="N17"/>
+    <pin index="31" iostandard="LVCMOS33" loc="N18"/>
+  </pins>
+</port>
+
+<port dir="in" left="3" name="P7_i" right="0">
+  <pins>
+   <pin index="0" iostandard="LVCMOS33" loc="M19"/>
+   <pin index="1" iostandard="LVCMOS33" loc="M20"/>
+   <pin index="2" iostandard="LVCMOS33" loc="L18"/>
+   <pin index="3" iostandard="LVCMOS33" loc="L19"/>
+  </pins>
+</port>
+
+<port dir="out" left="3" name="P7_o" right="0">
+  <pins>
+   <pin index="0" iostandard="LVCMOS33" loc="M19"/>
+   <pin index="1" iostandard="LVCMOS33" loc="M20"/>
+   <pin index="2" iostandard="LVCMOS33" loc="L18"/>
+   <pin index="3" iostandard="LVCMOS33" loc="L19"/>
+  </pins>
+</port>
+
+<port dir="out" left="3" name="P7_t" right="0">
+  <pins>
+   <pin index="0" iostandard="LVCMOS33" loc="M19"/>
+   <pin index="1" iostandard="LVCMOS33" loc="M20"/>
+   <pin index="2" iostandard="LVCMOS33" loc="L18"/>
+   <pin index="3" iostandard="LVCMOS33" loc="L19"/>
+  </pins>
+</port>
+
+  </ports>
+
+</board_part>

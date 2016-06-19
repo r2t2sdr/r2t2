@@ -1,0 +1,43 @@
+#
+# (C) Copyright 2014-2015 Xilinx, Inc.
+# Based on original code:
+# (C) Copyright 2007-2014 Michal Simek
+# (C) Copyright 2007-2012 PetaLogix Qld Pty Ltd
+#
+# Michal SIMEK <monstr@monstr.eu>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of
+# the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+
+#
+# The Device-Tree BSP generator
+#
+OPTION psf_version = 2.1;
+
+BEGIN OS device_tree
+OPTION DRC = device_tree_drc;
+OPTION OS_TYPE = DTS
+OPTION SUPPORTED_PERIPHERALS = (microblaze ps7_cortexa9);
+OPTION DESC = "Generate flat device tree";
+OPTION COMPILE_BSP = FALSE;
+
+PARAMETER name = dtg_version, desc = "DTG version", default = "2014.4";
+
+PARAMETER name = bootargs, desc = "Booting arguments", type = string, default = "";
+
+PARAMETER name = console_device, desc = "Instance name of IP core for boot console (e.g. RS232_Uart_1, not xps_uart16550)", type = peripheral_instance, range = (axi_uart16550, axi_uartlite, ps7_uart), default = none;
+
+PARAMETER name = periph_type_overrides, desc = "List of peripheral type overrides", type = string, default = "";
+PARAMETER name = main_memory, desc = "Name of Main Memory used with PetaLinux", type = peripheral_instance, range = (ps7_ddr, mpmc, mig_7series, axi_emc), default = none;
+PARAMETER name = kernel_version, desc = "Target kernel version", type = enum, values = ("2014.4" = 2014.4, "2015.1" = 2015.1, "2015.2" = 2015.2, "2015.3" = 2015.3 ), default = 2015.3;
+PARAMETER name = pcw_dts, desc = "Target dts filename for PCW configurations", type = string, default = system.dts;
+PARAMETER name = master_dts, desc = "Master dts filename", type = string, default = system.dts;
+END OS

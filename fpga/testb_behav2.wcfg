@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="testb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="testb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="19" />
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/LVDS_ADC_A_D0_N">
+      <obj_property name="ElementShortName">LVDS_ADC_A_D0_N</obj_property>
+      <obj_property name="ObjectShortName">LVDS_ADC_A_D0_N</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/LVDS_ADC_A_D0_P">
+      <obj_property name="ElementShortName">LVDS_ADC_A_D0_P</obj_property>
+      <obj_property name="ObjectShortName">LVDS_ADC_A_D0_P</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/LVDS_ADC_A_D1_N">
+      <obj_property name="ElementShortName">LVDS_ADC_A_D1_N</obj_property>
+      <obj_property name="ObjectShortName">LVDS_ADC_A_D1_N</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/LVDS_ADC_A_D1_P">
+      <obj_property name="ElementShortName">LVDS_ADC_A_D1_P</obj_property>
+      <obj_property name="ObjectShortName">LVDS_ADC_A_D1_P</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/LVDS_ADC_B_D0_N">
+      <obj_property name="ElementShortName">LVDS_ADC_B_D0_N</obj_property>
+      <obj_property name="ObjectShortName">LVDS_ADC_B_D0_N</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/LVDS_ADC_B_D0_P">
+      <obj_property name="ElementShortName">LVDS_ADC_B_D0_P</obj_property>
+      <obj_property name="ObjectShortName">LVDS_ADC_B_D0_P</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/LVDS_ADC_B_D1_N">
+      <obj_property name="ElementShortName">LVDS_ADC_B_D1_N</obj_property>
+      <obj_property name="ObjectShortName">LVDS_ADC_B_D1_N</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/LVDS_ADC_B_D1_P">
+      <obj_property name="ElementShortName">LVDS_ADC_B_D1_P</obj_property>
+      <obj_property name="ObjectShortName">LVDS_ADC_B_D1_P</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/LVDS_ADC_DCO_N">
+      <obj_property name="ElementShortName">LVDS_ADC_DCO_N</obj_property>
+      <obj_property name="ObjectShortName">LVDS_ADC_DCO_N</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/LVDS_ADC_DCO_P">
+      <obj_property name="ElementShortName">LVDS_ADC_DCO_P</obj_property>
+      <obj_property name="ObjectShortName">LVDS_ADC_DCO_P</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/LVDS_ADC_FCO_N">
+      <obj_property name="ElementShortName">LVDS_ADC_FCO_N</obj_property>
+      <obj_property name="ObjectShortName">LVDS_ADC_FCO_N</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/LVDS_ADC_FCO_P">
+      <obj_property name="ElementShortName">LVDS_ADC_FCO_P</obj_property>
+      <obj_property name="ObjectShortName">LVDS_ADC_FCO_P</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/sreset">
+      <obj_property name="ElementShortName">sreset</obj_property>
+      <obj_property name="ObjectShortName">sreset</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/clk200Mhz">
+      <obj_property name="ElementShortName">clk200Mhz</obj_property>
+      <obj_property name="ObjectShortName">clk200Mhz</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/testb/dut/M_AXIS_ACD_A_tdata">
+      <obj_property name="ElementShortName">M_AXIS_ACD_A_tdata[15:0]</obj_property>
+      <obj_property name="ObjectShortName">M_AXIS_ACD_A_tdata[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="array" fp_name="/testb/dut/M_AXIS_ACD_B_tdata">
+      <obj_property name="ElementShortName">M_AXIS_ACD_B_tdata[15:0]</obj_property>
+      <obj_property name="ObjectShortName">M_AXIS_ACD_B_tdata[15:0]</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/adc_clk_div">
+      <obj_property name="ElementShortName">adc_clk_div</obj_property>
+      <obj_property name="ObjectShortName">adc_clk_div</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/bitslip">
+      <obj_property name="ElementShortName">bitslip</obj_property>
+      <obj_property name="ObjectShortName">bitslip</obj_property>
+   </wvobject>
+   <wvobject db_ref_id="1" type="logic" fp_name="/testb/dut/adc_clk">
+      <obj_property name="ElementShortName">adc_clk</obj_property>
+      <obj_property name="ObjectShortName">adc_clk</obj_property>
+   </wvobject>
+</wave_config>

@@ -1,0 +1,4 @@
+config NET_R2T2
+	tristate "R2T2 network fpga driver"
+	---help---
+	  This option enables the R2T2 network driver for communication with fpga

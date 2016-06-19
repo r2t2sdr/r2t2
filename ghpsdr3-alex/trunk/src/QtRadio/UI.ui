@@ -1,0 +1,1274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>UI</class>
+ <widget class="QMainWindow" name="UI">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>994</width>
+    <height>470</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>470</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>QtRadio - not connected</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="verticalSpacing">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>4</number>
+    </property>
+    <property name="bottomMargin">
+     <number>4</number>
+    </property>
+    <item row="1" column="0" colspan="3">
+     <widget class="Panadapter" name="spectrumView">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>150</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="4">
+     <widget class="QFrame" name="frame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>40</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>40</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <property name="lineWidth">
+       <number>2</number>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="topMargin">
+        <number>1</number>
+       </property>
+       <property name="bottomMargin">
+        <number>1</number>
+       </property>
+       <item>
+        <widget class="QWidget" name="widget" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <widget class="QSlider" name="agcTLevelSlider">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>10</y>
+            <width>111</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="toolTip">
+           <string extracomment="AGC max gain">Variable fixed gain control.</string>
+          </property>
+          <property name="minimum">
+           <number>-20</number>
+          </property>
+          <property name="maximum">
+           <number>120</number>
+          </property>
+          <property name="value">
+           <number>30</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label">
+          <property name="geometry">
+           <rect>
+            <x>15</x>
+            <y>0</y>
+            <width>43</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>AGC-T:</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="agcTLevelLabel">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>0</y>
+            <width>41</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="toolTip">
+           <string extracomment="AGC max gain/threshold"/>
+          </property>
+          <property name="text">
+           <string>30</string>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="rxEqEnableCB">
+         <property name="maximumSize">
+          <size>
+           <width>110</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Enable/Disable RX audio equalizer.</string>
+         </property>
+         <property name="text">
+          <string>RX Equalizer</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="txEqEnableCB">
+         <property name="maximumSize">
+          <size>
+           <width>110</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Enable/Disable TX audio equalizer.</string>
+         </property>
+         <property name="text">
+          <string>TX Equalizer</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="tnfButton">
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Enable/Disable tracking notch filters.</string>
+         </property>
+         <property name="text">
+          <string>TNF</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="tnfAddButton">
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Add tracking notch filter to current band.</string>
+         </property>
+         <property name="text">
+          <string>+TNF</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="zoomSampRadio">
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Enable original zoom.</string>
+         </property>
+         <property name="text">
+          <string>Sample Zoom</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="zoomViewRadio">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Enable view zoom.</string>
+         </property>
+         <property name="text">
+          <string>View Zoom</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QSlider" name="zoomSpectrumSlider">
+      <property name="minimumSize">
+       <size>
+        <width>30</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="maximum">
+       <number>200</number>
+      </property>
+      <property name="singleStep">
+       <number>1</number>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksBelow</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="4">
+     <widget class="QWidget" name="widget_2" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>118</height>
+       </size>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="margin">
+        <number>1</number>
+       </property>
+       <item>
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QFrame" name="sMFrame">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>154</width>
+           <height>118</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>154</width>
+           <height>119</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="lineWidth">
+          <number>2</number>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>1</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>1</number>
+          </property>
+          <item>
+           <widget class="sMeter" name="sMeterFrame">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="vfo" name="vfoFrame">
+         <property name="minimumSize">
+          <size>
+           <width>575</width>
+           <height>118</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>575</width>
+           <height>118</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="lineWidth">
+          <number>2</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Ctl" name="ctlFrame">
+         <property name="minimumSize">
+          <size>
+           <width>240</width>
+           <height>118</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>118</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="lineWidth">
+          <number>2</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>994</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuBand">
+    <property name="title">
+     <string>Band</string>
+    </property>
+    <widget class="QMenu" name="menuXVTR">
+     <property name="title">
+      <string>XVTR</string>
+     </property>
+    </widget>
+    <addaction name="actionKeypad"/>
+    <addaction name="separator"/>
+    <addaction name="action160"/>
+    <addaction name="action80"/>
+    <addaction name="action60"/>
+    <addaction name="action40"/>
+    <addaction name="action30"/>
+    <addaction name="action20"/>
+    <addaction name="action17"/>
+    <addaction name="action15"/>
+    <addaction name="action12"/>
+    <addaction name="action10"/>
+    <addaction name="action6"/>
+    <addaction name="separator"/>
+    <addaction name="actionGen"/>
+    <addaction name="actionWWV"/>
+    <addaction name="separator"/>
+    <addaction name="menuXVTR"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuMode">
+    <property name="title">
+     <string>Mode</string>
+    </property>
+    <addaction name="actionLSB"/>
+    <addaction name="actionUSB"/>
+    <addaction name="actionDSB"/>
+    <addaction name="actionCWU"/>
+    <addaction name="actionCWL"/>
+    <addaction name="actionAM"/>
+    <addaction name="actionSAM"/>
+    <addaction name="actionFMN"/>
+    <addaction name="actionDIGL"/>
+    <addaction name="actionDIGU"/>
+   </widget>
+   <widget class="QMenu" name="menuFilter">
+    <property name="title">
+     <string>Filter</string>
+    </property>
+    <addaction name="actionFilter_0"/>
+    <addaction name="actionFilter_1"/>
+    <addaction name="actionFilter_2"/>
+    <addaction name="actionFilter_3"/>
+    <addaction name="actionFilter_4"/>
+    <addaction name="actionFilter_5"/>
+    <addaction name="actionFilter_6"/>
+    <addaction name="actionFilter_7"/>
+    <addaction name="actionFilter_8"/>
+    <addaction name="actionFilter_9"/>
+    <addaction name="actionFilter_10"/>
+   </widget>
+   <widget class="QMenu" name="menuNoise_Reduction">
+    <property name="title">
+     <string>Noise Reduction</string>
+    </property>
+    <addaction name="actionANF"/>
+    <addaction name="actionNR"/>
+    <addaction name="actionNB"/>
+    <addaction name="actionSDROM"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuAGC">
+    <property name="title">
+     <string>AGC</string>
+    </property>
+    <addaction name="actionFixed"/>
+    <addaction name="actionSlow"/>
+    <addaction name="actionMedium"/>
+    <addaction name="actionFast"/>
+    <addaction name="actionLong"/>
+   </widget>
+   <widget class="QMenu" name="menuReceiver">
+    <property name="title">
+     <string>Receiver</string>
+    </property>
+    <addaction name="actionConnectToServer"/>
+    <addaction name="actionDisconnectFromServer"/>
+    <addaction name="actionQuick_Server_List"/>
+    <addaction name="separator"/>
+    <addaction name="actionSubrx"/>
+    <addaction name="separator"/>
+    <addaction name="actionBandscope"/>
+    <addaction name="actionRecord"/>
+    <addaction name="actionConfig"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuAudio">
+    <property name="title">
+     <string>Audio</string>
+    </property>
+    <addaction name="actionMuteMainRx"/>
+    <addaction name="actionMuteSubRx"/>
+    <addaction name="separator"/>
+    <addaction name="actionEqualizer"/>
+   </widget>
+   <widget class="QMenu" name="menuHardware">
+    <property name="title">
+     <string>Hardware</string>
+    </property>
+    <addaction name="actionPreamp"/>
+    <addaction name="separator"/>
+    <addaction name="actionDither"/>
+    <addaction name="actionRandom"/>
+    <addaction name="separator"/>
+    <addaction name="actionPWS_Post_Filter"/>
+    <addaction name="actionPWS_Pre_Filter"/>
+    <addaction name="actionPWS_Semi_Raw"/>
+    <addaction name="actionPWS_Post_Det"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <widget class="QMenu" name="menuBookmarks">
+    <property name="title">
+     <string>Bookmarks</string>
+    </property>
+    <widget class="QMenu" name="menuView_Bookmarks">
+     <property name="title">
+      <string>View Bookmarks</string>
+     </property>
+    </widget>
+    <addaction name="actionBookmarkThisFrequency"/>
+    <addaction name="separator"/>
+    <addaction name="menuView_Bookmarks"/>
+    <addaction name="separator"/>
+    <addaction name="actionEditBookmarks"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuSpectrum">
+    <property name="title">
+     <string>Spectrum</string>
+    </property>
+    <addaction name="actionPolyphase"/>
+   </widget>
+   <widget class="QMenu" name="menuSquelch">
+    <property name="title">
+     <string>Squelch</string>
+    </property>
+    <addaction name="actionSquelchEnable"/>
+    <addaction name="separator"/>
+    <addaction name="actionSquelchReset"/>
+   </widget>
+   <addaction name="menuReceiver"/>
+   <addaction name="menuAudio"/>
+   <addaction name="menuBand"/>
+   <addaction name="menuMode"/>
+   <addaction name="menuFilter"/>
+   <addaction name="menuNoise_Reduction"/>
+   <addaction name="menuAGC"/>
+   <addaction name="menuSpectrum"/>
+   <addaction name="menuSquelch"/>
+   <addaction name="menuHardware"/>
+   <addaction name="menuBookmarks"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="sizeGripEnabled">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <action name="action60">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>60</string>
+   </property>
+  </action>
+  <action name="action40">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>40</string>
+   </property>
+  </action>
+  <action name="action30">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>30</string>
+   </property>
+  </action>
+  <action name="action20">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>20</string>
+   </property>
+  </action>
+  <action name="action17">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>17</string>
+   </property>
+  </action>
+  <action name="action15">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>15</string>
+   </property>
+  </action>
+  <action name="action12">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>12</string>
+   </property>
+  </action>
+  <action name="action10">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>10</string>
+   </property>
+  </action>
+  <action name="action6">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>6</string>
+   </property>
+  </action>
+  <action name="actionGen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Gen</string>
+   </property>
+  </action>
+  <action name="actionWWV">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>WWV</string>
+   </property>
+  </action>
+  <action name="actionLSB">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>LSB</string>
+   </property>
+  </action>
+  <action name="actionUSB">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>USB</string>
+   </property>
+  </action>
+  <action name="actionDSB">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>DSB</string>
+   </property>
+  </action>
+  <action name="actionCWL">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>CWL</string>
+   </property>
+  </action>
+  <action name="actionCWU">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>CWU</string>
+   </property>
+  </action>
+  <action name="actionAM">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>AM</string>
+   </property>
+  </action>
+  <action name="actionFMN">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>FMN</string>
+   </property>
+  </action>
+  <action name="actionFilter_0">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Filter 0</string>
+   </property>
+  </action>
+  <action name="actionFilter_1">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Filter 1</string>
+   </property>
+  </action>
+  <action name="actionFilter_2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Filter 2</string>
+   </property>
+  </action>
+  <action name="actionFilter_3">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Filter 3</string>
+   </property>
+  </action>
+  <action name="actionFilter_4">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Filter 4</string>
+   </property>
+  </action>
+  <action name="actionFilter_5">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Filter 5</string>
+   </property>
+  </action>
+  <action name="actionFilter_6">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Filter 6</string>
+   </property>
+  </action>
+  <action name="actionFilter_7">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Filter 7</string>
+   </property>
+  </action>
+  <action name="actionFilter_8">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Filter 8</string>
+   </property>
+  </action>
+  <action name="actionFilter_9">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Filter 9</string>
+   </property>
+  </action>
+  <action name="actionANF">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>ANF</string>
+   </property>
+  </action>
+  <action name="actionNR">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>NR</string>
+   </property>
+  </action>
+  <action name="actionNB">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>NB</string>
+   </property>
+  </action>
+  <action name="actionSlow">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Slow</string>
+   </property>
+  </action>
+  <action name="actionMedium">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Medium</string>
+   </property>
+  </action>
+  <action name="actionFast">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fast</string>
+   </property>
+  </action>
+  <action name="actionLong">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Long</string>
+   </property>
+  </action>
+  <action name="actionSAM">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>SAM</string>
+   </property>
+  </action>
+  <action name="actionDIGL">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>DIGL</string>
+   </property>
+  </action>
+  <action name="actionDIGU">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>DIGU</string>
+   </property>
+  </action>
+  <action name="actionConfigure">
+   <property name="text">
+    <string>Configure</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionRx">
+   <property name="text">
+    <string>rx 0</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="text">
+    <string>Connect</string>
+   </property>
+  </action>
+  <action name="action127_0_0_1">
+   <property name="text">
+    <string>127.0.0.1</string>
+   </property>
+  </action>
+  <action name="actionEdit">
+   <property name="text">
+    <string>Edit</string>
+   </property>
+  </action>
+  <action name="actionConnectToServer">
+   <property name="text">
+    <string>Connect</string>
+   </property>
+   <property name="toolTip">
+    <string>Connect to a dspserver</string>
+   </property>
+   <property name="shortcut">
+    <string>C</string>
+   </property>
+  </action>
+  <action name="actionDisconnectFromServer">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Disconnect</string>
+   </property>
+   <property name="shortcut">
+    <string>D</string>
+   </property>
+  </action>
+  <action name="actionSubrx">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Subrx</string>
+   </property>
+   <property name="shortcut">
+    <string>S</string>
+   </property>
+  </action>
+  <action name="actionConfig">
+   <property name="text">
+    <string>Configure</string>
+   </property>
+  </action>
+  <action name="actionMuteMainRx">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Mute Main Rx</string>
+   </property>
+  </action>
+  <action name="actionMuteSubRx">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Mute Sub Rx</string>
+   </property>
+  </action>
+  <action name="actionPreamp">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Preamp</string>
+   </property>
+  </action>
+  <action name="actionDither">
+   <property name="text">
+    <string>Dither</string>
+   </property>
+  </action>
+  <action name="actionRandom">
+   <property name="text">
+    <string>Random</string>
+   </property>
+  </action>
+  <action name="actionBandscope">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Bandscope</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionRecord">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Record</string>
+   </property>
+  </action>
+  <action name="actionBookmark">
+   <property name="text">
+    <string>Bookmark this frequency</string>
+   </property>
+  </action>
+  <action name="actionEditBookmarks">
+   <property name="text">
+    <string>Edit Bookmarks</string>
+   </property>
+  </action>
+  <action name="actionBookmarkThisFrequency">
+   <property name="text">
+    <string>Bookmark This Frequency</string>
+   </property>
+  </action>
+  <action name="actionXVTRConfigure">
+   <property name="text">
+    <string>Configure</string>
+   </property>
+  </action>
+  <action name="action123">
+   <property name="text">
+    <string>123</string>
+   </property>
+  </action>
+  <action name="actionSDROM">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>NB2</string>
+   </property>
+  </action>
+  <action name="actionPolyphase">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Polyphase</string>
+   </property>
+  </action>
+  <action name="actionKeypad">
+   <property name="text">
+    <string>Keypad</string>
+   </property>
+   <property name="shortcut">
+    <string>K</string>
+   </property>
+  </action>
+  <action name="actionQuick_Server_List">
+   <property name="text">
+    <string>Quick Server List  </string>
+   </property>
+   <property name="toolTip">
+    <string>Quickly select a shared SDR  server from a list of online radios</string>
+   </property>
+   <property name="shortcut">
+    <string>L</string>
+   </property>
+  </action>
+  <action name="actionSquelchEnable">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Enable</string>
+   </property>
+  </action>
+  <action name="actionSquelchReset">
+   <property name="text">
+    <string>Reset</string>
+   </property>
+  </action>
+  <action name="actionPWS_Pre_Filter">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>PWS Pre Filter</string>
+   </property>
+  </action>
+  <action name="actionPWS_Semi_Raw">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>PWS Semi Raw</string>
+   </property>
+  </action>
+  <action name="actionPWS_Post_Det">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>PWS Post Det</string>
+   </property>
+  </action>
+  <action name="actionPWS_Post_Filter">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>PWS Post Filter</string>
+   </property>
+  </action>
+  <action name="actionFixed">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fixed</string>
+   </property>
+  </action>
+  <action name="actionEqualizer">
+   <property name="text">
+    <string>Equalizer</string>
+   </property>
+  </action>
+  <action name="action80">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>80</string>
+   </property>
+  </action>
+  <action name="action160">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>160</string>
+   </property>
+  </action>
+  <action name="actionFilter_10">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Filter 10</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>sMeter</class>
+   <extends>QFrame</extends>
+   <header>smeter.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>vfo</class>
+   <extends>QFrame</extends>
+   <header location="global">vfo.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Ctl</class>
+   <extends>QFrame</extends>
+   <header>ctl.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Panadapter</class>
+   <extends>QGraphicsView</extends>
+   <header>Panadapter.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

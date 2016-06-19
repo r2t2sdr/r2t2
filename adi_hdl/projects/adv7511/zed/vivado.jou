@@ -1,0 +1,10 @@
+#-----------------------------------------------------------
+# Vivado v2014.4 (64-bit)
+# SW Build 1071353 on Tue Nov 18 16:48:31 MST 2014
+# IP Build 1070531 on Tue Nov 18 01:10:18 MST 2014
+# Start of session at: Thu Nov 19 22:44:55 2015
+# Process ID: 850
+# Log file: /home/home/stefan/projekte/sdr/r2t2/svn/adi_hdl/projects/adv7511/zed/vivado.log
+# Journal file: /home/home/stefan/projekte/sdr/r2t2/svn/adi_hdl/projects/adv7511/zed/vivado.jou
+#-----------------------------------------------------------
+source system_project.tcl

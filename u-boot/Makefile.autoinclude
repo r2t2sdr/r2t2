@@ -1,0 +1,7 @@
+PROOT:=/home/stefan/projekte/sdr/r2t2/svn/petalinux/r2t2
+INSTANCE:=linux/u-boot
+-include /home/stefan/projekte/sdr/r2t2/svn/petalinux/r2t2/build/linux/Makefile.export
+-include /home/stefan/projekte/sdr/r2t2/svn/petalinux/r2t2/build/linux/u-boot/Makefile.export
+CONFIGFILE:=/home/stefan/projekte/sdr/r2t2/svn/petalinux/r2t2/subsystems/linux/config
+dir_u_boot_y=/opt/Xilinx/petalinux-v2014.4-final/components/u-boot/u-boot-plnx
+

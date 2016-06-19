@@ -1,0 +1,100 @@
+Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2014.4 (lin64) Build 1071353 Tue Nov 18 16:48:31 MST 2014
+| Date         : Thu Nov 19 22:55:37 2015
+| Host         : beta running 64-bit unknown
+| Command      : report_drc
+------------------------------------------------------------------------------------
+
+Report DRC
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: netlist
+          Floorplan: checkpoint_system_top
+      Design limits: <entire design considered>
+           Ruledeck: default
+           Max violations: <unlimited>
+         Violations found: 13
+
+2. REPORT DETAILS
+-----------------
+CFGBVS-1#1 Warning
+Missing CFGBVS and CONFIG_VOLTAGE Design Properties  
+Neither the CFGBVS nor CONFIG_VOLTAGE voltage property is set in the current_design.  Configuration bank voltage select (CFGBVS) must be set to VCCO or GND, and CONFIG_VOLTAGE must be set to the correct configuration voltage, in order to determine the I/O voltage support for the pins in bank 0.  It is suggested to specify these either using the 'Edit Device Properties' function in the GUI or directly in the XDC file using the following syntax:
+
+ set_property CFGBVS value1 [current_design]
+ #where value1 is either VCCO or GND
+
+ set_property CONFIG_VOLTAGE value2 [current_design]
+ #where value2 is the voltage provided to configuration bank 0
+
+Refer to the device configuration user guide for more information.
+Related violations: <none>
+
+IOCS-1#1 Warning
+IOB clock sharing  
+IOs hdmi_data_e, spdif placed at U16, U15 connects to flops which are clocked by i_system_wrapper/system_i/axi_hdmi_clkgen/inst/i_mmcm_drp/clk_0, i_system_wrapper/system_i/sys_audio_clkgen/inst/clk_out1.  Pushing these flops into IOB may cause PAR to fail because the clock route is shared between adjacent (differential pair) IOs.  If there are only two clocks packing them in different BELs might fix the problem, like INST IOB1_flop = BEL FF1 and INST IOB2_flop = BEL FF2.
+Related violations: <none>
+
+PLIO-7#1 Warning
+Placement Constraints Check for IO constraints  
+An IO Bus fixed_io_mio[53:0] with more than one IO standard is found. Components associated with this bus are:  fixed_io_mio[53] of IOStandard LVCMOS18; fixed_io_mio[52] of IOStandard LVCMOS18; fixed_io_mio[51] of IOStandard LVCMOS18; fixed_io_mio[50] of IOStandard LVCMOS18; fixed_io_mio[49] of IOStandard LVCMOS18; fixed_io_mio[48] of IOStandard LVCMOS18; fixed_io_mio[47] of IOStandard LVCMOS18; fixed_io_mio[46] of IOStandard LVCMOS18; fixed_io_mio[45] of IOStandard LVCMOS18; fixed_io_mio[44] of IOStandard LVCMOS18; fixed_io_mio[43] of IOStandard LVCMOS18; fixed_io_mio[42] of IOStandard LVCMOS18; fixed_io_mio[41] of IOStandard LVCMOS18; fixed_io_mio[40] of IOStandard LVCMOS18; fixed_io_mio[39] of IOStandard LVCMOS18; fixed_io_mio[38] of IOStandard LVCMOS18; fixed_io_mio[37] of IOStandard LVCMOS18; fixed_io_mio[36] of IOStandard LVCMOS18; fixed_io_mio[35] of IOStandard LVCMOS18; fixed_io_mio[34] of IOStandard LVCMOS18; fixed_io_mio[33] of IOStandard LVCMOS18; fixed_io_mio[32] of IOStandard LVCMOS18; fixed_io_mio[31] of IOStandard LVCMOS18; fixed_io_mio[30] of IOStandard LVCMOS18; fixed_io_mio[29] of IOStandard LVCMOS18; fixed_io_mio[28] of IOStandard LVCMOS18; fixed_io_mio[27] of IOStandard LVCMOS18; fixed_io_mio[26] of IOStandard LVCMOS18; fixed_io_mio[25] of IOStandard LVCMOS18; fixed_io_mio[24] of IOStandard LVCMOS18; fixed_io_mio[23] of IOStandard LVCMOS18; fixed_io_mio[22] of IOStandard LVCMOS18; fixed_io_mio[21] of IOStandard LVCMOS18; fixed_io_mio[20] of IOStandard LVCMOS18; fixed_io_mio[19] of IOStandard LVCMOS18; fixed_io_mio[18] of IOStandard LVCMOS18; fixed_io_mio[17] of IOStandard LVCMOS18; fixed_io_mio[16] of IOStandard LVCMOS18; fixed_io_mio[15] of IOStandard LVCMOS33; fixed_io_mio[14] of IOStandard LVCMOS33; fixed_io_mio[13] of IOStandard LVCMOS33; fixed_io_mio[12] of IOStandard LVCMOS33; fixed_io_mio[11] of IOStandard LVCMOS33; fixed_io_mio[10] of IOStandard LVCMOS33; fixed_io_mio[9] of IOStandard LVCMOS33; fixed_io_mio[8] of IOStandard LVCMOS33; fixed_io_mio[7] of IOStandard LVCMOS33; fixed_io_mio[6] of IOStandard LVCMOS33; fixed_io_mio[5] of IOStandard LVCMOS33; fixed_io_mio[4] of IOStandard LVCMOS33; fixed_io_mio[3] of IOStandard LVCMOS33; fixed_io_mio[2] of IOStandard LVCMOS33; fixed_io_mio[1] of IOStandard LVCMOS33; fixed_io_mio[0] of IOStandard LVCMOS33;
+Related violations: <none>
+
+PLIO-7#2 Warning
+Placement Constraints Check for IO constraints  
+An IO Bus gpio_bd[31:0] with more than one IO standard is found. Components associated with this bus are:  gpio_bd[31] of IOStandard LVCMOS25; gpio_bd[30] of IOStandard LVCMOS25; gpio_bd[29] of IOStandard LVCMOS25; gpio_bd[28] of IOStandard LVCMOS25; gpio_bd[27] of IOStandard LVCMOS25; gpio_bd[26] of IOStandard LVCMOS33; gpio_bd[25] of IOStandard LVCMOS33; gpio_bd[24] of IOStandard LVCMOS33; gpio_bd[23] of IOStandard LVCMOS33; gpio_bd[22] of IOStandard LVCMOS33; gpio_bd[21] of IOStandard LVCMOS33; gpio_bd[20] of IOStandard LVCMOS33; gpio_bd[19] of IOStandard LVCMOS33; gpio_bd[18] of IOStandard LVCMOS25; gpio_bd[17] of IOStandard LVCMOS25; gpio_bd[16] of IOStandard LVCMOS25; gpio_bd[15] of IOStandard LVCMOS25; gpio_bd[14] of IOStandard LVCMOS25; gpio_bd[13] of IOStandard LVCMOS25; gpio_bd[12] of IOStandard LVCMOS25; gpio_bd[11] of IOStandard LVCMOS25; gpio_bd[10] of IOStandard LVCMOS33; gpio_bd[9] of IOStandard LVCMOS33; gpio_bd[8] of IOStandard LVCMOS33; gpio_bd[7] of IOStandard LVCMOS33; gpio_bd[6] of IOStandard LVCMOS33; gpio_bd[5] of IOStandard LVCMOS33; gpio_bd[4] of IOStandard LVCMOS25; gpio_bd[3] of IOStandard LVCMOS25; gpio_bd[2] of IOStandard LVCMOS25; gpio_bd[1] of IOStandard LVCMOS25; gpio_bd[0] of IOStandard LVCMOS25;
+Related violations: <none>
+
+AVAL-4#1 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+i_system_wrapper/system_i/axi_hdmi_core/inst/i_tx_core/i_csc_RGB2CrYCb/i_csc_1_Cb/i_mul_c1/i_mult_macro/dsp_v5_1.DSP48_V5_1: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#2 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+i_system_wrapper/system_i/axi_hdmi_core/inst/i_tx_core/i_csc_RGB2CrYCb/i_csc_1_Cb/i_mul_c2/i_mult_macro/dsp_v5_1.DSP48_V5_1: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#3 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+i_system_wrapper/system_i/axi_hdmi_core/inst/i_tx_core/i_csc_RGB2CrYCb/i_csc_1_Cb/i_mul_c3/i_mult_macro/dsp_v5_1.DSP48_V5_1: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#4 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+i_system_wrapper/system_i/axi_hdmi_core/inst/i_tx_core/i_csc_RGB2CrYCb/i_csc_1_Cr/i_mul_c1/i_mult_macro/dsp_v5_1.DSP48_V5_1: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#5 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+i_system_wrapper/system_i/axi_hdmi_core/inst/i_tx_core/i_csc_RGB2CrYCb/i_csc_1_Cr/i_mul_c2/i_mult_macro/dsp_v5_1.DSP48_V5_1: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#6 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+i_system_wrapper/system_i/axi_hdmi_core/inst/i_tx_core/i_csc_RGB2CrYCb/i_csc_1_Cr/i_mul_c3/i_mult_macro/dsp_v5_1.DSP48_V5_1: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#7 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+i_system_wrapper/system_i/axi_hdmi_core/inst/i_tx_core/i_csc_RGB2CrYCb/i_csc_1_Y/i_mul_c1/i_mult_macro/dsp_v5_1.DSP48_V5_1: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#8 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+i_system_wrapper/system_i/axi_hdmi_core/inst/i_tx_core/i_csc_RGB2CrYCb/i_csc_1_Y/i_mul_c2/i_mult_macro/dsp_v5_1.DSP48_V5_1: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+AVAL-4#9 Advisory
+enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND  
+i_system_wrapper/system_i/axi_hdmi_core/inst/i_tx_core/i_csc_RGB2CrYCb/i_csc_1_Y/i_mul_c3/i_mult_macro/dsp_v5_1.DSP48_V5_1: DSP48E1 is not using the D port (USE_DPORT = FALSE). For improved power characteristics, set DREG and ADREG to '1', tie CED, CEAD, and RSTD to logic '0'.
+Related violations: <none>
+
+

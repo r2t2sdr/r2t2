@@ -1,0 +1,30 @@
+pkgname=r2t2
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="tools for r2t2 sdr transceiver"
+url="http://r2t2.de"
+arch=('armv7h')
+license=('GPLv3')
+#depends=()
+#makedepends=()
+install=("r2t2.install")
+
+
+package() {
+	echo "install"
+	mkdir -p ${pkgdir}/mnt
+	mkdir -p ${pkgdir}/usr/bin/
+	mkdir -p ${pkgdir}/lib/firmware/
+	mkdir -p ${pkgdir}/root/
+
+	cp /home/r2t2/images/image.ub ${pkgdir}/mnt/
+	cp /home/r2t2/images/boot.bin ${pkgdir}/mnt/
+	cp /home/r2t2/images/top.bit ${pkgdir}/lib/firmware/r2t2.bit
+	cp /home/r2t2/certs/* ${pkgdir}/root/
+
+	cp /home/r2t2/r2t2/r2t2 ${pkgdir}/usr/bin/
+	cp /home/r2t2/scripts/r2t2_init ${pkgdir}/usr/bin/
+	cp ~/scripts/r2t2_init ${pkgdir}/usr/bin/
+	cp ~/ghpsdr3-alex/trunk/src/dspserver/dspserver ${pkgdir}/usr/bin/
+	cp ~/ghpsdr3-alex/trunk/src/r2t2/r2t2-server ${pkgdir}/usr/bin/
+}

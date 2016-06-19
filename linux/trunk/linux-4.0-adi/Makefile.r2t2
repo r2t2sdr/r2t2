@@ -1,0 +1,22 @@
+.PHONY: dtb image bootimage all
+
+all: dtb image bootimage
+
+dtb:
+	rm -f arch/arm/boot/dts/r2t2.dtb 
+	make ARCH=arm r2t2_defconfig
+	make ARCH=arm LOADADDR=0x8000 uImage -j4
+	make ARCH=arm modules -j4
+	make ARCH=arm r2t2.dtb
+
+
+image:
+	#make ARCH=arm INSTALL_MOD_PATH=/tftpboot modules_install
+	make ARCH=arm INSTALL_MOD_PATH=../../../output modules_install
+	cp arch/arm/boot/dts/r2t2.dtb devicetree.dtb
+
+bootimage:
+	arm-xilinx-eabi-objcopy -O binary -R .comment -S vmlinux vmlinux.bin
+	mkimage -f boot.its image.ub
+	#cp image.ub /tftpboot/
+	cp image.ub ../../../output/ 

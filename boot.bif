@@ -1,0 +1,6 @@
+the_ROM_image:
+{
+	[bootloader] fsbl/src/executable.elf
+	output/r2t2.bit
+	u-boot/u-boot.elf
+}

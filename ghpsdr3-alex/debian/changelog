@@ -1,0 +1,175 @@
+
+ghpsdr3rxtx (2.3~0ubuntu1ppa1~oneiric) oneiric; urgency=high
+
+  * Andrea Montefusco IW0HDV
+    PPA 2.2
+    Bug fixed in distcheck.
+    Bugs fixed: FPGA and firmware for HPSDR Ozy added; udev rule fule for Ozy added.
+    hpsdr-server search for firmware and FPGA in executable directory, not only in the current one.
+    Attempt to fix "invalid version" and "QIODevice::read called with maxSize < 0" bugs.
+    Fixed bug in build system: the build failed if the commit message contained quote ( " )characters.
+    libevent2 removed because not needed in order to build master branch.
+
+  * Andrea Montefusco IW0HDV
+    PPA 2.1
+    QtRadio auto connect feature added.
+    First release of python launcher.
+    Merge branch 'perseus-server'
+
+  * VE9GJ Glenn Taylor
+    Fixed pro file, added wrap around to step up key and added branch to title bar.
+    Updated top level README with instructions for Windows Users
+
+  * Alex Lee <alexlee188@gmail.com>    
+
+  * Andrea Montefusco IW0HDV
+    PPA 2.0
+    More checks on simple-pulse libraries, due to subtle difference in Fedora 16 binary packages.
+    An attempt to take in account more linking paths on 64 bit platforms.
+    HPSDR server: build system
+
+  * VE9GJ Glenn Taylor
+    Added Cursor Key control of VFO
+    Fixed --share bug reported by Eric in dspserver
+    dspserver now updates 0 of 1 Clients
+    QtRadio deletes quick Connect hosts on disconnect
+    Satus column wider and Green now triggered on 0 also
+
+  * Alex Lee <alexlee188@gmail.com>    
+    Updated README
+    QtRadio/dspserver: bug fix Codec2 for Rx audio
+    QtRadio: Quick Server List selected server is updated to 
+    Configure Server List and displayed correctly on window title bar
+
+  * John Melton G0ORX/N6LYT
+    Added code and menu for Squelch
+    QtRadio check header version/subversion
+    Fixed changing receivers to update title.
+    add Android client aHPSDR
+    QtRadio changes for binary header
+    dspserver changes for binary header
+    Changed code for binary header format
+    Fixed frequency setting when multiplr receivers
+    Changed Title to include selected Rx (For HPSDR)
+    added --lo option to dspserver to set the LO_offset value
+    Fixed S Meter dBm disply to be right aligned
+
+  * kb1lqc
+    Fixed mistake in --lookupcountry command under running the dspserver
+    Added QtMobility-dev package dependency to mitigate the QAudioFormat 
+    compile error experience when Ubuntu 11.10 users compile the project.
+
+  * Alex Lee 
+    minor updates to do_server script
+    Modified do_server for jackd from /usr/bin
+    Added do_server script to start jack and then softrock with --jack option
+    QtRadio: fixed some warning messages by the Clang compiler
+
+  * Andrea Montefusco IW0HDV 
+    Spectrum class changed in order to allow for several sample rates
+    in a wide range (especially suited for DDC hardware).
+
+  * Graeme Jury
+    read quick memory index now no change when storing
+    Code tidy ready to push
+    Partial setup of band menu stepping
+    fixed WWV stepping bug
+    Mem storage now working
+    Memory store rebuilt
+    Working on mem storage
+    Further preparation of band information
+    Bugfix on 160M band settings, rearrange limits
+
+  * Alex Lee 
+    QtRadio: tweaked Audio.cpp params
+    QtRadio: updated title string to 30 Nov 2011
+    QtRadio: tweaked Audio.cpp parameters
+    QtRadio: 2 channel 16bit PCM working under LAN
+    QtRadio: tweaked resampling buffer size
+    QtRadio: increased resampling buffers for 2 channel aLaw 48000 and 1 channel 16bit PCM 48000
+    QtRadio: when codec2 is selected, samplerate is fixed at 8000 and channel 1 and cannot be changed by user
+
+  * Andrea Montefusco IW0HDV 
+    Build helper files removed.
+    QtRadio auto connect feature added.
+    First release of python launcher.
+
+  * VE9GJ Glenn Taylor
+    Fixed focus when clicking SubRX button
+    Added Current HotKey Step Rate Ticks to vfo widget
+    Added Quick Connect server dialog
+
+  * Alex Lee <alexlee188@gmail.com>
+    Updated README
+    dspserver: bug fix message
+
+  * Glenn Taylor VE9GJ 
+    Fixed possible memleak in dspserver updatestaus()
+    Added wget requirment to README
+    Fixed some gcc warnings
+
+  * Glenn Taylor VE9GJ
+    Added web register to dspserver ( --share) Note new depend of libconfig8 !
+
+  * Graeme Jury
+    bugfix, vfoB zero on rightclick fixed
+
+  * Alex Lee
+    README: added libsamplerate0-dev
+    Updated README regarding ppa
+
+  * Andrea Montefusco IW0HDV
+    Bug fixed: spurious files removed from dependecies list.
+    Autotools on widget-server.
+
+  * Alex Lee
+    Updatd README; cleaned up header files for widget-server
+    Added back the original server for hpsdr hardware
+    Renamed server to widget-server
+    QtRadio: Quick Server List selected server is updated to Configure Server List and displayed correctly on window title bar
+
+  * Glenn Taylor VE9GJ 
+    Updated top level README with instructions for Windows Users
+
+  * Alex Lee
+    Changed codec2 buffer to 8 frames; increased audio buffer size for testing
+    minor changes to function name
+    Tweaks to make connection more reliable
+    Some error checking of connection data from dspserver
+
+  * Graeme Jury
+    Up/Down buttons programmed at 20/40/80/160
+    Cleaned up some debug statements from vfo.cpp
+    subRx bugs fixed, more adjustments to vfo.cpp
+    Major rework of vfo.cpp
+
+  * Added rigctl to QtRadio default port 19090 added section to top level README, Glenn Taylor VE9GJ
+    QtRadio: Quick Server List selected server is updated to Configure Server List and displayed correctly on window title bar
+
+  * More features added, Graeme Jury
+
+  * Band button changes with band shift, band memory changes,
+    merge branch 'band' into gvj
+    WWV button now working
+    Provided Aux panel for TX controls
+    Bugfix - missed settings->endGroup() in band
+    Band limits now saved in config file
+    Fixed checking of band buttons & vfo mouse wheel direction
+    Merge branch 'master' of github.com:alexlee188/ghpsdr3-alex
+    Made the project file work for Ubuntu 11.04 and made notes for th...
+    When --correctedfreq is used assume old firmware.
+     
+  * JACK audio and multiple receivers.
+    This comit makes --jack a command line option.
+
+  * menu machinery
+
+  * git string added in About; Source and PPA release 1.3
+
+  * Bug fixed in debian/control: qtmobility-dev was missing
+
+  * Bug fixed in QtRadio Makefile.am
+
+  * Initial release
+
+ -- Andrea Montefusco IW0HDV (Debian packaging from laptop) <andrew@montefusco.com>  Sat, 6 Oct 2011 22:10:00 +0200

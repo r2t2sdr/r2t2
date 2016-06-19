@@ -1,0 +1,53 @@
+#!/bin/sh
+
+#CLOCK=125e6
+CLOCK=122.88e6
+# CLOCK=62.5e6
+
+echo ${CLOCK}
+
+echo "init clock chip"
+r2t2 -s ${CLOCK} -u
+
+echo "init adc/dac"
+r2t2 -p
+
+echo "reset adc part in fpga"
+r2t2 -d 0xf8000240 -w 2
+r2t2 -d 0xf8000240 -w 0
+
+#set rx
+r2t2 -c 0 -s ${CLOCK} -r 7e6
+r2t2 -c 1 -s ${CLOCK} -r 7e6
+r2t2 -c 2 -s ${CLOCK} -r 7e6
+r2t2 -c 3 -s ${CLOCK} -r 7e6
+r2t2 -c 4 -s ${CLOCK} -r 7e6
+r2t2 -c 5 -s ${CLOCK} -r 7e6
+r2t2 -c 6 -s ${CLOCK} -r 7e6
+r2t2 -c 7 -s ${CLOCK} -r 7e6
+r2t2 -c 8 -s ${CLOCK} -r 7e6
+r2t2 -c 0 -s ${CLOCK} -a 96000
+r2t2 -c 1 -s ${CLOCK} -a 96000
+r2t2 -c 2 -s ${CLOCK} -a 96000
+r2t2 -c 3 -s ${CLOCK} -a 96000
+r2t2 -c 4 -s ${CLOCK} -a 96000
+r2t2 -c 5 -s ${CLOCK} -a 96000
+r2t2 -c 6 -s ${CLOCK} -a 96000
+r2t2 -c 7 -s ${CLOCK} -a 96000
+r2t2 -c 8 -s ${CLOCK} -a 192000
+
+#set tx
+r2t2 -s ${CLOCK} -t 7e6
+r2t2 -s ${CLOCK} -b 96000
+
+
+#init preamp
+r2t2 -g 0
+r2t2 -k 0
+#init att
+r2t2 -i 0
+r2t2 -j 0
+
+ifconfig rad0 down 
+ifconfig rad0 mtu 65536
+ifconfig rad0 up

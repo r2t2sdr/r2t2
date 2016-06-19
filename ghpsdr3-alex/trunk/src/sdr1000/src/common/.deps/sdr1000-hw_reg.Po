@@ -1,0 +1,8 @@
+src/common/sdr1000-hw_reg.o: src/common/hw_reg.cpp \
+ /usr/include/stdc-predef.h src/common/hw_reg.h src/common/common.h
+
+/usr/include/stdc-predef.h:
+
+src/common/hw_reg.h:
+
+src/common/common.h:

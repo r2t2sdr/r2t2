@@ -1,0 +1,17 @@
+Hinweise
+
+- Die .xmdrc sollte nach ~ kopiert werden.
+- In die ~/.gdbint folgendes eintragen, damit die lokale .gdbinit ausgeführt wird:
+set auto-load safe-path /
+
+- Zum Debuggen zuerst die Einstellungen des Xilinx-SDK importieren: 
+
+~/Xilinx/SDK/2014.4/settings64.sh
+
+  Danach den xmd starten. Dieser führt die ~/.xmdrc beim Start aus. 
+  Mit 
+    arm-xilinx-eabi-gdb wdl
+  startet der GDB.	
+
+
+
