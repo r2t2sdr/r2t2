@@ -6,11 +6,12 @@
 #include <string.h>
 #include <stropts.h>
 #include <unistd.h>
+#include "i2c.h"
 
 #define I2C_ADDR_TCA9545 	0x70
 #define I2C_ADDR_SI5344 	0x6b
 
-#define I2C_BUS		4
+#define I2C_BUS		3
 
 #define SI_REG_REV		0
 #define SI_REG_PAGE 	1
@@ -189,59 +190,6 @@ uint16_t data_125_DAC10mhz[] = {
 	0x001C, 0x01, 0x0B24, 0xDB, 0x0B25, 0x02,
 };
 
-int writeI2C(int8_t bus, int8_t addr, uint8_t *val, int len) {
-	char devstr[8];
-	int fd,ret;
-
-	sprintf (devstr, "/dev/i2c-%i", bus);
-	fd = open(devstr, O_RDWR);
-
-	if (fd < 0) {
-		printf("Error opening file %s: %s\n", devstr, strerror(errno));
-		return -1;
-	}
-
-	if (ioctl(fd, I2C_SLAVE, addr) < 0) {
-		printf("ioctl write error: %s\n", strerror(errno));
-		return -1;
-	}
-
-	ret = write(fd, val, len);
-
-	close(fd);
-	return ret;
-} 
-
-int readI2C(int8_t bus, int8_t addr, uint8_t reg) {
-	char devstr[8];
-	uint8_t val;
-	int fd,ret;
-
-	sprintf (devstr, "/dev/i2c-%i", bus);
-	fd = open(devstr, O_RDWR);
-
-	if (fd < 0) {
-		printf("Error opening file: %s\n", strerror(errno));
-		return -1;
-	}
-
-	if (ioctl(fd, I2C_SLAVE, addr) < 0) {
-		printf("ioctl read error: %s\n", strerror(errno));
-		return -1;
-	}
-
-	ret = write(fd, &reg, 1);
-	if (ret<=0)
-		return ret;
-
-	ret = read(fd, &val, 1);
-	if (ret<=0)
-		return ret;
-	return val;
-
-	close(fd);
-} 
-
 int wSi(int reg, uint8_t val) {
 	uint8_t buf[2];
 	int ret;
@@ -288,7 +236,7 @@ int initClock (int f) {
 	uint8_t val;
 
 	// activate full i2c routing in tca
-	//val = 15;
+	val = 15;
 	//ret = writeI2C(I2C_BUS, I2C_ADDR_TCA9545, &val, sizeof(val));
 
 	printf ("detected Si%02x%02x Rev. %i\n", rSi(SI_REG_PART_HI),rSi(SI_REG_PART_LO),rSi(SI_REG_REV));

@@ -1,6 +1,6 @@
 #! /bin/sh
 # Generated automatically by config.status (ghpsdr3) iw0hdv
-# Libtool was configured on host beta:
+# Libtool was configured on host thinkpad:
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 
 # Provide generalized library-building support services.
@@ -282,10 +282,10 @@ finish_eval=""
 hardcode_into_libs=yes
 
 # Compile-time system search path for libraries.
-sys_lib_search_path_spec="/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0 /usr/lib /lib "
+sys_lib_search_path_spec="/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0 /usr/lib /lib "
 
 # Detected run-time system search path for libraries.
-sys_lib_dlsearch_path_spec="/lib /usr/lib /opt/android-sdk/tools/lib /usr/lib/libfakeroot /usr/lib/ /usr/lib/ffmpeg-compat/ /usr/lib32 /usr/local/lib /usr/lib/octave/4.0.0 /opt/opencascade/lib /usr/lib/opencollada /usr/lib/openmpi /usr/lib/vmware-tools/lib32/libvmGuestLib.so /usr/lib/vmware-tools/lib64/libvmGuestLib.so /usr/lib/vmware-tools/lib32/libvmGuestLibJava.so /usr/lib/vmware-tools/lib64/libvmGuestLibJava.so /usr/lib/vmware-tools/lib32/libDeployPkg.so /usr/lib/vmware-tools/lib64/libDeployPkg.so "
+sys_lib_dlsearch_path_spec="/lib /usr/lib /opt/android-sdk/tools/lib /usr/local/lib64/digilent/adept  /usr/lib/libfakeroot /usr/lib/ /usr/lib/ffmpeg-compat/ /usr/local/lib64 /usr/lib32 /usr/local/lib /usr/lib/octave/4.0.0 /opt/opencascade/lib /usr/lib/opencollada /usr/lib/openmpi "
 
 # Explicit LT_SYS_LIBRARY_PATH set during ./configure time.
 configure_time_lt_sys_library_path=""
@@ -11792,17 +11792,17 @@ file_list_spec=""
 hardcode_action=immediate
 
 # The directories searched by this compiler when creating a shared library.
-compiler_lib_search_dirs="/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0 /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/../../../../lib /lib/../lib /usr/lib/../lib /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/../../.."
+compiler_lib_search_dirs="/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0 /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/../../../../lib /lib/../lib /usr/lib/../lib /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/../../.."
 
 # Dependencies to place before and after the objects being linked to
 # create a shared library.
-predep_objects="/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/../../../../lib/crti.o /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/crtbeginS.o"
-postdep_objects="/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/crtendS.o /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/../../../../lib/crtn.o"
+predep_objects="/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/../../../../lib/crti.o /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/crtbeginS.o"
+postdep_objects="/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/crtendS.o /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/../../../../lib/crtn.o"
 predeps=""
 postdeps="-lstdc++ -lm -lgcc_s -lc -lgcc_s"
 
 # The library search path used internally by the compiler when linking
 # a shared library.
-compiler_lib_search_path="-L/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0 -L/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/../../.."
+compiler_lib_search_path="-L/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0 -L/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/../../.."
 
 # ### END LIBTOOL TAG CONFIG: CXX

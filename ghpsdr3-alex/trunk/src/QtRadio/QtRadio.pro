@@ -105,6 +105,7 @@ SOURCES += main.cpp\
     hardware_perseus.cpp \
     hardware_hiqsdr.cpp \
     hardware_hermes.cpp \
+    hardware_r2t2.cpp \
     Panadapter.cpp
 
 
@@ -164,6 +165,7 @@ HEADERS  += \
     hardware_hiqsdr.h \
     hardware_hermes.h \
     hardware_rtlsdr.h \
+    hardware_r2t2.h \
     Panadapter.h
 
 FORMS    += \   

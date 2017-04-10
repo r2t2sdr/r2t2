@@ -1,0 +1,46 @@
+package R2T2Proto;
+
+message R2T2Message {
+    enum Command {
+		NONE        = 0;
+        RXOPEN 		= 1;
+        TXOPEN 		= 2;
+        CLOSE		= 4;
+        STARTAUDIO	= 5;
+        STOPAUDIO	= 6; 
+		STARTFFT 	= 7;
+		STOPFFT 	= 8;
+		REQFFT      = 9;
+        REINIT 		= 10;
+        ACK 		= 11;
+        NACK 		= 12;
+        TIMEOUT 	= 13;
+        ALIVE 		= 14;
+    };
+
+    message Gain {
+        required uint32 adc = 1;
+        required sint32 gain = 2;
+    }
+
+    optional Command command        = 1;
+    optional bytes rxData           = 2;
+    optional bytes txData           = 3;
+    optional bytes fftData          = 4;
+    optional uint32 txDataAck       = 10;
+    optional uint64 rxFreq          = 20;
+    optional uint64 txFreq          = 21;
+    optional uint32 txRate          = 22;
+    optional uint32 rxRate          = 23;
+    optional uint32 fftRate         = 24;
+    optional uint32 fftSize         = 25;
+	optional uint32 rx              = 30;
+	optional uint32 tx              = 31;
+    optional Gain gain              = 40;
+    optional Gain att               = 41;
+    optional uint32 antenna         = 42;
+    optional double forwardPower    = 50;
+    optional double backwardPower   = 51;
+}
+
+

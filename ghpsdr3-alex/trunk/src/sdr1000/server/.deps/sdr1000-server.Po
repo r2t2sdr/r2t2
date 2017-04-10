@@ -2,7 +2,7 @@ server/sdr1000-server.o: server/server.cpp /usr/include/stdc-predef.h \
  /usr/include/stdlib.h /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
  /usr/include/gnu/stubs-64.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stddef.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stddef.h \
  /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
  /usr/include/endian.h /usr/include/bits/endian.h \
  /usr/include/bits/byteswap.h /usr/include/bits/types.h \
@@ -19,7 +19,7 @@ server/sdr1000-server.o: server/server.cpp /usr/include/stdc-predef.h \
  /usr/include/asm/socket.h /usr/include/asm-generic/socket.h \
  /usr/include/asm/sockios.h /usr/include/asm-generic/sockios.h \
  /usr/include/netinet/in.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stdint.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/wchar.h /usr/include/bits/in.h \
  /usr/include/arpa/inet.h /usr/include/netdb.h /usr/include/rpc/netdb.h \
  /usr/include/bits/siginfo.h /usr/include/bits/netdb.h \
@@ -28,15 +28,15 @@ server/sdr1000-server.o: server/server.cpp /usr/include/stdc-predef.h \
  /usr/include/string.h server/client.h server/listener.h \
  server/receiver.h /usr/include/stdio.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/wchar.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stdarg.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stdarg.h \
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
  /usr/include/bits/stdio.h server/sdr1000.h src/linux/hw_sdr1000.h \
  src/common/common.h src/common/pio_reg.h src/common/hw_reg.h \
  src/common/rfe_reg.h /usr/include/unistd.h /usr/include/bits/posix_opt.h \
  /usr/include/bits/environments.h /usr/include/bits/confname.h \
  src/linux/usb/sdr1kusb.h /usr/include/sys/time.h src/linux/usb/usb.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include-fixed/limits.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include-fixed/syslimits.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include-fixed/limits.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/bits/posix1_lim.h \
  /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
  /usr/include/bits/posix2_lim.h /usr/include/bits/xopen_lim.h \
@@ -57,7 +57,7 @@ server/sdr1000-server.o: server/server.cpp /usr/include/stdc-predef.h \
 
 /usr/include/gnu/stubs-64.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stddef.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stddef.h:
 
 /usr/include/bits/waitflags.h:
 
@@ -125,7 +125,7 @@ server/sdr1000-server.o: server/server.cpp /usr/include/stdc-predef.h \
 
 /usr/include/netinet/in.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stdint.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stdint.h:
 
 /usr/include/stdint.h:
 
@@ -169,7 +169,7 @@ server/receiver.h:
 
 /usr/include/wchar.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stdarg.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stdarg.h:
 
 /usr/include/bits/stdio_lim.h:
 
@@ -203,9 +203,9 @@ src/linux/usb/sdr1kusb.h:
 
 src/linux/usb/usb.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include-fixed/limits.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include-fixed/limits.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include-fixed/syslimits.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include-fixed/syslimits.h:
 
 /usr/include/limits.h:
 

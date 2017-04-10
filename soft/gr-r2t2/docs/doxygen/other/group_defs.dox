@@ -1,0 +1,7 @@
+/*!
+ * \defgroup block GNU Radio R2T2 C++ Signal Processing Blocks
+ * \brief All C++ blocks that can be used from the R2T2 GNU Radio
+ *        module are listed here or in the subcategories below.
+ *
+ */
+

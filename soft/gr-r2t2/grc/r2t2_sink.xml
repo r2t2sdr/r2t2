@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<block>
+  <name>R2T2 sink</name>
+  <key>gr_r2t2_sink</key>
+  <category>[Core]/SDR/R2T2</category>
+  <import>import r2t2</import>
+  <make>r2t2.sink(8, $addr, 8000, $txfreq, $rate)</make>
+  <callback>setTxFreq($txfreq)</callback>
+  <callback>setRate($rate)</callback>
+
+  <param>
+      <name>IP</name>
+      <key>addr</key>
+      <value>192.168.1.99</value>
+      <type>string</type>
+  </param>
+
+  <param>
+    <name>TX-Freq (Hz)</name>
+    <key>txfreq</key>
+    <value>7000000</value>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Rate</name>
+    <key>rate</key>
+    <value>240000</value>
+    <type>int</type>
+    <option>
+	<name>8k</name>
+	<key>8000</key>
+    </option>
+    <option>
+	<name>9.6k</name>
+	<key>9600</key>
+    </option>
+    <option>
+	<name>16k</name>
+	<key>16000</key>
+    </option>
+    <option>
+	<name>19.2k</name>
+	<key>19200</key>
+    </option>
+    <option>
+	<name>24k</name>
+	<key>24000</key>
+    </option>
+    <option>
+	<name>38.4k</name>
+	<key>38400</key>
+    </option>
+    <option>
+	<name>48k</name>
+	<key>48000</key>
+    </option>
+    <option>
+	<name>96k</name>
+	<key>96000</key>
+    </option>
+    <option>
+	<name>192k</name>
+	<key>192000</key>
+    </option>
+    <option>
+	<name>240k</name>
+	<key>240000</key>
+    </option>
+    <option>
+	<name>384k</name>
+	<key>384000</key>
+    </option>
+    <option>
+	<name>480k</name>
+	<key>480000</key>
+    </option>
+    <option>
+	<name>960k</name>
+	<key>960000</key>
+    </option>
+    <option>
+	<name>1.28M (16Bit)</name>
+	<key>1280000</key>
+    </option>
+    <option>
+	<name>1.536 (16Bit)</name>
+	<key>1536000</key>
+    </option>
+    <option>
+	<name>1.92M (16Bit)</name>
+	<key>1920000</key>
+    </option>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+  <doc>
+  R2T2-TX (www.r2t2.de)
+  </doc>
+
+</block>

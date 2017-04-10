@@ -1,0 +1,158 @@
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
+
+#include <complex>
+
+#define VERSION        		"0.1.0"
+#define VERSION_INT    		00010
+
+#define RX_CLOCK            122880000LL
+
+#define DEFAULT_SAMPLE_RATE	8000
+
+#define R2T2_SERVER_PORT 	8000
+
+#define MODE_LSB		0
+#define MODE_USB		1
+#define MODE_DSB		2
+#define MODE_CW		    3
+#define MODE_CWU	    4
+#define MODE_FM			5
+#define MODE_AM			6
+
+#define GRID_SIZE		8
+#define DISP_X_SIZE		100
+#define DISP_Y_SIZE		60
+#define DSIZE_X			(DISP_X_SIZE*GRID_SIZE)
+#define DSIZE_Y			(DISP_Y_SIZE*GRID_SIZE)
+
+
+#define MAX_FFT			4096	
+#define FFT_SIZE		1024	
+
+#define DEFAULT_AUDIO_DEV	"default"
+#define DEFAULT_MIXER_DEV   "hw:0"
+#define DEFAULT_MIXER_VOL   "PCM"
+#define DEFAULT_MIXER_MIC   "Front Mic"
+
+#define C_INTERNAL_INT		0
+#define C_INTERNAL_EXT		1
+#define C_INTERNAL_OFF		2
+#define C_INTERNAL_HPSDR	3
+
+#define SRC_DISP		0
+#define SRC_SDR			1
+#define SRC_CTL			2
+#define SRC_KEY			3
+#define SRC_DISP_KEY	4
+	
+#define MERCURY_FIRM_REV	34
+#define PENELOPE_FIRM_REV	18
+#define METIS_FIRM_REV		26
+
+#define WATERFALL_MIN		(-140)
+#define WATERFALL_MAX		(-20)
+
+#define	DUAL_OFFSET		0
+
+#define MAX_MEM		12
+#define MAX_BAND	12
+#define MAX_MENU 	12	
+#define NBUTTON 	80
+#define MAX_ENTRY 	32 
+
+#define HEADER_SIZE     			12
+
+#define FFT_BUFFER_HEADER_SIZE 		15
+#define AUDIO_BUFFER_HEADER_SIZE    5
+
+#define SPECTRUM_BUFFER     0
+#define AUDIO_BUFFER        1
+#define BANDSCOPE_BUFFER    2
+#define RTP_REPLY_BUFFER    3
+#define ANSWER_BUFFER       4
+
+#define HEADER_VERSION      2
+#define HEADER_SUBVERSION   1
+
+#define amplOffset         10
+#define amplFFTOffset      18
+
+#define MAX_SERVER          32
+
+typedef std::complex<double>        gr_complex;
+
+#define CMDS \
+	X(CMD_NONE,"NONE") \
+	X(CMD_AGC_DEC,"AGC_DEC") \
+	X(CMD_ANT,"ANT") \
+	X(CMD_DISP_MODE,"DISP_MODE") \
+	X(CMD_FFT_COMPLEX,"FFT_COMPLEX") \
+	X(CMD_FFT_SAMPLE_RATE,"FFT_SAMPLE_RATE") \
+	X(CMD_FFT_SIZE,"FFT_SIZE") \
+	X(CMD_FFT_TIME,"FFT_TIME") \
+	X(CMD_RX_FILTER_GAIN,"RX_FILTER_GAIN") \
+	X(CMD_TX_FILTER_GAIN,"TX_FILTER_GAIN") \
+	X(CMD_FILTER_RX_CUT,"FILTER_RX_CUT") \
+	X(CMD_FILTER_RX_HI,"FILTER_RX_HI") \
+	X(CMD_FILTER_RX_LO,"FILTER_RX_LO") \
+	X(CMD_FILTER_TX_CUT,"FILTER_TX_CUT") \
+	X(CMD_FILTER_TX_HI,"FILTER_TX_HI") \
+	X(CMD_FILTER_TX_LO,"FILTER_TX_LO") \
+	X(CMD_GAIN,"GAIN") \
+	X(CMD_MODE,"MODE") \
+	X(CMD_PRESEL,"PRESEL") \
+	X(CMD_PREAMP,"PREAMP") \
+	X(CMD_RSSI,"RSSI") \
+	X(CMD_RX_FREQ,"RX_FREQ") \
+	X(CMD_SAMPLE_RATE,"SAMPLE_RATE") \
+	X(CMD_SMETER_MODE,"SMETER_MODE") \
+	X(CMD_STEP,"STEP") \
+	X(CMD_SWR,"SWR") \
+	X(CMD_TX,"TX") \
+	X(CMD_TX_RX,"TX_RX") \
+	X(CMD_TX_FREQ,"TX_FREQ") \
+	X(CMD_TX_POWER,"TX_POWER") \
+	X(CMD_VOLUME,"VOLUME") \
+	X(CMD_MIC,"MIC") \
+	X(CMD_WATERFALL_MAX,"WATERFALL_MAX") \
+	X(CMD_WATERFALL_MIN,"WATERFALL_MIN") \
+	X(CMD_DIV1,"DIV1") \
+	X(CMD_DIV2,"DIV2") \
+	X(CMD_TWO_TONE_TEST,"TWO_TONE_TEST") \
+	X(CMD_TX_DELAY,"TX_DELAY") \
+	X(CMD_FULL_DUPLEX,"FULL_DUPLEX") \
+	X(CMD_NB_LEVEL,"NB_LEVEL") \
+	X(CMD_INTERNAL,"INTERNAL") \
+	X(CMD_NOTCH,"NOTCH") \
+	X(CMD_SQUELCH,"SQUELCH") \
+	X(CMD_DISP_COLOR,"DISP_COLOR") \
+	X(CMD_AUDIO_COMP,"AUDIO_COMP") \
+	X(CMD_FREQ_OFFSET,"FREQ_OFFSET") \
+	X(CMD_INIT_END,"INIT_END") \
+	X(CMD_EXIT,"EXIT") \
+	X(CMD_MENU,"MENU") \
+	X(CMD_NUMBER,"NUMBER") \
+	X(CMD_STORE_MEMORY,"STORE_MEMORY") \
+	X(CMD_RECONNECT,"RECONNECT") \
+	X(CMD_FREQ_STEP_DOWN,"FREQ_STEP_DOWN") \
+	X(CMD_FREQ_STEP_UP,"FREQ_STEP_UP") \
+	X(CMD_RECALL_MEMORY,"RECALL_MEMORY") \
+	X(CMD_BAND,"BAND") \
+	X(CMD_INPUT_FREQ,"INPUT_FREQ") \
+	X(CMD_ADC_OV,"ADC_OV") \
+	X(CMD_IN_LEVEL,"IN_LEVEL") \
+	X(CMD_TXPOWER_PEEK_LEVEL,"TXPOWER_PEEK_LEVEL") \
+	X(CMD_TXPOWER_AV_LEVEL,"TXPOWER_AV_LEVEL") \
+	X(CMD_LAYOUT_CHANGED,"LAYOUT_CHANGED") \
+    X(CMD_CONNECT,"CONNECT") \
+	X(CMD_LAST,"LAST")
+
+#define X(a, b) a,
+typedef enum { CMDS } CtlCmd;
+#undef X
+
+extern const char* CmdString [];
+extern const char* SrcString[];
+
+#endif

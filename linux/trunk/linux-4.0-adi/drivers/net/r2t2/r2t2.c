@@ -83,7 +83,7 @@
 #define XILINX_DMA_RESET_LOOP		1000000
 #define XILINX_DMA_HALT_LOOP		1000000
 
-static int R2T2_DMA_BUF_SIZE = 1024*4;
+static int R2T2_DMA_BUF_SIZE = 4096;
 
 /* The instantiated net device */
 static struct net_device* netdev_rad;
@@ -410,7 +410,7 @@ static void dma_do_tasklet(unsigned long data)
 
 				// send skb
 				// skb = dev_alloc_skb(len + PADDING_SIZE + NET_IP_ALIGN);
-				skb = dev_alloc_skb(R2T2_DMA_BUF_SIZE);
+				skb = dev_alloc_skb(R2T2_DMA_BUF_SIZE + 64);
 				if(skb == NULL) {
 					printk(KERN_ERR "Cannot allocate new skb\n");
 					return;
@@ -427,7 +427,7 @@ static void dma_do_tasklet(unsigned long data)
 					from[3] |= 0x10;
 				if (desc->hw.status & XILINX_DMA_BD_EOP)
 					from[3] |= 0x20;
-
+				 
 				memcpy(skb_put(skb, len), from, len);
 
 				skb->dev = netdev_rad;
@@ -451,7 +451,7 @@ static void dma_do_tasklet(unsigned long data)
 			desc = desc->next;
 		}
 		if (compl==DESC_CNT)
-			pr_debug("DMA-Descr overrun\n");
+			printk(KERN_ERR "R2T2: DMA-Descr overrun\n");
 
 		// !!!!! local loop
 		// rad_xmit(skb,NULL);

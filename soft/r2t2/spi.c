@@ -8,12 +8,12 @@
 #include <string.h>
 #include <assert.h>
 
-#define MDIO_BASE 	138   // base addr extracted from /sys/kernel/debug/gpio
+#define MDIO_BASE 	906   // base addr extracted from /sys/kernel/debug/gpio
 #define ADC_SDIO 	(MDIO_BASE + 9)
 #define ADC_CSB 	(MDIO_BASE + 10)
 #define ADC_SCLK 	(MDIO_BASE + 11)
 
-#define FPGA_GPIO_BASE 106   // base addr extracted from /sys/kernel/debug/gpio
+#define FPGA_GPIO_BASE 874   // base addr extracted from /sys/kernel/debug/gpio
 #define DA_SCLK 	(FPGA_GPIO_BASE + 0) 
 #define DA_SDIO 	(FPGA_GPIO_BASE + 1) 
 #define DA_CS   	(FPGA_GPIO_BASE + 2) 
@@ -60,7 +60,7 @@ uint16_t adc_init_data[] =  {
 	0x0005, 0x33,
 	0x000B, 0x00,   // clock divide ratio
 	0x000C, 0x02,   // chop mode  (0x04)
-	0x000D, 0x00,   // Testmode
+	0x000D, 0x07,   // Testmode
 	0x0010, 0x38,   // offset adjust
 	0x0014, 0x01,   // output mode, 
 	0x0015, 0x60,   // Termination

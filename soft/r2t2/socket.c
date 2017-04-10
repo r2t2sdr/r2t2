@@ -11,6 +11,7 @@
 #include <netinet/ether.h>
 #include <unistd.h>
 #include "math.h"
+#include "reg.h"
 
 #define MY_DEST_MAC0	0x00
 #define MY_DEST_MAC1	0x00
@@ -26,13 +27,14 @@
 #define PADDING_SIZE 	2
 
 int totalSamples = 0;
+uint32_t channel1Test = 0;
+uint32_t mem=0;
 
 int readSocket(const char *ifname)
 {
 	int sockfd, ret, i;
 	ssize_t numbytes;
 	uint8_t buf[BUF_SIZ];
-	static int n=0;
 
 	/* Open PF_PACKET socket, listening for EtherType ETHER_TYPE */
 	if ((sockfd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_R2T2))) == -1) {
@@ -53,17 +55,36 @@ int readSocket(const char *ifname)
 		if (numbytes<=R2T2_HEADER_SIZE)
 			continue;
 		numbytes -= R2T2_HEADER_SIZE;
-		//printf("listener: got packet %i bytes\n", (int)numbytes);
 
 		totalSamples += numbytes/8;
-		//if (n++ > 100) {
-		//printf("samples %i\n",totalSamples);
-		n=0;
-		/* Print packet */
-		printf("%i %08x\n", numbytes, *(uint32_t*)(buf+R2T2_HEADER_SIZE));
-		//if (((*(uint32_t*)(buf+R2T2_HEADER_SIZE)) & 0x0f000000) == 0x08000000 )
-		//	for (i=0; i<numbytes/4; i++) printf("%i ", ((*(uint32_t*)(buf+R2T2_HEADER_SIZE+i*4))&0xffffff) << 8);
-		//printf("\n");
+		uint32_t sample = *(uint32_t*)(buf+R2T2_HEADER_SIZE); 
+
+//		printf("%i %08x\n", numbytes, sample);
+
+		if ((numbytes == 1792) & ((sample >> 24) == 0x31)) {
+			//printf("ok\n");
+			for (i=0; i<numbytes/4; i++) {
+				sample = *(uint32_t*)(buf+R2T2_HEADER_SIZE+i*4);
+				sample &= 0xffffff;
+				if (channel1Test+1 != sample) {
+					printf("LOST: %03i %08x\n",i, *(uint32_t*)(buf+R2T2_HEADER_SIZE+i*4));
+					if (mem!=4) {
+						mem=4;
+						setMem(0xf8000240, 4);
+					}
+				} else {
+					//					printf("OK  : %03i %08x\n",i, *(uint32_t*)(buf+R2T2_HEADER_SIZE+i*4));
+					if (mem!=0) {
+						mem=0;
+						setMem(0xf8000240, 0);
+					}
+				}
+				channel1Test = sample;
+			}
+		}
+		//			for (i=0; i<numbytes/4; i++) 
+		//				printf("%i - %08x\n", i,(*(uint32_t*)(buf+R2T2_HEADER_SIZE+i*4)));
+		//		printf("\n");
 	}
 
 	close(sockfd);

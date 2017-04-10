@@ -6,11 +6,11 @@ src/linux/sdr1000-hw_sdr1000.o: src/linux/hw_sdr1000.cpp \
  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
  /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
  /usr/include/bits/types.h /usr/include/bits/typesizes.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stddef.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stddef.h \
  /usr/include/bits/confname.h /usr/include/getopt.h /usr/include/sys/io.h \
  src/linux/usb/sdr1kusb.h /usr/include/stdio.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/wchar.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stdarg.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stdarg.h \
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
  /usr/include/bits/stdio.h /usr/include/sys/time.h /usr/include/time.h \
  /usr/include/bits/time.h /usr/include/sys/select.h \
@@ -22,8 +22,8 @@ src/linux/sdr1000-hw_sdr1000.o: src/linux/hw_sdr1000.cpp \
  /usr/include/sys/types.h /usr/include/sys/sysmacros.h \
  /usr/include/bits/pthreadtypes.h /usr/include/alloca.h \
  /usr/include/bits/stdlib-bsearch.h /usr/include/bits/stdlib-float.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include-fixed/limits.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include-fixed/syslimits.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include-fixed/limits.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/bits/posix1_lim.h \
  /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
  /usr/include/bits/posix2_lim.h /usr/include/bits/xopen_lim.h \
@@ -66,7 +66,7 @@ src/common/rfe_reg.h:
 
 /usr/include/bits/typesizes.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stddef.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stddef.h:
 
 /usr/include/bits/confname.h:
 
@@ -84,7 +84,7 @@ src/linux/usb/sdr1kusb.h:
 
 /usr/include/wchar.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stdarg.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stdarg.h:
 
 /usr/include/bits/stdio_lim.h:
 
@@ -134,9 +134,9 @@ src/linux/usb/usb.h:
 
 /usr/include/bits/stdlib-float.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include-fixed/limits.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include-fixed/limits.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include-fixed/syslimits.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include-fixed/syslimits.h:
 
 /usr/include/limits.h:
 

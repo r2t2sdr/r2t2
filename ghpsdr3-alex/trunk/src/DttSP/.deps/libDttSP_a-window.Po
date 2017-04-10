@@ -2,7 +2,7 @@ libDttSP_a-window.o: window.c /usr/include/stdc-predef.h window.h \
  /usr/include/stdlib.h /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
  /usr/include/gnu/stubs-64.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stddef.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stddef.h \
  /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
  /usr/include/endian.h /usr/include/bits/endian.h \
  /usr/include/bits/byteswap.h /usr/include/bits/types.h \
@@ -14,7 +14,7 @@ libDttSP_a-window.o: window.c /usr/include/stdc-predef.h window.h \
  /usr/include/bits/stdlib-bsearch.h /usr/include/bits/stdlib-float.h \
  /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
  /usr/include/wchar.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stdarg.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stdarg.h \
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
  /usr/include/bits/stdio.h datatypes.h fromsys.h /usr/include/sys/stat.h \
  /usr/include/bits/stat.h /usr/include/xlocale.h /usr/include/fcntl.h \
@@ -47,7 +47,7 @@ window.h:
 
 /usr/include/gnu/stubs-64.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stddef.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stddef.h:
 
 /usr/include/bits/waitflags.h:
 
@@ -95,7 +95,7 @@ window.h:
 
 /usr/include/wchar.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stdarg.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stdarg.h:
 
 /usr/include/bits/stdio_lim.h:
 

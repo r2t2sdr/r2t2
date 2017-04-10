@@ -28,6 +28,7 @@ set( CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_C_CXX_FLAGS_DEBUG}" )
 add_executable(${PROJECT_NAME}
 	reg.c
 	spi.c
+    i2c.c
 	si5344_init.c
 	socket.c
 	main.c

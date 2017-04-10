@@ -115,7 +115,7 @@ Port (
 	SIGNAL AXIS_ADC_B_tdata  : std_logic_vector (15 downto 0);
 	SIGNAL AXIS_DAC_tdata    : std_logic_vector (15 downto 0);
 	SIGNAL AXIS_DAC_tvalid   : std_logic;
-	SIGNAL gpio            : STD_LOGIC_VECTOR( 31 DOWNTO 0);
+	SIGNAL gpio            : STD_LOGIC_VECTOR( 11 DOWNTO 0);
 	SIGNAL phy_led         : STD_LOGIC;
 	SIGNAL encline1 	   : STD_LOGIC;
 	SIGNAL encline2 	   : STD_LOGIC;
@@ -178,7 +178,7 @@ component ps_wrapper
     PL_PIN_P16 : in STD_LOGIC;
     PL_PIN_P22 : in STD_LOGIC;
     clk_idelayctrl : out STD_LOGIC;
-    gpio_tri_io : inout STD_LOGIC_VECTOR ( 31 downto 0 );
+    gpio_tri_io : inout STD_LOGIC_VECTOR ( 11 downto 0 );
     hdmi_out_data : out STD_LOGIC_VECTOR ( 11 downto 0 );
     hdmi_out_de : out STD_LOGIC;
     hdmi_out_hsync : out STD_LOGIC;

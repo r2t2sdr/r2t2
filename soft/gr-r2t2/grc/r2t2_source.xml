@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<block>
+  <name>R2T2 source</name>
+  <key>gr_r2t2_source</key>
+  <category>[Core]/SDR/R2T2</category>
+  <import>import r2t2</import>
+  <make>r2t2.source(8, $addr, 8000, $rxfreq, $samp_rate, $att, $gain, $antenna)</make>
+  <callback>setRxFreq($rxfreq)</callback>
+  <callback>setRate($samp_rate)</callback>
+  <callback>setAtt($att)</callback>
+  <callback>setGain($gain)</callback>
+  <callback>setAntenna($antenna)</callback>
+
+  <param>
+      <name>IP</name>
+      <key>addr</key>
+      <value>192.168.1.99</value>
+      <type>string</type>
+  </param>
+
+  <param>
+    <name>RX-Freq (Hz)</name>
+    <key>rxfreq</key>
+    <value>7000000</value>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Rate</name>
+    <key>samp_rate</key>
+    <value>240000</value>
+    <type>int</type>
+    <option>
+	<name>8k</name>
+	<key>8000</key>
+    </option>
+    <option>
+	<name>9.6k</name>
+	<key>9600</key>
+    </option>
+    <option>
+	<name>16k</name>
+	<key>16000</key>
+    </option>
+    <option>
+	<name>19.2k</name>
+	<key>19200</key>
+    </option>
+    <option>
+	<name>24k</name>
+	<key>24000</key>
+    </option>
+    <option>
+	<name>38.4k</name>
+	<key>38400</key>
+    </option>
+    <option>
+	<name>48k</name>
+	<key>48000</key>
+    </option>
+    <option>
+	<name>96k</name>
+	<key>96000</key>
+    </option>
+    <option>
+	<name>192k</name>
+	<key>192000</key>
+    </option>
+    <option>
+	<name>240k</name>
+	<key>240000</key>
+    </option>
+    <option>
+	<name>384k</name>
+	<key>384000</key>
+    </option>
+    <option>
+	<name>480k</name>
+	<key>480000</key>
+    </option>
+    <option>
+	<name>960k</name>
+	<key>960000</key>
+    </option>
+    <option>
+	<name>1.28M (16Bit)</name>
+	<key>1280000</key>
+    </option>
+    <option>
+	<name>1.536 (16Bit)</name>
+	<key>1536000</key>
+    </option>
+    <option>
+	<name>1.92M (16Bit)</name>
+	<key>1920000</key>
+    </option>
+  </param>
+
+  <param>
+    <name>Attentuator</name>
+    <key>att</key>
+    <value>0</value>
+    <type>int</type>
+    <option>
+	<name>0 dB</name>
+	<key>0</key>
+    </option>
+    <option>
+	<name>-10 dB</name>
+	<key>10</key>
+    </option>
+    <option>
+	<name>-20 dB</name>
+	<key>20</key>
+    </option>
+    <option>
+	<name>-30 dB</name>
+	<key>30</key>
+    </option>
+  </param>
+
+  <param>
+    <name>Gain</name>
+    <key>gain</key>
+    <value>0</value>
+    <type>int</type>
+    <option>
+	<name>0 dB</name>
+	<key>0</key>
+    </option>
+    <option>
+	<name>10 dB</name>
+	<key>10</key>
+    </option>
+    <option>
+	<name>20 dB</name>
+	<key>20</key>
+    </option>
+    <option>
+	<name>30 dB</name>
+	<key>30</key>
+    </option>
+  </param>
+
+  <param>
+    <name>Antenna</name>
+    <key>antenna</key>
+    <value>0</value>
+    <type>int</type>
+    <option>
+	<name>off</name>
+	<key>0</key>
+    </option>
+    <option>
+	<name>Ant 1 (I)</name>
+	<key>1</key>
+    </option>
+    <option>
+	<name>Ant 2 (Q)</name>
+	<key>2</key>
+    </option>
+    <option>
+	<name>IQ</name>
+	<key>3</key>
+    </option>
+  </param>
+
+  <param>
+      <name>Num Outputs</name>
+      <key>num_outputs</key>
+      <value>1</value>
+      <type>int</type>
+  </param>
+  <check>0 &lt; $num_outputs</check>
+  <check>8 &gt; $num_outputs</check>
+
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <nports>$num_outputs</nports>
+  </source>
+  <doc>
+  R2T2-RX (www.r2t2.de)
+  </doc>
+</block>

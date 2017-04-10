@@ -2,10 +2,10 @@ hpsdr_server-listener.o: listener.c /usr/include/stdc-predef.h \
  /usr/include/stdio.h /usr/include/features.h /usr/include/sys/cdefs.h \
  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
  /usr/include/gnu/stubs-64.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stddef.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stddef.h \
  /usr/include/bits/types.h /usr/include/bits/typesizes.h \
  /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stdarg.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stdarg.h \
  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
  /usr/include/bits/stdio.h /usr/include/stdlib.h \
  /usr/include/bits/waitflags.h /usr/include/bits/waitstatus.h \
@@ -21,7 +21,7 @@ hpsdr_server-listener.o: listener.c /usr/include/stdc-predef.h \
  /usr/include/bits/sockaddr.h /usr/include/asm/socket.h \
  /usr/include/asm-generic/socket.h /usr/include/asm/sockios.h \
  /usr/include/asm-generic/sockios.h /usr/include/netinet/in.h \
- /usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stdint.h \
+ /usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/wchar.h /usr/include/bits/in.h \
  /usr/include/arpa/inet.h /usr/include/netdb.h /usr/include/rpc/netdb.h \
  /usr/include/bits/netdb.h /usr/include/pthread.h /usr/include/sched.h \
@@ -44,7 +44,7 @@ hpsdr_server-listener.o: listener.c /usr/include/stdc-predef.h \
 
 /usr/include/gnu/stubs-64.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stddef.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stddef.h:
 
 /usr/include/bits/types.h:
 
@@ -56,7 +56,7 @@ hpsdr_server-listener.o: listener.c /usr/include/stdc-predef.h \
 
 /usr/include/wchar.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stdarg.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stdarg.h:
 
 /usr/include/bits/stdio_lim.h:
 
@@ -122,7 +122,7 @@ hpsdr_server-listener.o: listener.c /usr/include/stdc-predef.h \
 
 /usr/include/netinet/in.h:
 
-/usr/lib/gcc/x86_64-unknown-linux-gnu/5.2.0/include/stdint.h:
+/usr/lib/gcc/x86_64-unknown-linux-gnu/5.3.0/include/stdint.h:
 
 /usr/include/stdint.h:
 
