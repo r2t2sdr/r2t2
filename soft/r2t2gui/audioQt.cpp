@@ -46,7 +46,7 @@ Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixe
 	mutex = new QMutex();
 	timer = new QTimer(this);
 
-    qDebug() << "period" << 1000*periodSize/(rate*2) << audioOutput->notifyInterval();
+    // qDebug() << "period" << 1000*periodSize/(rate*2) << audioOutput->notifyInterval();
 
 	timer->start(1000*periodSize/(rate*2)-1);
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));

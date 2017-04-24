@@ -31,8 +31,15 @@ int Rotate::process(cfloat_t* in0, int cnt) {
 		ph += dph;
 		if (ph >= ROTATOR_TAB_SIZE)
 			ph -= ROTATOR_TAB_SIZE;
+
 		if (ph < 0)
 			ph += ROTATOR_TAB_SIZE;
+
+		if (ph < 0 || ph >= ROTATOR_TAB_SIZE) {
+			qDebug() << "illegal phase" << ph << dph;
+			//assert(0);
+			ph=0;
+		}
 	}
 	return cnt;
 }
@@ -41,8 +48,14 @@ void Rotate::setFreq(float f) {
     //qDebug() << name.data() << f;
     // assert(f<1.0);
     if (f>=1) {
-        f=0;
 		qDebug() << "illegal rotate freq" << f;
+		//assert(0);
+        f=0;
+	}
+    if (f<=-1) {
+		qDebug() << "illegal rotate freq" << f;
+		//assert(0);
+        f=0;
 	}
     dph = f * ROTATOR_TAB_SIZE;
 }

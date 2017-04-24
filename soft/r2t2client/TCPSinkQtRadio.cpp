@@ -1,19 +1,19 @@
-#include "TCPSink.h"
+#include "TCPSinkQtRadio.h"
 #include "types.h"
 #include "config.h"
 #include "lib.h"
 
-TCPSink::TCPSink(std::string name, QTcpSocket *tcpSocket, int fftRate) : 
+TCPSinkQtRadio::TCPSinkQtRadio(std::string name, QTcpSocket *tcpSocket, int fftRate) : 
 	ProcessBlock(name, 3, 0), tcpSocket(tcpSocket), fftRate(fftRate) {
     setInputType(0, typeid(int8_t)); // audio
     setInputType(1, typeid(uint8_t)); // fft 
-    setInputType(2, typeid(int16_t)); // S-Meter 
+    setInputType(2, typeid(float)); // S-Meter 
 }
 
-TCPSink::~TCPSink() {
+TCPSinkQtRadio::~TCPSinkQtRadio() {
 }
 
-int TCPSink::processAudio(int8_t* in0, int cnt) {
+int TCPSinkQtRadio::processAudio(int8_t* in0, int cnt) {
 	uint8_t audioHeader[5];
 	outGlobTime("audio");
 
@@ -31,7 +31,7 @@ int TCPSink::processAudio(int8_t* in0, int cnt) {
     return cnt;
 }
 
-int TCPSink::processFFT(uint8_t* in0, int cnt) {
+int TCPSinkQtRadio::processFFT(uint8_t* in0, int cnt) {
     int subrxMeter = rxMeter;
     int LO_offset = 0;
     uint8_t spectrumHeader[15];
@@ -59,11 +59,11 @@ int TCPSink::processFFT(uint8_t* in0, int cnt) {
     return 0;
 }
 
-void TCPSink::setFFTRate(uint32_t rate) {
+void TCPSinkQtRadio::setFFTRate(uint32_t rate) {
     fftRate = rate;
 }
 
-int TCPSink::receive(std::shared_ptr<ProcessBuffer> buf, uint32_t input, int recursion) {
+int TCPSinkQtRadio::receive(std::shared_ptr<ProcessBuffer> buf, uint32_t input, int recursion) {
 	preReceive(buf, input, recursion);
 
     if (input == 0) {
@@ -75,7 +75,7 @@ int TCPSink::receive(std::shared_ptr<ProcessBuffer> buf, uint32_t input, int rec
         inBuf[1].reset();
     }
     if (input == 2) {
-        rxMeter = *(uint16_t*)**(inBuf[2]);
+        rxMeter = (int16_t)(*(float*)**(inBuf[2]));
         inBuf[2].reset();
     }
 	return 0;

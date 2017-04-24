@@ -8,12 +8,14 @@ class Notch: public ProcessBlock
 {
 
 	public:
-		Notch(std::string name, uint32_t sampleRate);
+		Notch(std::string name);
 		~Notch();
 		int receive(std::shared_ptr<ProcessBuffer> buf, uint32_t input, int recursion);
 		void setSampleRate(uint32_t rate);
 
 	private:
+        void setNotchFreq(double f);
+        double processNotch(double in);
 		int process(float* in, int cnt);
 		float z0=0,z1=0,z2=0;
 		float notch_a1,notch_a2;

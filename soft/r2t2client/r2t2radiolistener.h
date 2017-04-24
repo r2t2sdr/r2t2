@@ -1,5 +1,5 @@
-#ifndef _R2T2_QTRADIOLISTENER_
-#define _R2T2_QTRADIOLISTENER_
+#ifndef _R2T2_RADIOLISTENER_
+#define _R2T2_RADIOLISTENER_
 
 #include <QUdpSocket>
 #include <QTcpSocket>
@@ -15,15 +15,17 @@
 #include <QMutex>
 #include <QNetworkAccessManager>
 #include "config.h"
-#include "r2t2client.h"
+#include "r2t2clientdspqtradio.h"
+#include "r2t2clientqtradio.h"
+#include "r2t2clientstandard.h"
 
 #define MAX_RX 	16	
 
-class R2T2QtRadioListener : QObject  {
+class R2T2RadioListener : QObject  {
 	Q_OBJECT
 	public:
-		R2T2QtRadioListener(QSettings *settings, QString addr, quint16 port, quint16 listenPort, uint32_t sampleRate);
-		~R2T2QtRadioListener();
+		R2T2RadioListener(QSettings *settings, QString addr, quint16 port, quint16 listenPort, uint32_t sampleRate);
+		~R2T2RadioListener();
 
 	public slots:
 
@@ -40,7 +42,9 @@ class R2T2QtRadioListener : QObject  {
 		QTimer *timer;
         quint16 port;
         QTcpServer *tcpServer;
-        R2T2Client *r2t2Client;
+        R2T2ClientQtRadio *r2t2ClientQtRadio;
+        R2T2ClientDSPQtRadio *r2t2ClientDSPQtRadio;
+        R2T2ClientStandard *r2t2ClientStandard;
         quint16 qtRadioPort;
 		uint32_t sampleRate;
 		int clients=0;

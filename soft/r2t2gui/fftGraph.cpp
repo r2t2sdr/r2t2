@@ -127,6 +127,10 @@ void FFTGraph::setFFTSize(int size) {
 	delete waterfallPixmap;
 	waterfallPixmap = new QPixmap(nFFT, ySize);
 	waterfallPixmap->fill(Qt::black);
+	for(int i=0; i < MAX_FFT; i++) {
+		fftmax[i]=0;
+		fftav[i]=0;
+	}
 }
 
 QRectF FFTGraph::boundingRect() const {
@@ -134,7 +138,6 @@ QRectF FFTGraph::boundingRect() const {
 }
 
 void FFTGraph::setMin(int v) {	// dbm
-	qDebug() << "min" << v;
 	tmi = v; 
 	if (tmi>=tma) tma = tmi + 0.1;
 	base = tmi;
@@ -142,7 +145,6 @@ void FFTGraph::setMin(int v) {	// dbm
 }
 
 void FFTGraph::setMax(int v) {   // dbm
-	qDebug() << "max" << v;
 	tma = v;
 	if (tmi>=tma) tmi = tma - 0.1;
 	base = tmi;
@@ -181,15 +183,6 @@ void FFTGraph::fftDataReady(QByteArray &data) {
 			mi = min(fftmax[i],mi);
 		ma = max(fftmax[i],ma);
 	}
-
-#if 0
-	if (tmi <= WATERFALL_MIN/20.0) {
-		base = -mi-0.2;
-	}
-	if (tma >= WATERFALL_MAX/20.0) {
-		scale = 256/(ma-mi)*0.9;
-	}
-#endif
 
 	switch (displayMode) {
 		case GRAPH_WATERFALL:

@@ -35,7 +35,7 @@ typedef struct {
 } MemSet;
 
 typedef struct {
-	char name[32];
+	char name[128];
 	int par;
 } Entry;
 
@@ -69,7 +69,7 @@ class Display_touch : public Display_base
 
 	public slots:
 		void displaySet(int, int, int);
-        void setServers(QStringList);
+        void setServers(QStringList, QStringList);
 		void fftData(QByteArray);
 		void start();
 	signals:
@@ -120,7 +120,6 @@ class Display_touch : public Display_base
 		int getVal(int cmd);
 		void setVal(int cmd, int val);
 		int rxFreq;
-		int freqOffset;
 		int inputVal;
 		bool inputMode;
 		bool txrx;
@@ -139,8 +138,8 @@ class Display_touch : public Display_base
 		int fullScreen;
 		bool initReady;
 		int volume;
-		int connectButtonIdx;
 		int encSens, encDelta;
+        bool connected;
 };
 
 #endif

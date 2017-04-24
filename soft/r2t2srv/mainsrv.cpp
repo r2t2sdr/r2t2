@@ -21,6 +21,8 @@ int main(int argc, char *argv[])
 {
 	int i;
 
+	qDebug() << "starting r2t2srv version " << VERSION;
+
 	if (geteuid () != 0) {
 		printf ("run with root permissions !\n");
 		return -1;

@@ -26,10 +26,11 @@ class Audio : public QThread  {
 		void audioRX(QByteArray);
 		void setTX(bool);
 		void audioMute(bool);
-#ifdef USE_MIXER
+// #ifdef USE_MIXER
 		void setVolume(int volume);
 		void setMic(int mic);
-#endif
+		void terminate();
+// #endif
 	private slots:
 		void timeout();
 

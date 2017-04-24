@@ -1,0 +1,65 @@
+syntax = "proto2";
+
+package R2T2GuiProto;
+
+message R2T2GuiMessage {
+    enum Command {
+        NONE   		= 0;
+        STARTAUDIO	= 1;
+        STOPAUDIO	= 2; 
+		REQFFT 	    = 3;
+    };
+
+    enum Mode {
+        LSB         = 0;
+        USB         = 1;
+        DSB         = 2;
+        CWL         = 3;
+        CWU         = 4;
+        FM          = 5;
+        AM          = 6;
+        DIGU        = 7;
+        SPEC        = 8;
+        DIGL        = 9;
+        SAM         = 10;
+        DRM         = 11;
+    };
+
+    enum AGC {
+        fixed   = 0;
+        slow    = 1;
+        mid     = 2; 
+        fast    = 3;
+        veryfast= 4;
+    };
+    
+    optional Command command        = 1;
+    optional bytes txData           = 2;
+    optional uint64 rxFreq          = 3;
+    optional uint64 txFreq          = 4;
+    optional uint32 fftRate         = 5;
+    optional uint32 fftSize         = 6;
+    optional Mode mode              = 7;
+    optional int32 gain             = 8;
+    optional uint32 antenna         = 9;
+    optional AGC agc                = 10;
+    optional int32 filterLo         = 11;
+    optional int32 filterHi         = 12;
+    optional string version         = 13;
+    optional int32 notch            = 14;
+}
+
+
+message R2T2GuiMessageAnswer {
+    enum Command {
+        NONE   		= 0;
+    };
+
+    optional Command command        = 1;
+    optional bytes rxData           = 2;
+    optional bytes fftData          = 3;
+    optional uint32 txDataAck       = 4;
+    optional double rssi            = 5;
+    optional string version         = 6;
+    optional uint32 fftRate         = 7;
+}

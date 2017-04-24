@@ -7,11 +7,12 @@
 #include "sdr.h"
 #include "display_base.h"
 #include "audioQt.h"
+#include "conf.h"
 
 class Control : public QObject  {
 	Q_OBJECT
 	public:
-		Control(char*, char*, char*, char* ,char*, int);
+		Control(char*, char*, char*, char* ,char*, int, bool);
 		~Control();
 
 
@@ -38,16 +39,14 @@ class Control : public QObject  {
 		QString r2t2IP;
 		QUdpSocket *hamLibSocket;
         QNetworkAccessManager *manager;
-		Sdr *sdr;
+		Sdr *sdr, *sdrqt, *sdrr2t2;
 #ifdef UNIX
 		//KeyReader *keyReader;
 #endif
 		Audio *audio;
 		Display_base *disp;
-
 		QSettings *settings;
-		int config[CMD_LAST];
-
+        Conf *conf;
 		QHostAddress sender;
 		quint16 senderPort;
 		uint8_t hpRxBuf[1200];
@@ -59,4 +58,5 @@ class Control : public QObject  {
 		int hp_receivers;
 		int cCnt;
 		bool initReady;
+        bool qtRadioMode;
 };

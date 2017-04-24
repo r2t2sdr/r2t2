@@ -20,12 +20,16 @@ RX::RX(std::string name, uint32_t sampleRate) : ProcessBlock(name, 2, 2), sample
     fftInterpol = new FFTInterpol("interpol", 2048);
 	agc = new AGC("agc");
     sMeter = new SMeter("smeter");
+    notch = new Notch("notch");
+    null = new Null("Null");
 
-	ProcessBlock::connect(0, rotate1, 0);
+	ProcessBlock::connect(0, split, 0);
 	ProcessBlock::connect(1, fft, 0);
 
     fft->connect(0, fftInterpol, 0);
 
+    split->connect(0, rotate1, 0);
+    split->connect(1, null, 0);
     rotate1->connect(0, firDecim, 0);
     firDecim->connect(0, rotate2, 0); 
 	rotate2->connect(0, nfSplit, 0);
@@ -52,9 +56,13 @@ RX::~RX() {
 	delete fftInterpol;
 	delete agc;
     delete sMeter;
+    delete notch;
+    delete null;
 }
 
 int RX::setFFTSize(int size) {
+    if (size>4096)
+        size=4096;
     fftInterpol->setSize(size);
     return fft->setSize(size);
 }
@@ -63,7 +71,36 @@ void RX::setAGCDec(int n) {
 	agc->setDec(n);
 }
 
+void RX::setNotch(bool n) {
+    if (n) {
+        agc->connect(0, notch, 0);
+        notch->connect(0, g711Encode, 0); 
+    } else
+        agc->connect(0, g711Encode, 0); 
+}
+
+void RX::setFFTAudio(bool audio) {
+    if (audio) {
+        split->connect(1, fft, 0);
+        ProcessBlock::connect(1, null, 0);
+    } else {
+        split->connect(1, null, 0);
+        ProcessBlock::connect(1, fft, 0);
+    }
+}
+
 void RX::setFilter(int32_t low, int32_t high) {
+	if (low > high) {
+		qDebug() << "file low >= high: " << low << high << ", ignoring";
+	}
+	if (abs(low) >= (int32_t)sampleRate/2)  {
+		// qDebug() << "Filter low freq out of range: " << low;
+		low = -(int32_t)sampleRate/2+1;
+	}
+	if (abs(high) >= (int32_t)sampleRate/2)  {
+		// qDebug() << "Filter high freq out of range: " << high; 
+		high = (int32_t)sampleRate/2-1;
+	}
     firDecim->setCutOffFreq((float)(abs(high-low))/sampleRate/2);
     rxOffset = (high+low)/2;
 	rotate1->setFreq(-1.0*rxOffset/sampleRate);
@@ -87,9 +124,11 @@ void RX::setMode(RXMode mode) {
         case RX_AM:
 			nfSplit->connect(0, amDemod, 0);
 			amDemod->connect(0, agc, 0); 
+			break;
         case RX_FM:
 			nfSplit->connect(0, fmDemod, 0);
 			fmDemod->connect(0, agc, 0); 
+			break;
         default:
             ;
     }

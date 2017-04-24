@@ -90,7 +90,7 @@ void FilterGraph::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QW
 	for (marker=start;marker<f+sampleRate/2;marker+=step) {
 		int x = (long long int)(marker - f)*(fftSize/2)/(sampleRate/2) + fftSize/2;
 		painter->drawLine(x-xViewPos,0,x-xViewPos,20);
-		painter->drawText(x-xViewPos+2,11,QString ("%1").arg(int((marker+500)/1000)));
+		painter->drawText(x-xViewPos+2,17,QString ("%1").arg(int((marker+500)/1000)));
 	}
 
 	switch (dispMode) {
@@ -182,13 +182,13 @@ void FilterGraph::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 
 void FilterGraph::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 	int f;
-	if (event->pos().y()<ySize/3) {
+	//if (event->pos().y()<ySize/3) {
 		f = startMoveFreq - (event->pos().x() - startMovePos) * sampleRate / fftSize;
-	} else if (event->pos().y()<ySize*2/3) {
-		f = startMoveFreq - (event->pos().x() - startMovePos) * 100;
-	} else {
-		f = startMoveFreq - (event->pos().x() - startMovePos) * 10;
-	}
+	//} else if (event->pos().y()<ySize*2/3) {
+	//	f = startMoveFreq - (event->pos().x() - startMovePos) * 100;
+	//} else {
+	//	f = startMoveFreq - (event->pos().x() - startMovePos) * 10;
+	//}
 	centerFreq = checkRange(f,0,RX_CLOCK/2);
 	emit freqChanged(centerFreq);
 }

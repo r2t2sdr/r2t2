@@ -7,6 +7,7 @@
 #include <algorithm>
 
 #include <google/protobuf/stubs/common.h>
+#include <google/protobuf/stubs/port.h>
 #include <google/protobuf/stubs/once.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/wire_format_lite_inl.h>
@@ -17,150 +18,175 @@
 // @@protoc_insertion_point(includes)
 
 namespace R2T2Proto {
+class R2T2Message_GainDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<R2T2Message_Gain> {
+} _R2T2Message_Gain_default_instance_;
+class R2T2MessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<R2T2Message> {
+} _R2T2Message_default_instance_;
+
+namespace protobuf_r2t2_2eproto {
+
 
 namespace {
 
-const ::google::protobuf::Descriptor* R2T2Message_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  R2T2Message_reflection_ = NULL;
-const ::google::protobuf::Descriptor* R2T2Message_Gain_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  R2T2Message_Gain_reflection_ = NULL;
-const ::google::protobuf::EnumDescriptor* R2T2Message_Command_descriptor_ = NULL;
+::google::protobuf::Metadata file_level_metadata[2];
+const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 }  // namespace
 
+const ::google::protobuf::uint32 TableStruct::offsets[] = {
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message_Gain, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message_Gain, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message_Gain, adc_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message_Gain, gain_),
+  0,
+  1,
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, command_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, rxdata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, txdata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, fftdata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, txdataack_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, rxfreq_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, txfreq_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, txrate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, rxrate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, fftrate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, fftsize_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, rx_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, tx_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, gain_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, att_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, antenna_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, forwardpower_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, backwardpower_),
+  5,
+  0,
+  1,
+  2,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  3,
+  4,
+  17,
+  15,
+  16,
+};
 
-void protobuf_AssignDesc_r2t2_2eproto() {
-  protobuf_AddDesc_r2t2_2eproto();
-  const ::google::protobuf::FileDescriptor* file =
-    ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
-      "r2t2.proto");
-  GOOGLE_CHECK(file != NULL);
-  R2T2Message_descriptor_ = file->message_type(0);
-  static const int R2T2Message_offsets_[18] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, command_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, rxdata_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, txdata_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, fftdata_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, txdataack_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, rxfreq_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, txfreq_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, txrate_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, rxrate_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, fftrate_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, fftsize_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, rx_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, tx_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, gain_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, att_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, antenna_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, forwardpower_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, backwardpower_),
-  };
-  R2T2Message_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      R2T2Message_descriptor_,
-      R2T2Message::default_instance_,
-      R2T2Message_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(R2T2Message));
-  R2T2Message_Gain_descriptor_ = R2T2Message_descriptor_->nested_type(0);
-  static const int R2T2Message_Gain_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message_Gain, adc_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message_Gain, gain_),
-  };
-  R2T2Message_Gain_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      R2T2Message_Gain_descriptor_,
-      R2T2Message_Gain::default_instance_,
-      R2T2Message_Gain_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message_Gain, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2Message_Gain, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(R2T2Message_Gain));
-  R2T2Message_Command_descriptor_ = R2T2Message_descriptor_->enum_type(0);
-}
+static const ::google::protobuf::internal::MigrationSchema schemas[] = {
+  { 0, 6, sizeof(R2T2Message_Gain)},
+  { 8, 30, sizeof(R2T2Message)},
+};
+
+static ::google::protobuf::Message const * const file_default_instances[] = {
+  reinterpret_cast<const ::google::protobuf::Message*>(&_R2T2Message_Gain_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_R2T2Message_default_instance_),
+};
 
 namespace {
 
-GOOGLE_PROTOBUF_DECLARE_ONCE(protobuf_AssignDescriptors_once_);
-inline void protobuf_AssignDescriptorsOnce() {
-  ::google::protobuf::GoogleOnceInit(&protobuf_AssignDescriptors_once_,
-                 &protobuf_AssignDesc_r2t2_2eproto);
+void protobuf_AssignDescriptors() {
+  AddDescriptors();
+  ::google::protobuf::MessageFactory* factory = NULL;
+  AssignDescriptors(
+      "r2t2.proto", schemas, file_default_instances, TableStruct::offsets, factory,
+      file_level_metadata, file_level_enum_descriptors, NULL);
 }
 
+void protobuf_AssignDescriptorsOnce() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &protobuf_AssignDescriptors);
+}
+
+void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    R2T2Message_descriptor_, &R2T2Message::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    R2T2Message_Gain_descriptor_, &R2T2Message_Gain::default_instance());
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 2);
 }
 
 }  // namespace
 
-void protobuf_ShutdownFile_r2t2_2eproto() {
-  delete R2T2Message::default_instance_;
-  delete R2T2Message_reflection_;
-  delete R2T2Message_Gain::default_instance_;
-  delete R2T2Message_Gain_reflection_;
+void TableStruct::Shutdown() {
+  _R2T2Message_Gain_default_instance_.Shutdown();
+  delete file_level_metadata[0].reflection;
+  _R2T2Message_default_instance_.Shutdown();
+  delete file_level_metadata[1].reflection;
 }
 
-void protobuf_AddDesc_r2t2_2eproto() {
-  static bool already_here = false;
-  if (already_here) return;
-  already_here = true;
+void TableStruct::InitDefaultsImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
+  ::google::protobuf::internal::InitProtobufDefaults();
+  _R2T2Message_Gain_default_instance_.DefaultConstruct();
+  _R2T2Message_default_instance_.DefaultConstruct();
+  _R2T2Message_default_instance_.get_mutable()->gain_ = const_cast< ::R2T2Proto::R2T2Message_Gain*>(
+      ::R2T2Proto::R2T2Message_Gain::internal_default_instance());
+  _R2T2Message_default_instance_.get_mutable()->att_ = const_cast< ::R2T2Proto::R2T2Message_Gain*>(
+      ::R2T2Proto::R2T2Message_Gain::internal_default_instance());
+}
+
+void InitDefaults() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &TableStruct::InitDefaultsImpl);
+}
+void AddDescriptorsImpl() {
+  InitDefaults();
+  static const char descriptor[] = {
+      "\n\nr2t2.proto\022\tR2T2Proto\"\350\004\n\013R2T2Message\022"
+      "/\n\007command\030\001 \001(\0162\036.R2T2Proto.R2T2Message"
+      ".Command\022\016\n\006rxData\030\002 \001(\014\022\016\n\006txData\030\003 \001(\014"
+      "\022\017\n\007fftData\030\004 \001(\014\022\021\n\ttxDataAck\030\n \001(\r\022\016\n\006"
+      "rxFreq\030\024 \001(\004\022\016\n\006txFreq\030\025 \001(\004\022\016\n\006txRate\030\026"
+      " \001(\r\022\016\n\006rxRate\030\027 \001(\r\022\017\n\007fftRate\030\030 \001(\r\022\017\n"
+      "\007fftSize\030\031 \001(\r\022\n\n\002rx\030\036 \001(\r\022\n\n\002tx\030\037 \001(\r\022)"
+      "\n\004gain\030( \001(\0132\033.R2T2Proto.R2T2Message.Gai"
+      "n\022(\n\003att\030) \001(\0132\033.R2T2Proto.R2T2Message.G"
+      "ain\022\017\n\007antenna\030* \001(\r\022\024\n\014forwardPower\0302 \001"
+      "(\001\022\025\n\rbackwardPower\0303 \001(\001\032!\n\004Gain\022\013\n\003adc"
+      "\030\001 \002(\r\022\014\n\004gain\030\002 \002(\021\"\263\001\n\007Command\022\010\n\004NONE"
+      "\020\000\022\n\n\006RXOPEN\020\001\022\n\n\006TXOPEN\020\002\022\t\n\005CLOSE\020\004\022\016\n"
+      "\nSTARTAUDIO\020\005\022\r\n\tSTOPAUDIO\020\006\022\014\n\010STARTFFT"
+      "\020\007\022\013\n\007STOPFFT\020\010\022\n\n\006REQFFT\020\t\022\n\n\006REINIT\020\n\022"
+      "\007\n\003ACK\020\013\022\010\n\004NACK\020\014\022\013\n\007TIMEOUT\020\r\022\t\n\005ALIVE"
+      "\020\016"
+  };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\nr2t2.proto\022\tR2T2Proto\"\350\004\n\013R2T2Message\022"
-    "/\n\007command\030\001 \001(\0162\036.R2T2Proto.R2T2Message"
-    ".Command\022\016\n\006rxData\030\002 \001(\014\022\016\n\006txData\030\003 \001(\014"
-    "\022\017\n\007fftData\030\004 \001(\014\022\021\n\ttxDataAck\030\n \001(\r\022\016\n\006"
-    "rxFreq\030\024 \001(\004\022\016\n\006txFreq\030\025 \001(\004\022\016\n\006txRate\030\026"
-    " \001(\r\022\016\n\006rxRate\030\027 \001(\r\022\017\n\007fftRate\030\030 \001(\r\022\017\n"
-    "\007fftSize\030\031 \001(\r\022\n\n\002rx\030\036 \001(\r\022\n\n\002tx\030\037 \001(\r\022)"
-    "\n\004gain\030( \001(\0132\033.R2T2Proto.R2T2Message.Gai"
-    "n\022(\n\003att\030) \001(\0132\033.R2T2Proto.R2T2Message.G"
-    "ain\022\017\n\007antenna\030* \001(\r\022\024\n\014forwardPower\0302 \001"
-    "(\001\022\025\n\rbackwardPower\0303 \001(\001\032!\n\004Gain\022\013\n\003adc"
-    "\030\001 \002(\r\022\014\n\004gain\030\002 \002(\021\"\263\001\n\007Command\022\010\n\004NONE"
-    "\020\000\022\n\n\006RXOPEN\020\001\022\n\n\006TXOPEN\020\002\022\t\n\005CLOSE\020\004\022\016\n"
-    "\nSTARTAUDIO\020\005\022\r\n\tSTOPAUDIO\020\006\022\014\n\010STARTFFT"
-    "\020\007\022\013\n\007STOPFFT\020\010\022\n\n\006REQFFT\020\t\022\n\n\006REINIT\020\n\022"
-    "\007\n\003ACK\020\013\022\010\n\004NACK\020\014\022\013\n\007TIMEOUT\020\r\022\t\n\005ALIVE"
-    "\020\016", 642);
+      descriptor, 642);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "r2t2.proto", &protobuf_RegisterTypes);
-  R2T2Message::default_instance_ = new R2T2Message();
-  R2T2Message_Gain::default_instance_ = new R2T2Message_Gain();
-  R2T2Message::default_instance_->InitAsDefaultInstance();
-  R2T2Message_Gain::default_instance_->InitAsDefaultInstance();
-  ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_r2t2_2eproto);
+  ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
 }
 
+void AddDescriptors() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &AddDescriptorsImpl);
+}
 // Force AddDescriptors() to be called at static initialization time.
-struct StaticDescriptorInitializer_r2t2_2eproto {
-  StaticDescriptorInitializer_r2t2_2eproto() {
-    protobuf_AddDesc_r2t2_2eproto();
+struct StaticDescriptorInitializer {
+  StaticDescriptorInitializer() {
+    AddDescriptors();
   }
-} static_descriptor_initializer_r2t2_2eproto_;
+} static_descriptor_initializer;
 
-// ===================================================================
+}  // namespace protobuf_r2t2_2eproto
 
 const ::google::protobuf::EnumDescriptor* R2T2Message_Command_descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return R2T2Message_Command_descriptor_;
+  protobuf_r2t2_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_r2t2_2eproto::file_level_enum_descriptors[0];
 }
 bool R2T2Message_Command_IsValid(int value) {
-  switch(value) {
+  switch (value) {
     case 0:
     case 1:
     case 2:
@@ -181,7 +207,7 @@ bool R2T2Message_Command_IsValid(int value) {
   }
 }
 
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const R2T2Message_Command R2T2Message::NONE;
 const R2T2Message_Command R2T2Message::RXOPEN;
 const R2T2Message_Command R2T2Message::TXOPEN;
@@ -199,33 +225,39 @@ const R2T2Message_Command R2T2Message::ALIVE;
 const R2T2Message_Command R2T2Message::Command_MIN;
 const R2T2Message_Command R2T2Message::Command_MAX;
 const int R2T2Message::Command_ARRAYSIZE;
-#endif  // _MSC_VER
-#ifndef _MSC_VER
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int R2T2Message_Gain::kAdcFieldNumber;
 const int R2T2Message_Gain::kGainFieldNumber;
-#endif  // !_MSC_VER
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 R2T2Message_Gain::R2T2Message_Gain()
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_r2t2_2eproto::InitDefaults();
+  }
   SharedCtor();
   // @@protoc_insertion_point(constructor:R2T2Proto.R2T2Message.Gain)
 }
-
-void R2T2Message_Gain::InitAsDefaultInstance() {
-}
-
 R2T2Message_Gain::R2T2Message_Gain(const R2T2Message_Gain& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _has_bits_(from._has_bits_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&adc_, &from.adc_,
+    reinterpret_cast<char*>(&gain_) -
+    reinterpret_cast<char*>(&adc_) + sizeof(gain_));
   // @@protoc_insertion_point(copy_constructor:R2T2Proto.R2T2Message.Gain)
 }
 
 void R2T2Message_Gain::SharedCtor() {
   _cached_size_ = 0;
-  adc_ = 0u;
-  gain_ = 0;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  ::memset(&adc_, 0, reinterpret_cast<char*>(&gain_) -
+    reinterpret_cast<char*>(&adc_) + sizeof(gain_));
 }
 
 R2T2Message_Gain::~R2T2Message_Gain() {
@@ -234,8 +266,6 @@ R2T2Message_Gain::~R2T2Message_Gain() {
 }
 
 void R2T2Message_Gain::SharedDtor() {
-  if (this != default_instance_) {
-  }
 }
 
 void R2T2Message_Gain::SetCachedSize(int size) const {
@@ -244,77 +274,66 @@ void R2T2Message_Gain::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
 const ::google::protobuf::Descriptor* R2T2Message_Gain::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return R2T2Message_Gain_descriptor_;
+  protobuf_r2t2_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_r2t2_2eproto::file_level_metadata[0].descriptor;
 }
 
 const R2T2Message_Gain& R2T2Message_Gain::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_r2t2_2eproto();
-  return *default_instance_;
+  protobuf_r2t2_2eproto::InitDefaults();
+  return *internal_default_instance();
 }
 
-R2T2Message_Gain* R2T2Message_Gain::default_instance_ = NULL;
-
-R2T2Message_Gain* R2T2Message_Gain::New() const {
-  return new R2T2Message_Gain;
+R2T2Message_Gain* R2T2Message_Gain::New(::google::protobuf::Arena* arena) const {
+  R2T2Message_Gain* n = new R2T2Message_Gain;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
 }
 
 void R2T2Message_Gain::Clear() {
-#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
-  &reinterpret_cast<R2T2Message_Gain*>(16)->f) - \
-   reinterpret_cast<char*>(16))
-
-#define ZR_(first, last) do {                              \
-    size_t f = OFFSET_OF_FIELD_(first);                    \
-    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
-    ::memset(&first, 0, n);                                \
-  } while (0)
-
-  ZR_(adc_, gain_);
-
-#undef OFFSET_OF_FIELD_
-#undef ZR_
-
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
+// @@protoc_insertion_point(message_clear_start:R2T2Proto.R2T2Message.Gain)
+  if (_has_bits_[0 / 32] & 3u) {
+    ::memset(&adc_, 0, reinterpret_cast<char*>(&gain_) -
+      reinterpret_cast<char*>(&adc_) + sizeof(gain_));
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear();
 }
 
 bool R2T2Message_Gain::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:R2T2Proto.R2T2Message.Gain)
   for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // required uint32 adc = 1;
       case 1: {
-        if (tag == 8) {
+        if (tag == 8u) {
+          set_has_adc();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &adc_)));
-          set_has_adc();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(16)) goto parse_gain;
         break;
       }
 
       // required sint32 gain = 2;
       case 2: {
-        if (tag == 16) {
-         parse_gain:
+        if (tag == 16u) {
+          set_has_gain();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_SINT32>(
                  input, &gain_)));
-          set_has_gain();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectAtEnd()) goto success;
         break;
       }
 
@@ -353,15 +372,16 @@ void R2T2Message_Gain::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteSInt32(2, this->gain(), output);
   }
 
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
   // @@protoc_insertion_point(serialize_end:R2T2Proto.R2T2Message.Gain)
 }
 
-::google::protobuf::uint8* R2T2Message_Gain::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::google::protobuf::uint8* R2T2Message_Gain::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:R2T2Proto.R2T2Message.Gain)
   // required uint32 adc = 1;
   if (has_adc()) {
@@ -373,7 +393,7 @@ void R2T2Message_Gain::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteSInt32ToArray(2, this->gain(), target);
   }
 
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
@@ -381,51 +401,76 @@ void R2T2Message_Gain::SerializeWithCachedSizes(
   return target;
 }
 
-int R2T2Message_Gain::ByteSize() const {
-  int total_size = 0;
+size_t R2T2Message_Gain::RequiredFieldsByteSizeFallback() const {
+// @@protoc_insertion_point(required_fields_byte_size_fallback_start:R2T2Proto.R2T2Message.Gain)
+  size_t total_size = 0;
 
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+  if (has_adc()) {
     // required uint32 adc = 1;
-    if (has_adc()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->adc());
-    }
-
-    // required sint32 gain = 2;
-    if (has_gain()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::SInt32Size(
-          this->gain());
-    }
-
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->adc());
   }
-  if (!unknown_fields().empty()) {
+
+  if (has_gain()) {
+    // required sint32 gain = 2;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::SInt32Size(
+        this->gain());
+  }
+
+  return total_size;
+}
+size_t R2T2Message_Gain::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:R2T2Proto.R2T2Message.Gain)
+  size_t total_size = 0;
+
+  if (_internal_metadata_.have_unknown_fields()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         unknown_fields());
   }
+  if (((_has_bits_[0] & 0x00000003) ^ 0x00000003) == 0) {  // All required fields are present.
+    // required uint32 adc = 1;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->adc());
+
+    // required sint32 gain = 2;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::SInt32Size(
+        this->gain());
+
+  } else {
+    total_size += RequiredFieldsByteSizeFallback();
+  }
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
+  _cached_size_ = cached_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
   return total_size;
 }
 
 void R2T2Message_Gain::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
+// @@protoc_insertion_point(generalized_merge_from_start:R2T2Proto.R2T2Message.Gain)
+  GOOGLE_DCHECK_NE(&from, this);
   const R2T2Message_Gain* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const R2T2Message_Gain*>(
-      &from);
+      ::google::protobuf::internal::DynamicCastToGenerated<const R2T2Message_Gain>(
+          &from);
   if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:R2T2Proto.R2T2Message.Gain)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:R2T2Proto.R2T2Message.Gain)
     MergeFrom(*source);
   }
 }
 
 void R2T2Message_Gain::MergeFrom(const R2T2Message_Gain& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+// @@protoc_insertion_point(class_specific_merge_from_start:R2T2Proto.R2T2Message.Gain)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from._has_bits_[0 / 32] & 3u) {
     if (from.has_adc()) {
       set_adc(from.adc());
     }
@@ -433,16 +478,17 @@ void R2T2Message_Gain::MergeFrom(const R2T2Message_Gain& from) {
       set_gain(from.gain());
     }
   }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
 void R2T2Message_Gain::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:R2T2Proto.R2T2Message.Gain)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void R2T2Message_Gain::CopyFrom(const R2T2Message_Gain& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:R2T2Proto.R2T2Message.Gain)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -450,32 +496,82 @@ void R2T2Message_Gain::CopyFrom(const R2T2Message_Gain& from) {
 
 bool R2T2Message_Gain::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
-
   return true;
 }
 
 void R2T2Message_Gain::Swap(R2T2Message_Gain* other) {
-  if (other != this) {
-    std::swap(adc_, other->adc_);
-    std::swap(gain_, other->gain_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
+  if (other == this) return;
+  InternalSwap(other);
+}
+void R2T2Message_Gain::InternalSwap(R2T2Message_Gain* other) {
+  std::swap(adc_, other->adc_);
+  std::swap(gain_, other->gain_);
+  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata R2T2Message_Gain::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = R2T2Message_Gain_descriptor_;
-  metadata.reflection = R2T2Message_Gain_reflection_;
-  return metadata;
+  protobuf_r2t2_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_r2t2_2eproto::file_level_metadata[0];
 }
 
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// R2T2Message_Gain
 
-// -------------------------------------------------------------------
+// required uint32 adc = 1;
+bool R2T2Message_Gain::has_adc() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+void R2T2Message_Gain::set_has_adc() {
+  _has_bits_[0] |= 0x00000001u;
+}
+void R2T2Message_Gain::clear_has_adc() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+void R2T2Message_Gain::clear_adc() {
+  adc_ = 0u;
+  clear_has_adc();
+}
+::google::protobuf::uint32 R2T2Message_Gain::adc() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.Gain.adc)
+  return adc_;
+}
+void R2T2Message_Gain::set_adc(::google::protobuf::uint32 value) {
+  set_has_adc();
+  adc_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.Gain.adc)
+}
 
-#ifndef _MSC_VER
+// required sint32 gain = 2;
+bool R2T2Message_Gain::has_gain() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+void R2T2Message_Gain::set_has_gain() {
+  _has_bits_[0] |= 0x00000002u;
+}
+void R2T2Message_Gain::clear_has_gain() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+void R2T2Message_Gain::clear_gain() {
+  gain_ = 0;
+  clear_has_gain();
+}
+::google::protobuf::int32 R2T2Message_Gain::gain() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.Gain.gain)
+  return gain_;
+}
+void R2T2Message_Gain::set_gain(::google::protobuf::int32 value) {
+  set_has_gain();
+  gain_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.Gain.gain)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int R2T2Message::kCommandFieldNumber;
 const int R2T2Message::kRxDataFieldNumber;
 const int R2T2Message::kTxDataFieldNumber;
@@ -494,48 +590,57 @@ const int R2T2Message::kAttFieldNumber;
 const int R2T2Message::kAntennaFieldNumber;
 const int R2T2Message::kForwardPowerFieldNumber;
 const int R2T2Message::kBackwardPowerFieldNumber;
-#endif  // !_MSC_VER
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 R2T2Message::R2T2Message()
-  : ::google::protobuf::Message() {
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_r2t2_2eproto::InitDefaults();
+  }
   SharedCtor();
   // @@protoc_insertion_point(constructor:R2T2Proto.R2T2Message)
 }
-
-void R2T2Message::InitAsDefaultInstance() {
-  gain_ = const_cast< ::R2T2Proto::R2T2Message_Gain*>(&::R2T2Proto::R2T2Message_Gain::default_instance());
-  att_ = const_cast< ::R2T2Proto::R2T2Message_Gain*>(&::R2T2Proto::R2T2Message_Gain::default_instance());
-}
-
 R2T2Message::R2T2Message(const R2T2Message& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _has_bits_(from._has_bits_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  rxdata_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.has_rxdata()) {
+    rxdata_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.rxdata_);
+  }
+  txdata_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.has_txdata()) {
+    txdata_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.txdata_);
+  }
+  fftdata_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.has_fftdata()) {
+    fftdata_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.fftdata_);
+  }
+  if (from.has_gain()) {
+    gain_ = new ::R2T2Proto::R2T2Message_Gain(*from.gain_);
+  } else {
+    gain_ = NULL;
+  }
+  if (from.has_att()) {
+    att_ = new ::R2T2Proto::R2T2Message_Gain(*from.att_);
+  } else {
+    att_ = NULL;
+  }
+  ::memcpy(&command_, &from.command_,
+    reinterpret_cast<char*>(&antenna_) -
+    reinterpret_cast<char*>(&command_) + sizeof(antenna_));
   // @@protoc_insertion_point(copy_constructor:R2T2Proto.R2T2Message)
 }
 
 void R2T2Message::SharedCtor() {
-  ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
-  command_ = 0;
-  rxdata_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  txdata_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  fftdata_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  txdataack_ = 0u;
-  rxfreq_ = GOOGLE_ULONGLONG(0);
-  txfreq_ = GOOGLE_ULONGLONG(0);
-  txrate_ = 0u;
-  rxrate_ = 0u;
-  fftrate_ = 0u;
-  fftsize_ = 0u;
-  rx_ = 0u;
-  tx_ = 0u;
-  gain_ = NULL;
-  att_ = NULL;
-  antenna_ = 0u;
-  forwardpower_ = 0;
-  backwardpower_ = 0;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  rxdata_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  txdata_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  fftdata_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&gain_, 0, reinterpret_cast<char*>(&antenna_) -
+    reinterpret_cast<char*>(&gain_) + sizeof(antenna_));
 }
 
 R2T2Message::~R2T2Message() {
@@ -544,17 +649,13 @@ R2T2Message::~R2T2Message() {
 }
 
 void R2T2Message::SharedDtor() {
-  if (rxdata_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    delete rxdata_;
-  }
-  if (txdata_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    delete txdata_;
-  }
-  if (fftdata_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    delete fftdata_;
-  }
-  if (this != default_instance_) {
+  rxdata_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  txdata_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  fftdata_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) {
     delete gain_;
+  }
+  if (this != internal_default_instance()) {
     delete att_;
   }
 }
@@ -565,83 +666,76 @@ void R2T2Message::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
 const ::google::protobuf::Descriptor* R2T2Message::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return R2T2Message_descriptor_;
+  protobuf_r2t2_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_r2t2_2eproto::file_level_metadata[1].descriptor;
 }
 
 const R2T2Message& R2T2Message::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_r2t2_2eproto();
-  return *default_instance_;
+  protobuf_r2t2_2eproto::InitDefaults();
+  return *internal_default_instance();
 }
 
-R2T2Message* R2T2Message::default_instance_ = NULL;
-
-R2T2Message* R2T2Message::New() const {
-  return new R2T2Message;
+R2T2Message* R2T2Message::New(::google::protobuf::Arena* arena) const {
+  R2T2Message* n = new R2T2Message;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
 }
 
 void R2T2Message::Clear() {
-#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
-  &reinterpret_cast<R2T2Message*>(16)->f) - \
-   reinterpret_cast<char*>(16))
-
-#define ZR_(first, last) do {                              \
-    size_t f = OFFSET_OF_FIELD_(first);                    \
-    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
-    ::memset(&first, 0, n);                                \
-  } while (0)
-
-  if (_has_bits_[0 / 32] & 255) {
-    ZR_(command_, txdataack_);
-    ZR_(rxfreq_, txrate_);
+// @@protoc_insertion_point(message_clear_start:R2T2Proto.R2T2Message)
+  if (_has_bits_[0 / 32] & 31u) {
     if (has_rxdata()) {
-      if (rxdata_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-        rxdata_->clear();
-      }
+      GOOGLE_DCHECK(!rxdata_.IsDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited()));
+      (*rxdata_.UnsafeRawStringPointer())->clear();
     }
     if (has_txdata()) {
-      if (txdata_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-        txdata_->clear();
-      }
+      GOOGLE_DCHECK(!txdata_.IsDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited()));
+      (*txdata_.UnsafeRawStringPointer())->clear();
     }
     if (has_fftdata()) {
-      if (fftdata_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-        fftdata_->clear();
-      }
+      GOOGLE_DCHECK(!fftdata_.IsDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited()));
+      (*fftdata_.UnsafeRawStringPointer())->clear();
     }
-  }
-  if (_has_bits_[8 / 32] & 65280) {
-    ZR_(rxrate_, tx_);
     if (has_gain()) {
-      if (gain_ != NULL) gain_->::R2T2Proto::R2T2Message_Gain::Clear();
+      GOOGLE_DCHECK(gain_ != NULL);
+      gain_->::R2T2Proto::R2T2Message_Gain::Clear();
     }
     if (has_att()) {
-      if (att_ != NULL) att_->::R2T2Proto::R2T2Message_Gain::Clear();
+      GOOGLE_DCHECK(att_ != NULL);
+      att_->::R2T2Proto::R2T2Message_Gain::Clear();
     }
-    antenna_ = 0u;
   }
-  ZR_(forwardpower_, backwardpower_);
-
-#undef OFFSET_OF_FIELD_
-#undef ZR_
-
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
+  if (_has_bits_[0 / 32] & 224u) {
+    ::memset(&command_, 0, reinterpret_cast<char*>(&rxfreq_) -
+      reinterpret_cast<char*>(&command_) + sizeof(rxfreq_));
+  }
+  if (_has_bits_[8 / 32] & 65280u) {
+    ::memset(&txfreq_, 0, reinterpret_cast<char*>(&forwardpower_) -
+      reinterpret_cast<char*>(&txfreq_) + sizeof(forwardpower_));
+  }
+  if (_has_bits_[16 / 32] & 196608u) {
+    ::memset(&backwardpower_, 0, reinterpret_cast<char*>(&antenna_) -
+      reinterpret_cast<char*>(&backwardpower_) + sizeof(antenna_));
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear();
 }
 
 bool R2T2Message::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:R2T2Proto.R2T2Message)
   for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(16383);
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(16383u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // optional .R2T2Proto.R2T2Message.Command command = 1;
       case 1: {
-        if (tag == 8) {
+        if (tag == 8u) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -654,252 +748,217 @@ bool R2T2Message::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(18)) goto parse_rxData;
         break;
       }
 
       // optional bytes rxData = 2;
       case 2: {
-        if (tag == 18) {
-         parse_rxData:
+        if (tag == 18u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_rxdata()));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(26)) goto parse_txData;
         break;
       }
 
       // optional bytes txData = 3;
       case 3: {
-        if (tag == 26) {
-         parse_txData:
+        if (tag == 26u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_txdata()));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(34)) goto parse_fftData;
         break;
       }
 
       // optional bytes fftData = 4;
       case 4: {
-        if (tag == 34) {
-         parse_fftData:
+        if (tag == 34u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_fftdata()));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(80)) goto parse_txDataAck;
         break;
       }
 
       // optional uint32 txDataAck = 10;
       case 10: {
-        if (tag == 80) {
-         parse_txDataAck:
+        if (tag == 80u) {
+          set_has_txdataack();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &txdataack_)));
-          set_has_txdataack();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(160)) goto parse_rxFreq;
         break;
       }
 
       // optional uint64 rxFreq = 20;
       case 20: {
-        if (tag == 160) {
-         parse_rxFreq:
+        if (tag == 160u) {
+          set_has_rxfreq();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &rxfreq_)));
-          set_has_rxfreq();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(168)) goto parse_txFreq;
         break;
       }
 
       // optional uint64 txFreq = 21;
       case 21: {
-        if (tag == 168) {
-         parse_txFreq:
+        if (tag == 168u) {
+          set_has_txfreq();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &txfreq_)));
-          set_has_txfreq();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(176)) goto parse_txRate;
         break;
       }
 
       // optional uint32 txRate = 22;
       case 22: {
-        if (tag == 176) {
-         parse_txRate:
+        if (tag == 176u) {
+          set_has_txrate();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &txrate_)));
-          set_has_txrate();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(184)) goto parse_rxRate;
         break;
       }
 
       // optional uint32 rxRate = 23;
       case 23: {
-        if (tag == 184) {
-         parse_rxRate:
+        if (tag == 184u) {
+          set_has_rxrate();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &rxrate_)));
-          set_has_rxrate();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(192)) goto parse_fftRate;
         break;
       }
 
       // optional uint32 fftRate = 24;
       case 24: {
-        if (tag == 192) {
-         parse_fftRate:
+        if (tag == 192u) {
+          set_has_fftrate();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &fftrate_)));
-          set_has_fftrate();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(200)) goto parse_fftSize;
         break;
       }
 
       // optional uint32 fftSize = 25;
       case 25: {
-        if (tag == 200) {
-         parse_fftSize:
+        if (tag == 200u) {
+          set_has_fftsize();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &fftsize_)));
-          set_has_fftsize();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(240)) goto parse_rx;
         break;
       }
 
       // optional uint32 rx = 30;
       case 30: {
-        if (tag == 240) {
-         parse_rx:
+        if (tag == 240u) {
+          set_has_rx();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &rx_)));
-          set_has_rx();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(248)) goto parse_tx;
         break;
       }
 
       // optional uint32 tx = 31;
       case 31: {
-        if (tag == 248) {
-         parse_tx:
+        if (tag == 248u) {
+          set_has_tx();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &tx_)));
-          set_has_tx();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(322)) goto parse_gain;
         break;
       }
 
       // optional .R2T2Proto.R2T2Message.Gain gain = 40;
       case 40: {
-        if (tag == 322) {
-         parse_gain:
+        if (tag == 322u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_gain()));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(330)) goto parse_att;
         break;
       }
 
       // optional .R2T2Proto.R2T2Message.Gain att = 41;
       case 41: {
-        if (tag == 330) {
-         parse_att:
+        if (tag == 330u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_att()));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(336)) goto parse_antenna;
         break;
       }
 
       // optional uint32 antenna = 42;
       case 42: {
-        if (tag == 336) {
-         parse_antenna:
+        if (tag == 336u) {
+          set_has_antenna();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &antenna_)));
-          set_has_antenna();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(401)) goto parse_forwardPower;
         break;
       }
 
       // optional double forwardPower = 50;
       case 50: {
-        if (tag == 401) {
-         parse_forwardPower:
+        if (tag == 401u) {
+          set_has_forwardpower();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &forwardpower_)));
-          set_has_forwardpower();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(409)) goto parse_backwardPower;
         break;
       }
 
       // optional double backwardPower = 51;
       case 51: {
-        if (tag == 409) {
-         parse_backwardPower:
+        if (tag == 409u) {
+          set_has_backwardpower();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &backwardpower_)));
-          set_has_backwardpower();
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectAtEnd()) goto success;
         break;
       }
 
@@ -1000,13 +1059,13 @@ void R2T2Message::SerializeWithCachedSizes(
   // optional .R2T2Proto.R2T2Message.Gain gain = 40;
   if (has_gain()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      40, this->gain(), output);
+      40, *this->gain_, output);
   }
 
   // optional .R2T2Proto.R2T2Message.Gain att = 41;
   if (has_att()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      41, this->att(), output);
+      41, *this->att_, output);
   }
 
   // optional uint32 antenna = 42;
@@ -1024,15 +1083,16 @@ void R2T2Message::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(51, this->backwardpower(), output);
   }
 
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
   // @@protoc_insertion_point(serialize_end:R2T2Proto.R2T2Message)
 }
 
-::google::protobuf::uint8* R2T2Message::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
+::google::protobuf::uint8* R2T2Message::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:R2T2Proto.R2T2Message)
   // optional .R2T2Proto.R2T2Message.Command command = 1;
   if (has_command()) {
@@ -1109,15 +1169,15 @@ void R2T2Message::SerializeWithCachedSizes(
   // optional .R2T2Proto.R2T2Message.Gain gain = 40;
   if (has_gain()) {
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        40, this->gain(), target);
+      InternalWriteMessageNoVirtualToArray(
+        40, *this->gain_, false, target);
   }
 
   // optional .R2T2Proto.R2T2Message.Gain att = 41;
   if (has_att()) {
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        41, this->att(), target);
+      InternalWriteMessageNoVirtualToArray(
+        41, *this->att_, false, target);
   }
 
   // optional uint32 antenna = 42;
@@ -1135,7 +1195,7 @@ void R2T2Message::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(51, this->backwardpower(), target);
   }
 
-  if (!unknown_fields().empty()) {
+  if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
@@ -1143,16 +1203,16 @@ void R2T2Message::SerializeWithCachedSizes(
   return target;
 }
 
-int R2T2Message::ByteSize() const {
-  int total_size = 0;
+size_t R2T2Message::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:R2T2Proto.R2T2Message)
+  size_t total_size = 0;
 
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional .R2T2Proto.R2T2Message.Command command = 1;
-    if (has_command()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::EnumSize(this->command());
-    }
-
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  if (_has_bits_[0 / 32] & 255u) {
     // optional bytes rxData = 2;
     if (has_rxdata()) {
       total_size += 1 +
@@ -1174,6 +1234,26 @@ int R2T2Message::ByteSize() const {
           this->fftdata());
     }
 
+    // optional .R2T2Proto.R2T2Message.Gain gain = 40;
+    if (has_gain()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *this->gain_);
+    }
+
+    // optional .R2T2Proto.R2T2Message.Gain att = 41;
+    if (has_att()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *this->att_);
+    }
+
+    // optional .R2T2Proto.R2T2Message.Command command = 1;
+    if (has_command()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->command());
+    }
+
     // optional uint32 txDataAck = 10;
     if (has_txdataack()) {
       total_size += 1 +
@@ -1188,6 +1268,8 @@ int R2T2Message::ByteSize() const {
           this->rxfreq());
     }
 
+  }
+  if (_has_bits_[8 / 32] & 65280u) {
     // optional uint64 txFreq = 21;
     if (has_txfreq()) {
       total_size += 2 +
@@ -1202,8 +1284,6 @@ int R2T2Message::ByteSize() const {
           this->txrate());
     }
 
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     // optional uint32 rxRate = 23;
     if (has_rxrate()) {
       total_size += 2 +
@@ -1239,18 +1319,16 @@ int R2T2Message::ByteSize() const {
           this->tx());
     }
 
-    // optional .R2T2Proto.R2T2Message.Gain gain = 40;
-    if (has_gain()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->gain());
+    // optional double forwardPower = 50;
+    if (has_forwardpower()) {
+      total_size += 2 + 8;
     }
 
-    // optional .R2T2Proto.R2T2Message.Gain att = 41;
-    if (has_att()) {
-      total_size += 2 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->att());
+  }
+  if (_has_bits_[16 / 32] & 196608u) {
+    // optional double backwardPower = 51;
+    if (has_backwardpower()) {
+      total_size += 2 + 8;
     }
 
     // optional uint32 antenna = 42;
@@ -1261,55 +1339,53 @@ int R2T2Message::ByteSize() const {
     }
 
   }
-  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    // optional double forwardPower = 50;
-    if (has_forwardpower()) {
-      total_size += 2 + 8;
-    }
-
-    // optional double backwardPower = 51;
-    if (has_backwardpower()) {
-      total_size += 2 + 8;
-    }
-
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
+  _cached_size_ = cached_size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
   return total_size;
 }
 
 void R2T2Message::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
+// @@protoc_insertion_point(generalized_merge_from_start:R2T2Proto.R2T2Message)
+  GOOGLE_DCHECK_NE(&from, this);
   const R2T2Message* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const R2T2Message*>(
-      &from);
+      ::google::protobuf::internal::DynamicCastToGenerated<const R2T2Message>(
+          &from);
   if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:R2T2Proto.R2T2Message)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:R2T2Proto.R2T2Message)
     MergeFrom(*source);
   }
 }
 
 void R2T2Message::MergeFrom(const R2T2Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_command()) {
-      set_command(from.command());
-    }
+// @@protoc_insertion_point(class_specific_merge_from_start:R2T2Proto.R2T2Message)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from._has_bits_[0 / 32] & 255u) {
     if (from.has_rxdata()) {
-      set_rxdata(from.rxdata());
+      set_has_rxdata();
+      rxdata_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.rxdata_);
     }
     if (from.has_txdata()) {
-      set_txdata(from.txdata());
+      set_has_txdata();
+      txdata_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.txdata_);
     }
     if (from.has_fftdata()) {
-      set_fftdata(from.fftdata());
+      set_has_fftdata();
+      fftdata_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.fftdata_);
+    }
+    if (from.has_gain()) {
+      mutable_gain()->::R2T2Proto::R2T2Message_Gain::MergeFrom(from.gain());
+    }
+    if (from.has_att()) {
+      mutable_att()->::R2T2Proto::R2T2Message_Gain::MergeFrom(from.att());
+    }
+    if (from.has_command()) {
+      set_command(from.command());
     }
     if (from.has_txdataack()) {
       set_txdataack(from.txdataack());
@@ -1317,14 +1393,14 @@ void R2T2Message::MergeFrom(const R2T2Message& from) {
     if (from.has_rxfreq()) {
       set_rxfreq(from.rxfreq());
     }
+  }
+  if (from._has_bits_[8 / 32] & 65280u) {
     if (from.has_txfreq()) {
       set_txfreq(from.txfreq());
     }
     if (from.has_txrate()) {
       set_txrate(from.txrate());
     }
-  }
-  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (from.has_rxrate()) {
       set_rxrate(from.rxrate());
     }
@@ -1340,84 +1416,670 @@ void R2T2Message::MergeFrom(const R2T2Message& from) {
     if (from.has_tx()) {
       set_tx(from.tx());
     }
-    if (from.has_gain()) {
-      mutable_gain()->::R2T2Proto::R2T2Message_Gain::MergeFrom(from.gain());
+    if (from.has_forwardpower()) {
+      set_forwardpower(from.forwardpower());
     }
-    if (from.has_att()) {
-      mutable_att()->::R2T2Proto::R2T2Message_Gain::MergeFrom(from.att());
+  }
+  if (from._has_bits_[16 / 32] & 196608u) {
+    if (from.has_backwardpower()) {
+      set_backwardpower(from.backwardpower());
     }
     if (from.has_antenna()) {
       set_antenna(from.antenna());
     }
   }
-  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    if (from.has_forwardpower()) {
-      set_forwardpower(from.forwardpower());
-    }
-    if (from.has_backwardpower()) {
-      set_backwardpower(from.backwardpower());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
 void R2T2Message::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:R2T2Proto.R2T2Message)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void R2T2Message::CopyFrom(const R2T2Message& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:R2T2Proto.R2T2Message)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 bool R2T2Message::IsInitialized() const {
-
   if (has_gain()) {
-    if (!this->gain().IsInitialized()) return false;
+    if (!this->gain_->IsInitialized()) return false;
   }
   if (has_att()) {
-    if (!this->att().IsInitialized()) return false;
+    if (!this->att_->IsInitialized()) return false;
   }
   return true;
 }
 
 void R2T2Message::Swap(R2T2Message* other) {
-  if (other != this) {
-    std::swap(command_, other->command_);
-    std::swap(rxdata_, other->rxdata_);
-    std::swap(txdata_, other->txdata_);
-    std::swap(fftdata_, other->fftdata_);
-    std::swap(txdataack_, other->txdataack_);
-    std::swap(rxfreq_, other->rxfreq_);
-    std::swap(txfreq_, other->txfreq_);
-    std::swap(txrate_, other->txrate_);
-    std::swap(rxrate_, other->rxrate_);
-    std::swap(fftrate_, other->fftrate_);
-    std::swap(fftsize_, other->fftsize_);
-    std::swap(rx_, other->rx_);
-    std::swap(tx_, other->tx_);
-    std::swap(gain_, other->gain_);
-    std::swap(att_, other->att_);
-    std::swap(antenna_, other->antenna_);
-    std::swap(forwardpower_, other->forwardpower_);
-    std::swap(backwardpower_, other->backwardpower_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
+  if (other == this) return;
+  InternalSwap(other);
+}
+void R2T2Message::InternalSwap(R2T2Message* other) {
+  rxdata_.Swap(&other->rxdata_);
+  txdata_.Swap(&other->txdata_);
+  fftdata_.Swap(&other->fftdata_);
+  std::swap(gain_, other->gain_);
+  std::swap(att_, other->att_);
+  std::swap(command_, other->command_);
+  std::swap(txdataack_, other->txdataack_);
+  std::swap(rxfreq_, other->rxfreq_);
+  std::swap(txfreq_, other->txfreq_);
+  std::swap(txrate_, other->txrate_);
+  std::swap(rxrate_, other->rxrate_);
+  std::swap(fftrate_, other->fftrate_);
+  std::swap(fftsize_, other->fftsize_);
+  std::swap(rx_, other->rx_);
+  std::swap(tx_, other->tx_);
+  std::swap(forwardpower_, other->forwardpower_);
+  std::swap(backwardpower_, other->backwardpower_);
+  std::swap(antenna_, other->antenna_);
+  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
 }
 
 ::google::protobuf::Metadata R2T2Message::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = R2T2Message_descriptor_;
-  metadata.reflection = R2T2Message_reflection_;
-  return metadata;
+  protobuf_r2t2_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_r2t2_2eproto::file_level_metadata[1];
 }
 
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// R2T2Message
+
+// optional .R2T2Proto.R2T2Message.Command command = 1;
+bool R2T2Message::has_command() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+void R2T2Message::set_has_command() {
+  _has_bits_[0] |= 0x00000020u;
+}
+void R2T2Message::clear_has_command() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+void R2T2Message::clear_command() {
+  command_ = 0;
+  clear_has_command();
+}
+::R2T2Proto::R2T2Message_Command R2T2Message::command() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.command)
+  return static_cast< ::R2T2Proto::R2T2Message_Command >(command_);
+}
+void R2T2Message::set_command(::R2T2Proto::R2T2Message_Command value) {
+  assert(::R2T2Proto::R2T2Message_Command_IsValid(value));
+  set_has_command();
+  command_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.command)
+}
+
+// optional bytes rxData = 2;
+bool R2T2Message::has_rxdata() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+void R2T2Message::set_has_rxdata() {
+  _has_bits_[0] |= 0x00000001u;
+}
+void R2T2Message::clear_has_rxdata() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+void R2T2Message::clear_rxdata() {
+  rxdata_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clear_has_rxdata();
+}
+const ::std::string& R2T2Message::rxdata() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.rxData)
+  return rxdata_.GetNoArena();
+}
+void R2T2Message::set_rxdata(const ::std::string& value) {
+  set_has_rxdata();
+  rxdata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.rxData)
+}
+#if LANG_CXX11
+void R2T2Message::set_rxdata(::std::string&& value) {
+  set_has_rxdata();
+  rxdata_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:R2T2Proto.R2T2Message.rxData)
+}
+#endif
+void R2T2Message::set_rxdata(const char* value) {
+  set_has_rxdata();
+  rxdata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:R2T2Proto.R2T2Message.rxData)
+}
+void R2T2Message::set_rxdata(const void* value, size_t size) {
+  set_has_rxdata();
+  rxdata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:R2T2Proto.R2T2Message.rxData)
+}
+::std::string* R2T2Message::mutable_rxdata() {
+  set_has_rxdata();
+  // @@protoc_insertion_point(field_mutable:R2T2Proto.R2T2Message.rxData)
+  return rxdata_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* R2T2Message::release_rxdata() {
+  // @@protoc_insertion_point(field_release:R2T2Proto.R2T2Message.rxData)
+  clear_has_rxdata();
+  return rxdata_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void R2T2Message::set_allocated_rxdata(::std::string* rxdata) {
+  if (rxdata != NULL) {
+    set_has_rxdata();
+  } else {
+    clear_has_rxdata();
+  }
+  rxdata_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), rxdata);
+  // @@protoc_insertion_point(field_set_allocated:R2T2Proto.R2T2Message.rxData)
+}
+
+// optional bytes txData = 3;
+bool R2T2Message::has_txdata() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+void R2T2Message::set_has_txdata() {
+  _has_bits_[0] |= 0x00000002u;
+}
+void R2T2Message::clear_has_txdata() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+void R2T2Message::clear_txdata() {
+  txdata_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clear_has_txdata();
+}
+const ::std::string& R2T2Message::txdata() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.txData)
+  return txdata_.GetNoArena();
+}
+void R2T2Message::set_txdata(const ::std::string& value) {
+  set_has_txdata();
+  txdata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.txData)
+}
+#if LANG_CXX11
+void R2T2Message::set_txdata(::std::string&& value) {
+  set_has_txdata();
+  txdata_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:R2T2Proto.R2T2Message.txData)
+}
+#endif
+void R2T2Message::set_txdata(const char* value) {
+  set_has_txdata();
+  txdata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:R2T2Proto.R2T2Message.txData)
+}
+void R2T2Message::set_txdata(const void* value, size_t size) {
+  set_has_txdata();
+  txdata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:R2T2Proto.R2T2Message.txData)
+}
+::std::string* R2T2Message::mutable_txdata() {
+  set_has_txdata();
+  // @@protoc_insertion_point(field_mutable:R2T2Proto.R2T2Message.txData)
+  return txdata_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* R2T2Message::release_txdata() {
+  // @@protoc_insertion_point(field_release:R2T2Proto.R2T2Message.txData)
+  clear_has_txdata();
+  return txdata_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void R2T2Message::set_allocated_txdata(::std::string* txdata) {
+  if (txdata != NULL) {
+    set_has_txdata();
+  } else {
+    clear_has_txdata();
+  }
+  txdata_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), txdata);
+  // @@protoc_insertion_point(field_set_allocated:R2T2Proto.R2T2Message.txData)
+}
+
+// optional bytes fftData = 4;
+bool R2T2Message::has_fftdata() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+void R2T2Message::set_has_fftdata() {
+  _has_bits_[0] |= 0x00000004u;
+}
+void R2T2Message::clear_has_fftdata() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+void R2T2Message::clear_fftdata() {
+  fftdata_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clear_has_fftdata();
+}
+const ::std::string& R2T2Message::fftdata() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.fftData)
+  return fftdata_.GetNoArena();
+}
+void R2T2Message::set_fftdata(const ::std::string& value) {
+  set_has_fftdata();
+  fftdata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.fftData)
+}
+#if LANG_CXX11
+void R2T2Message::set_fftdata(::std::string&& value) {
+  set_has_fftdata();
+  fftdata_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:R2T2Proto.R2T2Message.fftData)
+}
+#endif
+void R2T2Message::set_fftdata(const char* value) {
+  set_has_fftdata();
+  fftdata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:R2T2Proto.R2T2Message.fftData)
+}
+void R2T2Message::set_fftdata(const void* value, size_t size) {
+  set_has_fftdata();
+  fftdata_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:R2T2Proto.R2T2Message.fftData)
+}
+::std::string* R2T2Message::mutable_fftdata() {
+  set_has_fftdata();
+  // @@protoc_insertion_point(field_mutable:R2T2Proto.R2T2Message.fftData)
+  return fftdata_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* R2T2Message::release_fftdata() {
+  // @@protoc_insertion_point(field_release:R2T2Proto.R2T2Message.fftData)
+  clear_has_fftdata();
+  return fftdata_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void R2T2Message::set_allocated_fftdata(::std::string* fftdata) {
+  if (fftdata != NULL) {
+    set_has_fftdata();
+  } else {
+    clear_has_fftdata();
+  }
+  fftdata_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), fftdata);
+  // @@protoc_insertion_point(field_set_allocated:R2T2Proto.R2T2Message.fftData)
+}
+
+// optional uint32 txDataAck = 10;
+bool R2T2Message::has_txdataack() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+void R2T2Message::set_has_txdataack() {
+  _has_bits_[0] |= 0x00000040u;
+}
+void R2T2Message::clear_has_txdataack() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+void R2T2Message::clear_txdataack() {
+  txdataack_ = 0u;
+  clear_has_txdataack();
+}
+::google::protobuf::uint32 R2T2Message::txdataack() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.txDataAck)
+  return txdataack_;
+}
+void R2T2Message::set_txdataack(::google::protobuf::uint32 value) {
+  set_has_txdataack();
+  txdataack_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.txDataAck)
+}
+
+// optional uint64 rxFreq = 20;
+bool R2T2Message::has_rxfreq() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+void R2T2Message::set_has_rxfreq() {
+  _has_bits_[0] |= 0x00000080u;
+}
+void R2T2Message::clear_has_rxfreq() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+void R2T2Message::clear_rxfreq() {
+  rxfreq_ = GOOGLE_ULONGLONG(0);
+  clear_has_rxfreq();
+}
+::google::protobuf::uint64 R2T2Message::rxfreq() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.rxFreq)
+  return rxfreq_;
+}
+void R2T2Message::set_rxfreq(::google::protobuf::uint64 value) {
+  set_has_rxfreq();
+  rxfreq_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.rxFreq)
+}
+
+// optional uint64 txFreq = 21;
+bool R2T2Message::has_txfreq() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+void R2T2Message::set_has_txfreq() {
+  _has_bits_[0] |= 0x00000100u;
+}
+void R2T2Message::clear_has_txfreq() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+void R2T2Message::clear_txfreq() {
+  txfreq_ = GOOGLE_ULONGLONG(0);
+  clear_has_txfreq();
+}
+::google::protobuf::uint64 R2T2Message::txfreq() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.txFreq)
+  return txfreq_;
+}
+void R2T2Message::set_txfreq(::google::protobuf::uint64 value) {
+  set_has_txfreq();
+  txfreq_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.txFreq)
+}
+
+// optional uint32 txRate = 22;
+bool R2T2Message::has_txrate() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+void R2T2Message::set_has_txrate() {
+  _has_bits_[0] |= 0x00000200u;
+}
+void R2T2Message::clear_has_txrate() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+void R2T2Message::clear_txrate() {
+  txrate_ = 0u;
+  clear_has_txrate();
+}
+::google::protobuf::uint32 R2T2Message::txrate() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.txRate)
+  return txrate_;
+}
+void R2T2Message::set_txrate(::google::protobuf::uint32 value) {
+  set_has_txrate();
+  txrate_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.txRate)
+}
+
+// optional uint32 rxRate = 23;
+bool R2T2Message::has_rxrate() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+void R2T2Message::set_has_rxrate() {
+  _has_bits_[0] |= 0x00000400u;
+}
+void R2T2Message::clear_has_rxrate() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+void R2T2Message::clear_rxrate() {
+  rxrate_ = 0u;
+  clear_has_rxrate();
+}
+::google::protobuf::uint32 R2T2Message::rxrate() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.rxRate)
+  return rxrate_;
+}
+void R2T2Message::set_rxrate(::google::protobuf::uint32 value) {
+  set_has_rxrate();
+  rxrate_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.rxRate)
+}
+
+// optional uint32 fftRate = 24;
+bool R2T2Message::has_fftrate() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+void R2T2Message::set_has_fftrate() {
+  _has_bits_[0] |= 0x00000800u;
+}
+void R2T2Message::clear_has_fftrate() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+void R2T2Message::clear_fftrate() {
+  fftrate_ = 0u;
+  clear_has_fftrate();
+}
+::google::protobuf::uint32 R2T2Message::fftrate() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.fftRate)
+  return fftrate_;
+}
+void R2T2Message::set_fftrate(::google::protobuf::uint32 value) {
+  set_has_fftrate();
+  fftrate_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.fftRate)
+}
+
+// optional uint32 fftSize = 25;
+bool R2T2Message::has_fftsize() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+void R2T2Message::set_has_fftsize() {
+  _has_bits_[0] |= 0x00001000u;
+}
+void R2T2Message::clear_has_fftsize() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+void R2T2Message::clear_fftsize() {
+  fftsize_ = 0u;
+  clear_has_fftsize();
+}
+::google::protobuf::uint32 R2T2Message::fftsize() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.fftSize)
+  return fftsize_;
+}
+void R2T2Message::set_fftsize(::google::protobuf::uint32 value) {
+  set_has_fftsize();
+  fftsize_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.fftSize)
+}
+
+// optional uint32 rx = 30;
+bool R2T2Message::has_rx() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+void R2T2Message::set_has_rx() {
+  _has_bits_[0] |= 0x00002000u;
+}
+void R2T2Message::clear_has_rx() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+void R2T2Message::clear_rx() {
+  rx_ = 0u;
+  clear_has_rx();
+}
+::google::protobuf::uint32 R2T2Message::rx() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.rx)
+  return rx_;
+}
+void R2T2Message::set_rx(::google::protobuf::uint32 value) {
+  set_has_rx();
+  rx_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.rx)
+}
+
+// optional uint32 tx = 31;
+bool R2T2Message::has_tx() const {
+  return (_has_bits_[0] & 0x00004000u) != 0;
+}
+void R2T2Message::set_has_tx() {
+  _has_bits_[0] |= 0x00004000u;
+}
+void R2T2Message::clear_has_tx() {
+  _has_bits_[0] &= ~0x00004000u;
+}
+void R2T2Message::clear_tx() {
+  tx_ = 0u;
+  clear_has_tx();
+}
+::google::protobuf::uint32 R2T2Message::tx() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.tx)
+  return tx_;
+}
+void R2T2Message::set_tx(::google::protobuf::uint32 value) {
+  set_has_tx();
+  tx_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.tx)
+}
+
+// optional .R2T2Proto.R2T2Message.Gain gain = 40;
+bool R2T2Message::has_gain() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+void R2T2Message::set_has_gain() {
+  _has_bits_[0] |= 0x00000008u;
+}
+void R2T2Message::clear_has_gain() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+void R2T2Message::clear_gain() {
+  if (gain_ != NULL) gain_->::R2T2Proto::R2T2Message_Gain::Clear();
+  clear_has_gain();
+}
+const ::R2T2Proto::R2T2Message_Gain& R2T2Message::gain() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.gain)
+  return gain_ != NULL ? *gain_
+                         : *::R2T2Proto::R2T2Message_Gain::internal_default_instance();
+}
+::R2T2Proto::R2T2Message_Gain* R2T2Message::mutable_gain() {
+  set_has_gain();
+  if (gain_ == NULL) {
+    gain_ = new ::R2T2Proto::R2T2Message_Gain;
+  }
+  // @@protoc_insertion_point(field_mutable:R2T2Proto.R2T2Message.gain)
+  return gain_;
+}
+::R2T2Proto::R2T2Message_Gain* R2T2Message::release_gain() {
+  // @@protoc_insertion_point(field_release:R2T2Proto.R2T2Message.gain)
+  clear_has_gain();
+  ::R2T2Proto::R2T2Message_Gain* temp = gain_;
+  gain_ = NULL;
+  return temp;
+}
+void R2T2Message::set_allocated_gain(::R2T2Proto::R2T2Message_Gain* gain) {
+  delete gain_;
+  gain_ = gain;
+  if (gain) {
+    set_has_gain();
+  } else {
+    clear_has_gain();
+  }
+  // @@protoc_insertion_point(field_set_allocated:R2T2Proto.R2T2Message.gain)
+}
+
+// optional .R2T2Proto.R2T2Message.Gain att = 41;
+bool R2T2Message::has_att() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+void R2T2Message::set_has_att() {
+  _has_bits_[0] |= 0x00000010u;
+}
+void R2T2Message::clear_has_att() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+void R2T2Message::clear_att() {
+  if (att_ != NULL) att_->::R2T2Proto::R2T2Message_Gain::Clear();
+  clear_has_att();
+}
+const ::R2T2Proto::R2T2Message_Gain& R2T2Message::att() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.att)
+  return att_ != NULL ? *att_
+                         : *::R2T2Proto::R2T2Message_Gain::internal_default_instance();
+}
+::R2T2Proto::R2T2Message_Gain* R2T2Message::mutable_att() {
+  set_has_att();
+  if (att_ == NULL) {
+    att_ = new ::R2T2Proto::R2T2Message_Gain;
+  }
+  // @@protoc_insertion_point(field_mutable:R2T2Proto.R2T2Message.att)
+  return att_;
+}
+::R2T2Proto::R2T2Message_Gain* R2T2Message::release_att() {
+  // @@protoc_insertion_point(field_release:R2T2Proto.R2T2Message.att)
+  clear_has_att();
+  ::R2T2Proto::R2T2Message_Gain* temp = att_;
+  att_ = NULL;
+  return temp;
+}
+void R2T2Message::set_allocated_att(::R2T2Proto::R2T2Message_Gain* att) {
+  delete att_;
+  att_ = att;
+  if (att) {
+    set_has_att();
+  } else {
+    clear_has_att();
+  }
+  // @@protoc_insertion_point(field_set_allocated:R2T2Proto.R2T2Message.att)
+}
+
+// optional uint32 antenna = 42;
+bool R2T2Message::has_antenna() const {
+  return (_has_bits_[0] & 0x00020000u) != 0;
+}
+void R2T2Message::set_has_antenna() {
+  _has_bits_[0] |= 0x00020000u;
+}
+void R2T2Message::clear_has_antenna() {
+  _has_bits_[0] &= ~0x00020000u;
+}
+void R2T2Message::clear_antenna() {
+  antenna_ = 0u;
+  clear_has_antenna();
+}
+::google::protobuf::uint32 R2T2Message::antenna() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.antenna)
+  return antenna_;
+}
+void R2T2Message::set_antenna(::google::protobuf::uint32 value) {
+  set_has_antenna();
+  antenna_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.antenna)
+}
+
+// optional double forwardPower = 50;
+bool R2T2Message::has_forwardpower() const {
+  return (_has_bits_[0] & 0x00008000u) != 0;
+}
+void R2T2Message::set_has_forwardpower() {
+  _has_bits_[0] |= 0x00008000u;
+}
+void R2T2Message::clear_has_forwardpower() {
+  _has_bits_[0] &= ~0x00008000u;
+}
+void R2T2Message::clear_forwardpower() {
+  forwardpower_ = 0;
+  clear_has_forwardpower();
+}
+double R2T2Message::forwardpower() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.forwardPower)
+  return forwardpower_;
+}
+void R2T2Message::set_forwardpower(double value) {
+  set_has_forwardpower();
+  forwardpower_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.forwardPower)
+}
+
+// optional double backwardPower = 51;
+bool R2T2Message::has_backwardpower() const {
+  return (_has_bits_[0] & 0x00010000u) != 0;
+}
+void R2T2Message::set_has_backwardpower() {
+  _has_bits_[0] |= 0x00010000u;
+}
+void R2T2Message::clear_has_backwardpower() {
+  _has_bits_[0] &= ~0x00010000u;
+}
+void R2T2Message::clear_backwardpower() {
+  backwardpower_ = 0;
+  clear_has_backwardpower();
+}
+double R2T2Message::backwardpower() const {
+  // @@protoc_insertion_point(field_get:R2T2Proto.R2T2Message.backwardPower)
+  return backwardpower_;
+}
+void R2T2Message::set_backwardpower(double value) {
+  set_has_backwardpower();
+  backwardpower_ = value;
+  // @@protoc_insertion_point(field_set:R2T2Proto.R2T2Message.backwardPower)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // @@protoc_insertion_point(namespace_scope)
 

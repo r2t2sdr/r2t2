@@ -7,11 +7,12 @@
 
 bool touchscreen = false;
 bool defaults = false;
-int layOut=0;
+bool qtRadioMode = false;
+int layOut=1;
 
 void help(char *prog)
 {
-    printf("usage: %s [-h] [-t] [-v debugLevel] [-p ip] [-a devive] [-m mixer] [-o mixer volume] [-i mixer mic]"
+    printf("usage: %s [-h] [-t] [-v debugLevel] [-q] [-p ip] [-a devive] [-m mixer] [-o mixer volume] [-i mixer mic]"
 	    "\n\n", 
 	    prog);
     printf("  -a <audiodev>          use audiodev\n");
@@ -21,9 +22,9 @@ void help(char *prog)
     printf("  -m <mixerdev>          use mixerdev\n");
     printf("  -o <mixer volume>      use mixer for volume\n");
     printf("  -p <ip>                r2t2 ip\n");
-    printf("  -s                     use samplerate 48k, default is 8k\n");
-    printf("  -l [0|1|2]             use layOut n\n");
+    printf("  -l [0|1]               use layout n\n");
     printf("  -t                     touchscreen mode (fullscreen, no mouse pointer)\n");
+    printf("  -q                     qtradio mode\n");
     printf("  -v <debugLevel (0..4)> debug output\n");
 
     exit(0);
@@ -38,9 +39,8 @@ int main(int argc, char *argv[])
 	char *mixervol = NULL;
 	char *ip = NULL;
 	gettimeofday(&tStart, NULL);
-	int sampleRate = DEFAULT_SAMPLE_RATE;
 
-	while ((i = getopt(argc, argv, "+hdstp:a:l:m:i:o:v:")) != EOF) {
+	while ((i = getopt(argc, argv, "+hdtqp:a:l:m:i:o:v:")) != EOF) {
 		switch (i) {
 			case 'p':
 				ip = optarg;
@@ -66,11 +66,11 @@ int main(int argc, char *argv[])
 			case 't':
 				touchscreen = true;
 				break;
-			case 's':
-				sampleRate  = 48000;
-				break;
 			case 'd':
 				defaults = true;
+				break;
+			case 'q':
+				qtRadioMode = true;
 				break;
 			case 'h':
 			default:
@@ -79,12 +79,10 @@ int main(int argc, char *argv[])
 		}
 	}
 
-//QCoreApplication a(argc, argv);
     QApplication a(argc, argv);
-	Control *ctl = new Control(ip, audiodev, mixerdev, mixervol, mixermic, sampleRate);
+	Control *ctl = new Control(ip, audiodev, mixerdev, mixervol, mixermic, DEFAULT_SAMPLE_RATE, qtRadioMode);
 	QObject::connect(&a, SIGNAL(aboutToQuit()), ctl, SLOT(cleanup()));
 	a.exec();
-	//delete ctl;
 
 	return 0;
 }

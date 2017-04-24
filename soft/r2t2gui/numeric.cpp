@@ -44,7 +44,7 @@ int Numeric::getVal() {
 
 void Numeric::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
 	QString s = QString("%1").arg(val+dispOffset,digits);
-	painter->setFont(QFont("Monospace", ySize*0.7));
+	painter->setFont(QFont("Monospace", ySize*0.4));
 	QFontMetrics fm = painter->fontMetrics();
 //	QPoint center = QPoint(( xSize-fm.width(s))/2, ( ySize+fm.height())/2 );
 

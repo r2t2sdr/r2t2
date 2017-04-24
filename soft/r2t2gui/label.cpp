@@ -43,7 +43,7 @@ void Label::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget 
 	painter->drawText(2,l->ySize-2,l->name+":");
 	painter->setPen(colorLabelText);
 	if (l->val < MAX_MENU && entry[l->cmd][l->val].name != NULL)
-		painter->drawText(l->xSize/2-4, l->ySize-2, QString("%1").arg(entry[l->cmd][l->val].name));
+		painter->drawText(fm.width(l->name+":  "), l->ySize-2, QString("%1").arg(entry[l->cmd][l->val].name));
 	else
 		painter->drawText(l->xSize/2-4, l->ySize-2, QString("%1").arg(l->val));
 }
@@ -56,4 +56,3 @@ QRectF Label::boundingRect() const {
 void Label::doUpdate() {
 	update();
 }
-

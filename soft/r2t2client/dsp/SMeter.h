@@ -13,7 +13,7 @@ class SMeter: public ProcessBlock
 		int receive(std::shared_ptr<ProcessBuffer> buf, uint32_t input, int recursion);
 
 	private:
-		int process(cfloat_t* in, int cnt, int16_t* out);
+		int process(cfloat_t* in, int cnt, float* out);
         float val;
 };
 

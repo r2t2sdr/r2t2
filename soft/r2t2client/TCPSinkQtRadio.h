@@ -1,16 +1,16 @@
-#ifndef _TCPSINK_H_
-#define _TCPSINK_H_
+#ifndef _TCPSINK_QTRADIO_H_
+#define _TCPSINK_QTRADIO_H_
 
 #include <QTcpSocket>
-#include "ProcessBlock.h"
+#include "dsp/ProcessBlock.h"
 #include "types.h"
 
-class TCPSink: public ProcessBlock 
+class TCPSinkQtRadio: public ProcessBlock 
 {
 
 	public:
-		TCPSink(std::string name, QTcpSocket *socket, int fftRate);
-		~TCPSink();
+		TCPSinkQtRadio(std::string name, QTcpSocket *socket, int fftRate);
+		~TCPSinkQtRadio();
 		int receive(std::shared_ptr<ProcessBuffer> buf, uint32_t input, int recursion);
         void setFFTRate(uint32_t rate);
 

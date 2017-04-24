@@ -12,12 +12,16 @@
 #include <arpa/inet.h>
 #include <math.h>
 
+#include <google/protobuf/text_format.h>
+
 #include "r2t2srv.h"
 #include "lib.h"
 
 #define SCALE_32 		(1.0/2147483647.0) 
 #define SCALE_16 		(32767.0*0.9) 
 #define MAX_INT32 		0xffffffff
+
+extern int debugLevel;
 
 UdpReader::UdpReader(R2T2Srv *parent) : parent(parent) { }
 
@@ -234,7 +238,6 @@ void R2T2Srv::readClientUDPData() {
 #endif
 		int pos = 0;
 		int rx,tx;
-        //qDebug() << len << sender << senderPort;
 
 		if (buf[0]!='R' || buf[1]!='2') {
 			qDebug("sync error: magic");
@@ -244,13 +247,20 @@ void R2T2Srv::readClientUDPData() {
 		while(len > 4) {
 
 			int pktLen = buf[pos+2]+(buf[pos+3]<<8);
-
 			if (pktLen > len) {
 				qDebug() << "sync error: len" << pktLen << len;
 				return;
 			}
 
+
 			if (r2t2Msg->ParseFromArray(&buf[pos+4], pktLen)) {
+
+				if (debugLevel == 5) {
+					std::string formated;
+					google::protobuf::TextFormat::PrintToString(*r2t2Msg, &formated);
+					qDebug() << "Message from client " << len << sender << senderPort << "\n" << formated.data();
+				}
+
 				if (r2t2Msg->has_rxfreq()) {
 					rx = getClient(sender, senderPort);
 					sendAck(rx>=0, sender, senderPort);
@@ -276,7 +286,6 @@ void R2T2Srv::readClientUDPData() {
                         r2t2->setInput(rx, r2t2Msg->antenna());
 						client[rx].curInput = std::min((int)r2t2Msg->antenna()-1,1);
 					}
-					qDebug() << "ant:" << r2t2Msg->antenna();
 				}
 				if (r2t2Msg->has_gain()) {
 					rx = getClient(sender, senderPort);
@@ -319,7 +328,6 @@ void R2T2Srv::readClientUDPData() {
 					switch(r2t2Msg->command()) {
 						case R2T2Proto::R2T2Message_Command_RXOPEN:
 							rx = allocClient(sender, senderPort, Usage::RX);
-							qDebug() << "open rx = " << rx << senderPort;
 							sendAck(rx>=0, sender, senderPort);
 							if (rx>=0) {
 								mutex.lock();
@@ -330,7 +338,6 @@ void R2T2Srv::readClientUDPData() {
 							break;
 						case R2T2Proto::R2T2Message_Command_TXOPEN:
 							tx = allocClient(sender, senderPort, Usage::TX);
-							qDebug() << "open tx = " << tx;
 							sendAck(tx>=0, sender, senderPort);
 							if (tx>=0) {
 								mutex.lock();
@@ -341,7 +348,6 @@ void R2T2Srv::readClientUDPData() {
 							break;
 						case R2T2Proto::R2T2Message_Command_CLOSE:
 							rx = freeClient(sender, senderPort);
-							qDebug() << "close = " << rx << senderPort;
 							sendAck(rx>=0, sender, senderPort);
 							if (rx>=0) {
 								mutex.lock();
@@ -405,6 +411,11 @@ void R2T2Srv::sendR2T2Msg(QHostAddress addr, quint16 port) {
 
 	std::ostringstream out;
 	r2t2ClientMsg->SerializeToOstream(&out);
+	if (debugLevel == 5) {
+		std::string formated;
+		google::protobuf::TextFormat::PrintToString(*r2t2ClientMsg, &formated);
+		qDebug() << "Message to client " << addr << port << "\n" << formated.data();
+	}
 
 	strcpy((char*)outBuf, "R2");
 	outBuf[2] = out.str().size() & 0xff;
@@ -457,7 +468,6 @@ void R2T2Srv::handleAudioData(int32_t *out, int len) {
 #endif
 
 			}
-			// qDebug() << maxInt;
 
 			c->rxBufPos[TYPE_AUDIO]=pos;
 

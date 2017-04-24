@@ -15,6 +15,7 @@ FFT::FFT(std::string name, int size, bool inv) : ProcessBlock(name, 1, 1), size(
 		//window.push_back(0.5  - 0.5  * cos (2 * M_PI / size * i));  // Hanning window
 		// window.push_back(0.35875  - 0.48829*cos(2*M_PI/size*i) + 0.14128*cos(4*M_PI/size*i) - 0.01168*cos(6*M_PI/size*i));  // Blackman Herris
 		window.push_back(0.3625819  - 0.4891775*cos(2*M_PI/size*i) + 0.1365995*cos(4*M_PI/size*i) - 0.0106411*cos(6*M_PI/size*i));  // Blackman Nuttall 
+    work = 1;
 }
 
 
@@ -23,9 +24,10 @@ FFT::~FFT() {
 }
 
 int FFT::setSize(int s) {
-    if (s<1024) 
+    work = 0;
+    if (s<=1024) 
         s=1024;
-    else if (s<2048) 
+    else if (s<=2048) 
         s=2048;
     else s=4096;
 
@@ -60,11 +62,13 @@ int FFT::process(cfloat_t* in0, int in0Cnt, cfloat_t* out) {
 
 int FFT::receive(std::shared_ptr<ProcessBuffer> buf, uint32_t input, int recursion) {
 	int minBuf = preReceive(buf, input, recursion);
-	if (minBuf<0)
+	if (minBuf<0) {
 		return 0;
+    }
 
-	if (inBuf[0]->size() < (unsigned int)size) 
+	if (inBuf[0]->size() < (unsigned int)size) {
 		return 0;
+    }
 
 	if (!work) {
 		inBuf[0].reset();
@@ -80,6 +84,5 @@ int FFT::receive(std::shared_ptr<ProcessBuffer> buf, uint32_t input, int recursi
 
 	setGlobTime(name.data());
 	send(outBuf, 0, recursion+1);
-	work = 0;
 	return 0;
 }

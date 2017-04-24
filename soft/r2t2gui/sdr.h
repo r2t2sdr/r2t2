@@ -1,88 +1,58 @@
-#include <QTcpSocket>
-#include <QTimer>
-#include <QThread>
-#include <QSettings>
-#include <stdint.h>
+#ifndef _SDR_H_
+#define _SDR_H_
 
+#include <QThread>
+#include <stdint.h>
 
 class Sdr : public QThread  {
 	Q_OBJECT
 
 	public:
-		Sdr(QString ip, int rate);
-		~Sdr();
+		// Sdr(QString ip, int port);
+		//Sdr();
+		virtual ~Sdr() {};
 
-		void run();
-		void setRXFreq(uint32_t f);
-		void setTXFreq(uint32_t f);
-		void setSampleRate(int rate);
-		void setAnt(int);
-		void setPresel(int);
-		void setAttenuator(int);
-		void setTXLevel(int l);
-		void setPtt(bool on);
-		void setTXRate(int);
-		void setCWMode(bool);
-		void setFilter(int lo, int hi);
-		void setMode(int);
-		void setGain(int);
-		void setAGCDec(int);
-		void setFFT(int time,int size);
-		void setVolume(double);
-		void setMicGain(double);
-		void setToneTest(bool,  double, double, double, double);
-		void startRX();
-		void stopRX();
-		void setActive(bool);
-		void setAudioOff(bool);
-		void setTxDelay(int);
-		void setNBLevel(int);
-		void setNotch(int);
-		void setSquelch(int);
-		void setComp(int);
-		void selectPresel(int);
+		virtual void run()=0;
+		virtual void setRXFreq(uint32_t f)=0;
+		virtual void setTXFreq(uint32_t f)=0;
+		virtual void setSampleRate(int rate)=0;
+		virtual void setAnt(int)=0;
+		virtual void setPresel(int)=0;
+		virtual void setAttenuator(int)=0;
+		virtual void setTXLevel(int l)=0;
+		virtual void setPtt(bool on)=0;
+		virtual void setTXRate(int)=0;
+		virtual void setFilter(int lo, int hi)=0;
+		virtual void setMode(int)=0;
+		virtual void setGain(int)=0;
+		virtual void setAGC(int)=0;
+		virtual void setFFT(int time,int size)=0;
+		virtual void setFFTRate(int rate)=0;
+		virtual void setVolume(double)=0;
+		virtual void setMicGain(double)=0;
+		virtual void setToneTest(bool,  double, double, double, double)=0;
+		virtual void startRX()=0;
+		virtual void stopRX()=0;
+		virtual void setActive(bool)=0;
+		virtual void setAudioOff(bool)=0;
+		virtual void setTxDelay(int)=0;
+		virtual void setNBLevel(int)=0;
+		virtual void setNotch(int)=0;
+		virtual void setSquelch(int)=0;
+		virtual void setComp(int)=0;
+		virtual void selectPresel(int)=0;
+        virtual void setRx(int)=0;
 
 	public slots:
-		//void writeHiqsdr(QByteArray);
-		//void writeHiqsdrIQ(QByteArray);
-        void terminate();
-		void readServerTCPData();
-		void connected();
-		void disconnected();
-        void connectServer(QString ip, uint16_t port);
-        void disconnectServer();
+        virtual void terminate()=0;
+		virtual void readServerTCPData()=0;
+        virtual void setServer(QString ip, uint16_t port)=0;
+        virtual void connectServer(bool)=0;
 
 	signals:
-		void fftData(QByteArray);
-		void audioRX(QByteArray);
-        void controlCommand(int,int,int);
-
-
-    private slots:
-        void fftTime();
-
-    private:
-        void sendStartSeq();
-        QTcpSocket *tcpSocket;
-        QTimer *timer;
-		QByteArray inBuf;
-        QString ip;
-        uint16_t port;
-
-		void handleSpectrum(int len);
-		void handleAudio(int len);
-		void sendCmd(QString cmd);
-        bool conn = false;
-        bool startRx = false;
-        int fftSize = 1024;
-		int16_t outBuf[81920];
-		bool sdrRun = true;
-        uint32_t rxFreq = 7100000;
-        int antenna = 0;
-        int att = 0;
-        int pre = 0;
-        int mode = 0;
-        int filterLo = -3000;
-        int filterHi = -300;
+		//void fftData(QByteArray)=0;
+		//void audioRX(QByteArray)=0;
+        //void controlCommand(int,int,int)=0;
 };
 
+#endif

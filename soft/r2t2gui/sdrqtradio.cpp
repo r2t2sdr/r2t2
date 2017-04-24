@@ -6,42 +6,60 @@
 #include <stdint.h>
 #include "config.h"
 #include "lib.h"
-#include "sdr.h"
+#include "sdrqtradio.h"
 #include "assert.h"
 #include "g711.h"
 
-Sdr::Sdr (QString ip, int port) : ip(ip), port(port) {
+SdrQtRadio::SdrQtRadio (QString ip, int port) : ip(ip), port(port) {
+    qDebug() << "initial connect" << ip << port+rx;
     tcpSocket = new QTcpSocket(this);
 	tcpSocket->connectToHost(QHostAddress(ip), R2T2_SERVER_PORT);
 	connect(tcpSocket, SIGNAL(connected()), this, SLOT(connected()));
 	connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket::SocketError)));
 	connect (tcpSocket, SIGNAL(readyRead()), this, SLOT(readServerTCPData()));
+	tcpTimer = new QTimer(this);
+    tcpTimer->setSingleShot(true);
+	connect(tcpTimer, SIGNAL(timeout()), this, SLOT(tcpTimeout()));
+    tcpTimer->start(1000);
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(fftTime()));
 }
 
-Sdr::~Sdr() {
+SdrQtRadio::~SdrQtRadio() {
     delete tcpSocket;
 	delete timer;
 }
 
-void Sdr::connectServer(QString serverIP, uint16_t serverPort) {
+void SdrQtRadio::setServer(QString serverIP, uint16_t serverPort) {
     ip = serverIP;
     port = serverPort;
-    qDebug() << "connect" << ip << port;
-    if (conn)
+}
+
+void SdrQtRadio::connectServer(bool con) {
+    if (con) {
+        qDebug() << "connect" << ip << port+rx;
+        if (conn) {
+            tcpSocket->disconnectFromHost();
+            msleep(200);
+        }
+
+        delete tcpSocket;
+        tcpSocket = new QTcpSocket(this);
+        connect(tcpSocket, SIGNAL(connected()), this, SLOT(connected()));
+        connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+        connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket::SocketError)));
+        connect (tcpSocket, SIGNAL(readyRead()), this, SLOT(readServerTCPData()));
+        tcpSocket->connectToHost(QHostAddress(ip), port+rx);
+        tcpTimer->start(1000);
+    } else {
+        startRx = true;
+        timer->stop();
         tcpSocket->disconnectFromHost();
-    while (conn) 
-        msleep(100);
-    tcpSocket->connectToHost(QHostAddress(ip), port);
+    }
 }
 
-void Sdr::disconnectServer() {
-    startRx = true;
-    tcpSocket->disconnectFromHost();
-}
-
-void Sdr::sendStartSeq() {
+void SdrQtRadio::sendStartSeq() {
     sendCmd("SetIQEnable false");
     sendCmd("setMode 0");
     sendCmd("SetIQEnable true");
@@ -49,11 +67,13 @@ void Sdr::sendStartSeq() {
     sendCmd("setpwsmode 0");
     sendCmd("setEncoding 0");
     sendCmd("startAudioStream 800 8000 1 0");
-    qDebug() << "start audio";
+    if (fftTimeRep > 0)
+        timer->start(fftTimeRep);
 }
 
-void Sdr::connected() {
+void SdrQtRadio::connected() {
 	qDebug() << "connected";
+    tcpTimer->stop();
     inBuf.clear();
     conn = true;
     if (startRx) 
@@ -62,15 +82,29 @@ void Sdr::connected() {
    setRXFreq(rxFreq); 
    setMode(mode);
    setFilter(filterLo, filterHi);
+   emit controlCommand(SRC_SDR, CMD_CONNECT, 1); 
 }
 
-void Sdr::disconnected() {
+void SdrQtRadio::error(QAbstractSocket::SocketError /*error*/) {
+    disconnected();
+}
+
+void SdrQtRadio::disconnected() {
     inBuf.clear();
+    tcpTimer->stop();
+    timer->stop();
     conn = false;
 	qDebug() << "disconnected";
+    emit controlCommand(SRC_SDR, CMD_CONNECT, 0); 
 }
 
-void Sdr::handleSpectrum(int len) {
+void SdrQtRadio::tcpTimeout() {
+    qDebug() << "connect timeout";
+    connectServer(false);
+    disconnected();
+}
+
+void SdrQtRadio::handleSpectrum(int len) {
     // qDebug() << "fft" << len - FFT_BUFFER_HEADER_SIZE;
 	emit fftData(inBuf.mid(FFT_BUFFER_HEADER_SIZE, len - FFT_BUFFER_HEADER_SIZE));
 	emit controlCommand(SRC_SDR, CMD_RSSI, inBuf[6]); 
@@ -80,7 +114,7 @@ void Sdr::handleSpectrum(int len) {
 
 }
 
-void Sdr::handleAudio(int len) {
+void SdrQtRadio::handleAudio(int len) {
 	len -= AUDIO_BUFFER_HEADER_SIZE;
     // qDebug() << "audio" << len;
 	if (len > arraysize(outBuf))
@@ -92,7 +126,7 @@ void Sdr::handleAudio(int len) {
 	emit audioRX(QByteArray((char*)outBuf, len*sizeof(uint16_t)));
 }
 
-void Sdr::readServerTCPData() {
+void SdrQtRadio::readServerTCPData() {
 
 	while (tcpSocket->bytesAvailable()) {
 		inBuf += tcpSocket->readAll();
@@ -103,7 +137,7 @@ void Sdr::readServerTCPData() {
             else if (inBuf[0]== (char)AUDIO_BUFFER)
 				headerSize=AUDIO_BUFFER_HEADER_SIZE;
             else {
-                qDebug() << inBuf;
+                // qDebug() << inBuf;
                 inBuf.clear();
             }
             int len = ((uint8_t)inBuf[3]<<8) + (uint8_t)inBuf[4] + headerSize;
@@ -119,7 +153,7 @@ void Sdr::readServerTCPData() {
 	}
 }
 
-void Sdr::sendCmd(QString cmd) {
+void SdrQtRadio::sendCmd(QString cmd) {
     if (!conn)
         return;
     QByteArray a;
@@ -129,45 +163,46 @@ void Sdr::sendCmd(QString cmd) {
     tcpSocket->write(a);
 }
 
-void Sdr::startRX() {
+void SdrQtRadio::startRX() {
     if (conn)
         sendStartSeq();
     else
         startRx = true;
 }
 
-void Sdr::stopRX() {
+void SdrQtRadio::stopRX() {
     startRx = false;
 	sendCmd("stopAudioStream");
 }
 
-void Sdr::setRXFreq(uint32_t f) {
+void SdrQtRadio::setRXFreq(uint32_t f) {
     rxFreq = f;
     sendCmd(QString("setFrequency %1").arg(rxFreq));
 }
 
-void Sdr::setTXFreq(uint32_t /*f*/) {
+void SdrQtRadio::setTXFreq(uint32_t /*f*/) {
 }
 
-void Sdr::setSampleRate(int /*rate*/) {
+void SdrQtRadio::setSampleRate(int /*rate*/) {
 }
 
-
-void Sdr::setPtt(bool /*on*/) {
+void SdrQtRadio::setFFTRate(int /*rate*/) {
 }
 
-void Sdr::setTXRate(int /*rate*/) {
+void SdrQtRadio::setPtt(bool /*on*/) {
 }
 
-void Sdr::setTXLevel(int /*l*/) {
+void SdrQtRadio::setTXRate(int /*rate*/) {
 }
 
-void Sdr::setAttenuator(int n) {
-    qDebug() << "att" << n;
-    if (n==20) {
+void SdrQtRadio::setTXLevel(int /*l*/) {
+}
+
+void SdrQtRadio::setAttenuator(int n) {
+    if (n>=20) {
         sendCmd(QString("*activatepreamp 1"));
         sendCmd(QString("*setattenuator 0"));
-    } else if (n==10) {
+    } else if (n>=10) {
         sendCmd(QString("*activatepreamp 1"));
         sendCmd(QString("*setattenuator 10"));
     } else {
@@ -176,83 +211,87 @@ void Sdr::setAttenuator(int n) {
     }
 }
 
-void Sdr::setPresel(int /*n*/) {
+void SdrQtRadio::setPresel(int /*n*/) {
 }
 
-void Sdr::setAnt(int ant) {
+void SdrQtRadio::setAnt(int ant) {
     antenna = ant;
     sendCmd(QString("*selectantenna %1").arg(antenna));
 }
 
-void Sdr::setTxDelay(int /*txDelay*/) {
+void SdrQtRadio::setTxDelay(int /*txDelay*/) {
 }
 
-void Sdr::setNBLevel(int /*level*/) {
+void SdrQtRadio::setNBLevel(int /*level*/) {
 }
 
-void Sdr::setFilter(int lo, int hi) {
+void SdrQtRadio::setFilter(int lo, int hi) {
     filterLo = lo;
     filterHi = hi;
     sendCmd(QString("setFilter %1 %2").arg(lo).arg(hi));
 }
 
-void Sdr::setFFT(int time, int size) {
+void SdrQtRadio::setFFT(int time, int size) {
     fftSize = size;
-    timer->start(time);
-    qDebug() << "time" << time << size;
+    fftTimeRep = time;
+    if (fftTimeRep > 0)
+        timer->start(fftTimeRep);
 }
 
-void Sdr::setMode(int m) {
+void SdrQtRadio::setMode(int m) {
     mode = m;
     sendCmd(QString("setMode %1").arg(mode));
 }
 
-void Sdr::setGain(int m) {
-    qDebug() << "preamp" << m;
-    sendCmd(QString("*activatepreamp %1").arg(0));
+void SdrQtRadio::setGain(int m) {
+    sendCmd(QString("*activatepreamp %1").arg(m));
 }
 
-void Sdr::setAGCDec(int m) {
+void SdrQtRadio::setAGC(int m) {
     sendCmd(QString("*SetAGC %1").arg(m));
 }
 
-void Sdr::setMicGain(double) {
+void SdrQtRadio::setMicGain(double) {
 }
 
-void Sdr::setVolume(double) {
+void SdrQtRadio::setVolume(double) {
 }
 
-void Sdr::setToneTest(bool /*on*/, double /*f1*/, double /*level1*/, double /*f2*/, double /*level2*/) {
+void SdrQtRadio::setToneTest(bool /*on*/, double /*f1*/, double /*level1*/, double /*f2*/, double /*level2*/) {
 }
 
-void Sdr::setActive(bool /*on*/) {
+void SdrQtRadio::setActive(bool /*on*/) {
 }
 
-void Sdr::setAudioOff(bool /*on*/) {
+void SdrQtRadio::setAudioOff(bool /*on*/) {
 }
 
-void Sdr::setNotch(int /*v*/) {
+void SdrQtRadio::setNotch(int /*v*/) {
 }
 
-void Sdr::setSquelch(int /*v*/) {
+void SdrQtRadio::setSquelch(int /*v*/) {
 }
 
-void Sdr::terminate() {
+void SdrQtRadio::terminate() {
 	sdrRun = false;
 }
 
-void Sdr::run() {
+void SdrQtRadio::run() {
     while(sdrRun) {
 		msleep(200);
     }
 }
 
-void Sdr::setComp(int) {
+void SdrQtRadio::setComp(int) {
 }
 
-void Sdr::selectPresel(int) {
+void SdrQtRadio::selectPresel(int) {
 }
 
-void Sdr::fftTime() {
+void SdrQtRadio::fftTime() {
     sendCmd(QString("getSpectrum %1").arg(fftSize));
+}
+
+void SdrQtRadio::setRx(int v) {
+    rx = v;
 }

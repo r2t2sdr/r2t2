@@ -12,7 +12,7 @@ SMeter::SMeter(std::string name) : ProcessBlock(name, 1, 1) {
 SMeter::~SMeter() {
 }
 
-int SMeter::process(cfloat_t* in, int cnt, int16_t *out) {
+int SMeter::process(cfloat_t* in, int cnt, float *out) {
 	int processed = 0;
 	while (processed < cnt) {
 		cfloat_t x = *in++;
@@ -31,9 +31,9 @@ int SMeter::receive(std::shared_ptr<ProcessBuffer> buf, uint32_t input, int recu
 	if (minBuf<0)
 		return 0;
 
-    auto outBuf = std::make_shared<ProcessBuffer> (1, typeid(int16_t));
+    auto outBuf = std::make_shared<ProcessBuffer> (1, typeid(float));
 
-	process((cfloat_t*)**(inBuf[0]), inBuf[0]->size(), (int16_t*)**outBuf);
+	process((cfloat_t*)**(inBuf[0]), inBuf[0]->size(), (float*)**outBuf);
 
 	setGlobTime(name.data());
     outBuf->setSize(1);

@@ -191,10 +191,13 @@ void Audio::run() {
 	}
 }
 
-#ifdef USE_MIXER
+//#ifdef USE_MIXER
 void Audio::setVolume(int volume) {
 }
 
 void Audio::setMic(int mic) {
 }
-#endif
+
+void Audio::terminate() {
+}
+//#endif

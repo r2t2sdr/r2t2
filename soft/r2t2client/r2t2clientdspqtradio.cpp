@@ -14,8 +14,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-
-#include "r2t2client.h"
+#include "r2t2clientdspqtradio.h"
 #include "r2t2.pb.h"
 #include "lib.h"
 #include "types.h"
@@ -30,33 +29,25 @@ typedef struct _buffer {
 } QTRXBUF;
 
 
-UdpReader::UdpReader(R2T2Client *parent) : parent(parent) { }
+UdpReaderR2T2ClientDSPQtRadio::UdpReaderR2T2ClientDSPQtRadio(R2T2ClientDSPQtRadio *parent) : parent(parent) { }
 
-void UdpReader::run() { 
+void UdpReaderR2T2ClientDSPQtRadio::run() { 
     while (!isInterruptionRequested()) {
         parent->readR2T2ServerUDPData();
     }
     qDebug() << "reader terminated..";
 }
 
-UdpReader::~UdpReader() {
+UdpReaderR2T2ClientDSPQtRadio::~UdpReaderR2T2ClientDSPQtRadio() {
 }
 
-R2T2Client::R2T2Client(QSettings *settings, QString destAddr, quint16 port, ClientProto proto, 
+R2T2ClientDSPQtRadio::R2T2ClientDSPQtRadio(QSettings *settings, QString destAddr, quint16 port,
         QTcpSocket *tcpSocket, QString fileName, uint32_t sampleRate, uint32_t fftRate) 
-    :  settings(settings), dstAddr(destAddr), port(port), proto(proto), tcpSocket(tcpSocket), sampleRate(sampleRate), fftRate(fftRate) {
+    :  settings(settings), dstAddr(destAddr), port(port), tcpSocket(tcpSocket), sampleRate(sampleRate), fftRate(fftRate) {
 
 
         cmdFile = nullptr;
-        switch (proto) {
-            case CLIENT_QTRADIO:
-            case CLIENT_QTRADIO_DSPSERVER:
-                qDebug() << QTime::currentTime().toString() <<  "R2T2Client created, Version " << VERSION  ", addr " << tcpSocket->peerName() << "," << tcpSocket->peerAddress().toString() <<  "port: " << tcpSocket->peerPort();
-                break;
-            case CLIENT_CONSOLE:
-            default:
-                qDebug() << "R2T2Client Version " << VERSION << endl;
-        }
+        qDebug() << QTime::currentTime().toString() <<  "R2T2ClientDSPQtRadio created, Version " << VERSION  ", addr " << tcpSocket->peerName() << "," << tcpSocket->peerAddress().toString() <<  "port: " << tcpSocket->peerPort();
 
         if (fileName.isNull()) {
             input = new QTextStream(stdin);
@@ -73,7 +64,7 @@ R2T2Client::R2T2Client(QSettings *settings, QString destAddr, quint16 port, Clie
 
 #ifdef NATIVE_SOCKET
         serverSocket = openSocket(destAddr.toLocal8Bit().data(), port);
-        udpReader = new UdpReader(this);
+        udpReader = new UdpReaderR2T2ClientDSPQtRadio(this);
         connect(udpReader, SIGNAL(sendAudio(std::shared_ptr<ProcessBuffer>)), this, SLOT(sendAudioData(std::shared_ptr<ProcessBuffer>)));
         connect(udpReader, SIGNAL(sendFFT(std::shared_ptr<ProcessBuffer>)), this, SLOT(sendFFTData(std::shared_ptr<ProcessBuffer>)));
         connect(udpReader, SIGNAL(sendCmd(int)), this, SLOT(sendCmd(int)));
@@ -83,35 +74,19 @@ R2T2Client::R2T2Client(QSettings *settings, QString destAddr, quint16 port, Clie
         connect(serverSocket, SIGNAL(readyRead()), this, SLOT(readR2T2ServerUDPData()), Qt::DirectConnection );
 #endif
 
-        if (proto == CLIENT_QTRADIO) {
-            // for qt radio
-#ifdef NATIVE_SOCKET_CLIENT
-            clientSocket = socket(PF_INET,SOCK_DGRAM,IPPROTO_UDP);
-            if(clientSocket<0) {
-                perror("create socket failed for iq_socket\n");
-                exit(1);
-            }
-#else
-            clientSocket = new QUdpSocket(this);
-            clientSocket->bind(11000, QUdpSocket::ShareAddress);
-#endif
-        }
-
         r2t2Msg = new R2T2Proto::R2T2Message();
         r2t2ServerMsg = new R2T2Proto::R2T2Message();
 
-        if (proto == CLIENT_QTRADIO_DSPSERVER) {
-			rx = new RX("rx", sampleRate);
-			tcpSink = new TCPSink("tcpSink", tcpSocket, fftRate);
-			//tcpSink = new TCPSink("tcpSink", tcpSocket, sampleRate);
-			rx->connect(0, tcpSink, 0);
-			rx->connect(1, tcpSink, 1);
-			rx->connect(2, tcpSink, 2);
-            
-            r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_RXOPEN);
-            sendR2T2Msg();
-            connected = true;	
-        }
+        rx = new RX("rx", sampleRate);
+        tcpSink = new TCPSinkQtRadio("tcpSink", tcpSocket, fftRate);
+        rx->connect(0, tcpSink, 0);
+        rx->connect(1, tcpSink, 1);
+        rx->connect(2, tcpSink, 2);
+
+        //lastCommand = R2T2Proto::R2T2Message_Command_RXOPEN;
+        r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_RXOPEN);
+        sendR2T2Msg();
+        connected = true;	
 
         txTimer = new QTimer(this);
         connect(txTimer, SIGNAL(timeout()), this, SLOT(sendTxDataRestart()));
@@ -128,8 +103,8 @@ R2T2Client::R2T2Client(QSettings *settings, QString destAddr, quint16 port, Clie
         udpReader->start();
     }
 
-R2T2Client::~R2T2Client() {
-    qDebug() << QTime::currentTime().toString() << "R2T2Client terminated " << tcpSocket->peerPort();
+R2T2ClientDSPQtRadio::~R2T2ClientDSPQtRadio() {
+    qDebug() << QTime::currentTime().toString() << "R2T2ClientDSPQtRadio terminated " << tcpSocket->peerPort();
 
     mutex.lock();
     r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_CLOSE);
@@ -142,10 +117,8 @@ R2T2Client::~R2T2Client() {
 	delete udpReader;
 #endif
 
-	if (proto == CLIENT_QTRADIO_DSPSERVER) {
-		delete rx;
-		delete tcpSink;
-	}
+    delete rx;
+    delete tcpSink;
 
     if (cmdFile) {
         cmdFile->close();
@@ -158,15 +131,6 @@ R2T2Client::~R2T2Client() {
     serverSocket->close();
     delete serverSocket;
 #endif
-    if (proto == CLIENT_QTRADIO) {
-#ifdef NATIVE_SOCKET_CLIENT
-        shutdown(clientSocket, SHUT_RDWR);
-        close(clientSocket);
-#else
-        clientSocket->close();
-        delete clientSocket;
-#endif
-    }
     delete input;
     delete output;
     delete r2t2Msg;
@@ -178,7 +142,7 @@ R2T2Client::~R2T2Client() {
 }
 
 #ifdef NATIVE_SOCKET
-int R2T2Client::openSocket (const char *host, unsigned short port) {
+int R2T2ClientDSPQtRadio::openSocket (const char *host, unsigned short port) {
 
     int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if(sock == -1) {
@@ -221,172 +185,44 @@ int R2T2Client::openSocket (const char *host, unsigned short port) {
 }
 #endif
 
-void R2T2Client::usage() {
-    printf ("usage:\n\n");
 
-    printf ("att <gain>   : set attentuator (range 0 .. -30dB)\n");
-    printf ("close        : close all\n");
-    printf ("gain <gain>  : set gain (range -10 .. 30 dB)\n");
-    printf ("help         : view this help\n");
-    printf ("init         : init hardware\n");
-    printf ("quit         : close program\n");
-    printf ("rxa          : set rx antenna (0: I, 1: Q, 2: IQ\n");
-    printf ("rxf <freq>   : set rx freq\n");
-    printf ("rxopen       : open next available rx\n");
-    printf ("rxr <rate>   : set rx sample rate\n");
-    printf ("start        : start rx audio transfer\n");
-    printf ("stop         : stop rx audio transfer\n");
-    printf ("startfft     : start rx fft data transfer\n");
-    printf ("reqfft       : req one rx fft data transfer\n");
-    printf ("sfft <size>  : set fft size, used from reqfft\n");
-    printf ("stopfft      : stop rx fft data  transfer\n");
-    printf ("tt <freq>    : start two tone test with delta freq <freq>\n");
-    printf ("txf <freq>   : set tx freq\n");
-    printf ("txopen       : open tx\n");
-    printf ("txr <rate>   : set tx sample rate\n");
-}
-
-void R2T2Client::sendCmd(int cmd) {
+// command from r2t2server
+void R2T2ClientDSPQtRadio::sendCmd(int cmd) {
 	switch(cmd) {
-		case R2T2Proto::R2T2Message_Command_ACK:
-			if (proto == CLIENT_CONSOLE) {
-				*output << QLatin1String("*"); 
-				output->flush();
-			}
-			if (proto == CLIENT_QTRADIO_DSPSERVER) {
-				if (lastCommand == R2T2Proto::R2T2Message_Command_RXOPEN) {
-					sendClientTcpResp(QString("OK %1").arg(sampleRate));
-					connected = true;	
-					qDebug() << "open ack";
-				}
-				if (lastCommand == R2T2Proto::R2T2Message_Command_STARTAUDIO) {
-					sendClientTcpResp(QString("OK"));
-					qDebug() << "start audio";
-				}
-				lastCommand = R2T2Proto::R2T2Message_Command_NONE;
-			}
-			break;
-		case R2T2Proto::R2T2Message_Command_NACK:
-			if (proto == CLIENT_CONSOLE) {
-				*output << QLatin1String("?"); 
-				output->flush();
-			}
-			if (proto == CLIENT_QTRADIO_DSPSERVER) {
-				if (lastCommand == R2T2Proto::R2T2Message_Command_RXOPEN) {
-					qDebug() << "open nnnnack";
-					sendClientTcpResp(QString("ERROR").arg(sampleRate));
-					connected = false;	
-				}
-				if (lastCommand == R2T2Proto::R2T2Message_Command_STARTAUDIO) {
-					sendClientTcpResp(QString("ERROR"));
-					qDebug() << "start audio nack";
-				}
-				lastCommand = R2T2Proto::R2T2Message_Command_NONE;
-			}
-			break;
-		case R2T2Proto::R2T2Message_Command_TIMEOUT:
-			if (proto == CLIENT_CONSOLE) {
-				*output << QLatin1String("timeout"); 
-				output->flush();
-				connected = false;	
-			}
-			break;
+        case R2T2Proto::R2T2Message_Command_ACK:
+            if (lastCommand == R2T2Proto::R2T2Message_Command_RXOPEN) {
+                sendClientTcpResp(QString("OK %1").arg(sampleRate));
+                connected = true;	
+                qDebug() << "open ack";
+            }
+            if (lastCommand == R2T2Proto::R2T2Message_Command_STARTAUDIO) {
+                sendClientTcpResp(QString("OK"));
+                qDebug() << "start audio";
+            }
+            lastCommand = R2T2Proto::R2T2Message_Command_NONE;
+            break;
+
+        case R2T2Proto::R2T2Message_Command_NACK:
+            if (lastCommand == R2T2Proto::R2T2Message_Command_RXOPEN) {
+                qDebug() << "open nack";
+                sendClientTcpResp(QString("ERROR").arg(sampleRate));
+                connected = false;	
+            }
+            if (lastCommand == R2T2Proto::R2T2Message_Command_STARTAUDIO) {
+                sendClientTcpResp(QString("ERROR"));
+                qDebug() << "start audio nack";
+            }
+            lastCommand = R2T2Proto::R2T2Message_Command_NONE;
+            break;
 		default:
 			assert(0);
 	}
 }
 
-// input in console mode
-void R2T2Client::readConsole() {
-    QString line, cmd;
-    qint64 arg1,arg2;
-
-    *output << QLatin1String("$ "); 
-    output->flush();
-
-    while (input->readLineInto(&line)) {
-
-        QStringList s = line.split(' ');
-
-        cmd = s.value(0);
-        arg1 = s.value(1).toLongLong();
-        arg2 = s.value(2).toLongLong();
-
-        mutex.lock();
-        if (cmd == "rxopen") {
-            r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_RXOPEN);
-            connected = true;	
-            lastAck = 0;
-        }else if (cmd == "txopen") {
-            r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_TXOPEN);
-            connected = true;	
-        }else if (cmd == "close") {
-            r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_CLOSE);
-            connected = false;	
-        }else if (cmd == "start") {
-            r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_STARTAUDIO);
-        }else if (cmd == "startfft") {
-            r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_STARTFFT);
-        }else if (cmd == "reqfft") {
-            r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_REQFFT);
-        }else if (cmd == "stop") {
-            r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_STOPAUDIO);
-        }else if (cmd == "stopfft") {
-            r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_STOPFFT);
-        }else if (cmd == "init") {
-            r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_REINIT);
-        }else if (cmd == "sfft") {
-            r2t2ServerMsg->set_fftsize(arg1);
-        }else if (cmd == "rxf") {
-            r2t2ServerMsg->set_rxfreq(arg1);
-        } else if (cmd == "txf") {
-            r2t2ServerMsg->set_txfreq(arg1);
-        }else if (cmd == "rxr") {
-            r2t2ServerMsg->set_rxrate(arg1);
-        }else if (cmd == "txr") {
-            r2t2ServerMsg->set_txrate(arg1);
-            txRate = arg1;
-        }else if (cmd == "rxa") {
-            r2t2ServerMsg->set_antenna(arg1);
-        }else if (cmd == "gain") {
-            R2T2Proto::R2T2Message_Gain *msgGain = new R2T2Proto::R2T2Message_Gain();
-            msgGain->set_adc(arg1);
-            msgGain->set_gain(arg2);
-            r2t2ServerMsg->set_allocated_gain(msgGain);
-        }else if (cmd == "att") {
-            R2T2Proto::R2T2Message_Gain *msgAtt = new R2T2Proto::R2T2Message_Gain();
-            msgAtt->set_adc(arg1);
-            msgAtt->set_gain(arg2);
-            r2t2ServerMsg->set_allocated_att(msgAtt);
-        } else if (cmd == "tt") {
-            txAck = 0;
-            toneTestFreq = arg1;
-            mutex.unlock();
-            for (int i=0;i<3;i++)
-                sendTxToneTestData();
-        } else if (cmd == "help") {
-            usage();
-        } else if (cmd == "quit") {
-            break;
-        } else {
-            *output << QLatin1String("unknown command\n"); 
-        }
-        mutex.unlock();
-
-        sendR2T2Msg();
-        *output << QLatin1String("$ "); 
-        output->flush();
-    }
-    QCoreApplication::quit(); 
+void R2T2ClientDSPQtRadio::run() {
 }
 
-void R2T2Client::run() {
-
-	if (proto == CLIENT_CONSOLE) 
-		readConsole();
-}
-
-void R2T2Client::handleQtRadioDspFFTData(uint8_t* data, int len) {
+void R2T2ClientDSPQtRadio::handleQtRadioDspFFTData(uint8_t* data, int len) {
     auto buf0 = std::make_shared<ProcessBuffer> (MAX_FFT_SIZE*2, typeid(cfloat_t));
     if (buf0) {
         buf0->setSize(len/sizeof(cfloat_t));
@@ -395,7 +231,7 @@ void R2T2Client::handleQtRadioDspFFTData(uint8_t* data, int len) {
     }
 }
 
-void R2T2Client::handleQtRadioFFTData(uint8_t* data, int len) {
+void R2T2ClientDSPQtRadio::handleQtRadioFFTData(uint8_t* data, int len) {
     QTRXBUF buf;
     int offset = 0;
 
@@ -439,7 +275,7 @@ void R2T2Client::handleQtRadioFFTData(uint8_t* data, int len) {
     }
 }
 
-void R2T2Client::handleQtRadioRxData(uint8_t* data, int len) {
+void R2T2ClientDSPQtRadio::handleQtRadioRxData(uint8_t* data, int len) {
     QTRXBUF buf;
     int offset = 0;
     float* fdata = (float*)data;
@@ -480,7 +316,7 @@ void R2T2Client::handleQtRadioRxData(uint8_t* data, int len) {
     }
 }
 
-void R2T2Client::handleQtRadioDspRxData(uint8_t* data, int len) {
+void R2T2ClientDSPQtRadio::handleQtRadioDspRxData(uint8_t* data, int len) {
 
 	len /= sizeof(cfloat_t);
 	auto buf0 = std::make_shared<ProcessBuffer> (4096*4, typeid(cfloat_t));
@@ -492,7 +328,7 @@ void R2T2Client::handleQtRadioDspRxData(uint8_t* data, int len) {
 }
 
 #ifdef NATIVE_SOCKET
-int R2T2Client::getServerPacket(char *buf, int len) {
+int R2T2ClientDSPQtRadio::getServerPacket(char *buf, int len) {
 
     fd_set readfds;
     timeval timeout;
@@ -523,7 +359,7 @@ int R2T2Client::getServerPacket(char *buf, int len) {
 #endif
 
 // read udp from r2r2 server 
-void R2T2Client::readR2T2ServerUDPData() {
+void R2T2ClientDSPQtRadio::readR2T2ServerUDPData() {
     uint8_t buf[4096+32];
     int len;
 
@@ -552,43 +388,17 @@ void R2T2Client::readR2T2ServerUDPData() {
                 }
 
                 if (r2t2Msg->ParseFromArray(&buf[pos+4], pktLen)) {
-
-                    if (r2t2Msg->has_rx()) {
-                        if (proto == CLIENT_CONSOLE) {
-                            *output << QLatin1String("rx:") << r2t2Msg->rx(); 
-                            output->flush();
-                        }
-                    }
-
                     if (r2t2Msg->has_rxdata()) {
-                        if (proto == CLIENT_QTRADIO_DSPSERVER) {
-                            handleQtRadioDspRxData((uint8_t*)(r2t2Msg->rxdata().data()), r2t2Msg->rxdata().size());
-                        } else if (proto == CLIENT_QTRADIO) {
-                            handleQtRadioRxData((uint8_t*)(r2t2Msg->rxdata().data()), r2t2Msg->rxdata().size());
-                        } else {
-                            qDebug() << "rxData" << r2t2Msg->rxdata().size();
-                        }
+                        handleQtRadioDspRxData((uint8_t*)(r2t2Msg->rxdata().data()), r2t2Msg->rxdata().size());
                     }
 
                     if (r2t2Msg->has_fftdata()) {
-                        if (proto == CLIENT_QTRADIO_DSPSERVER) {
-                            handleQtRadioDspFFTData((uint8_t*)(r2t2Msg->fftdata().data()), r2t2Msg->fftdata().size());
-                        } else if (proto == CLIENT_QTRADIO) {
-                            assert(0);
-                            handleQtRadioFFTData((uint8_t*)(r2t2Msg->fftdata().data()), r2t2Msg->fftdata().size());
-                        } else {
-                            qDebug() << "fftData" << r2t2Msg->fftdata().size();
-                        }
+                        handleQtRadioDspFFTData((uint8_t*)(r2t2Msg->fftdata().data()), r2t2Msg->fftdata().size());
                     }
 
                     if (r2t2Msg->has_txdataack()) {
                         txAck -= r2t2Msg->txdataack() - lastAck;
                         lastAck = r2t2Msg->txdataack(); 
-                        if (proto == CLIENT_CONSOLE) {
-                            *output << QLatin1String("tx data ack") << lastAck << txAck; 
-                            output->flush();
-                            sendTxToneTestData();
-                        }
                     }
 
                     if (r2t2Msg->has_command()) {
@@ -602,89 +412,8 @@ void R2T2Client::readR2T2ServerUDPData() {
         }
     }
 
-// read tcp from gui in server mode
-void R2T2Client::readClientTCPData() {
-    uint8_t buf[2048];
-    QString line, cmd1, cmd2;
-    qint64 arg1, arg2;
-
-    while (tcpSocket->bytesAvailable()) {
-        int len = tcpSocket->read((char*)buf, sizeof(buf)-1);
-
-        buf[len]=0;
-        QStringList s = QString((char*)buf).split(' ');
-
-        cmd1 = s.value(0);
-        cmd2 = s.value(1);
-        arg1 = s.value(1).toLongLong();
-        arg2 = s.value(2).toLongLong();
-
-        //qDebug() << "cmd: " << cmd1 << cmd2;
-
-        mutex.lock();
-        if (cmd1 == "attach") {
-			qDebug() << cmd1;
-			lastCommand = R2T2Proto::R2T2Message_Command_RXOPEN;
-            r2t2ServerMsg->set_command(lastCommand);
-            rxBufPos = 0;
-            fftBufPos = 0;
-        } else if (cmd1 == "detach") {
-            qtClientPort = 0;
-            qtClientFFTPort = 0;
-            r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_CLOSE);
-            sendClientTcpResp(QString("OK %1").arg(sampleRate));
-            connected = false;	
-        } else if (cmd1 == "frequency") {
-            r2t2ServerMsg->set_rxfreq(arg1);
-            sendClientTcpResp(QString("OK"));
-        } else if (cmd1 == "start" && cmd2 == "fft") {
-            qtClientFFTPort = arg2;
-            qtClientFFTAddr = tcpSocket->peerAddress(); 
-            sendClientTcpResp(QString("OK"));
-        } else if (cmd1 == "start" && cmd2 == "iq") {
-            r2t2ServerMsg->set_rxrate(sampleRate);
-            r2t2ServerMsg->set_fftrate(fftRate);
-            tcpSink->setFFTRate(fftRate);
-			lastCommand = R2T2Proto::R2T2Message_Command_STARTAUDIO;
-            r2t2ServerMsg->set_command(lastCommand);
-            qtClientPort = arg2;
-            qtClientAddr = tcpSocket->peerAddress(); 
-        } else if (cmd1 == "stop" && cmd2 == "iq") {
-            r2t2ServerMsg->set_command(R2T2Proto::R2T2Message_Command_STOPAUDIO);
-            qtClientPort = 0;
-            qtClientFFTPort = 0;
-            sendClientTcpResp(QString("OK"));
-        } else if (cmd1 == "hardware?") {
-            sendClientTcpResp(QString("OK HiQSDR"));
-        } else if (cmd1 == "getserial?") {
-            sendClientTcpResp(QString("R2T2"));
-        } else if (cmd1 == "activatepreamp") {
-            R2T2Proto::R2T2Message_Gain *msgGain = new R2T2Proto::R2T2Message_Gain();
-            msgGain->set_adc(curAntenna);
-            msgGain->set_gain(arg1*20);
-            r2t2ServerMsg->set_allocated_gain(msgGain);
-            sendClientTcpResp(QString("OK"));
-        } else if (cmd1 == "setattenuator") {
-            R2T2Proto::R2T2Message_Gain *msgAtt = new R2T2Proto::R2T2Message_Gain();
-            msgAtt->set_adc(curAntenna);
-            msgAtt->set_gain(arg1);
-            r2t2ServerMsg->set_allocated_att(msgAtt);
-            sendClientTcpResp(QString("OK"));
-        } else if (cmd1 == "selectantenna") {
-            curAntenna = std::min((int)arg1,1);
-            r2t2ServerMsg->set_antenna(arg1+1);
-            sendClientTcpResp(QString("OK"));
-        } else {
-            qDebug() << "unknown command: " << cmd1 << cmd2;
-            sendClientTcpResp(QString("ERROR unknown command"));
-        }
-        mutex.unlock();
-        sendR2T2Msg();
-    }
-}
-
 // read tcp from gui in dsp mode
-void R2T2Client::readDspTCPData() {
+void R2T2ClientDSPQtRadio::readDspTCPData() {
     uint8_t buf[2048];
     QString line, cmd1, cmd2;
     qint64 arg1, arg2;
@@ -765,7 +494,7 @@ void R2T2Client::readDspTCPData() {
     }
 }
 
-void R2T2Client::sendTxToneTestData() {
+void R2T2ClientDSPQtRadio::sendTxToneTestData() {
     int i;
     if (toneTestFreq==0) 
         return;
@@ -790,7 +519,7 @@ void R2T2Client::sendTxToneTestData() {
 }
 
 // send alive to r2t2 server
-void R2T2Client::sendAlive() {
+void R2T2ClientDSPQtRadio::sendAlive() {
     if (alive>0)
         alive--;
     if (alive==0 && connected) {
@@ -802,35 +531,35 @@ void R2T2Client::sendAlive() {
     }
 }
 
-void R2T2Client::sendQResp(QString q, QString s, QString sep) {
+void R2T2ClientDSPQtRadio::sendQResp(QString q, QString s, QString sep) {
     QString answer = q+sep+s;
     sendClientTcpResp(QString("4%1%2").arg(answer.size()).arg(answer));
     // qDebug() << "resp: " << QString("4%1%2").arg(answer.size()).arg(answer);
 }
 
-void R2T2Client::sendClientTcpResp(QString str) {
+void R2T2ClientDSPQtRadio::sendClientTcpResp(QString str) {
     QByteArray a;
     a.append(str);
     tcpSocket->write(a);
 }
 
-void R2T2Client::sendTxDataRestart() {
+void R2T2ClientDSPQtRadio::sendTxDataRestart() {
     qDebug() << "txRestart";
 }
 
-void R2T2Client::sendAudioData(std::shared_ptr<ProcessBuffer> buf0) {
+void R2T2ClientDSPQtRadio::sendAudioData(std::shared_ptr<ProcessBuffer> buf0) {
 	rx->receive(buf0, 0, 0);
 }
 
-void R2T2Client::sendFFTData(std::shared_ptr<ProcessBuffer> buf0) {
+void R2T2ClientDSPQtRadio::sendFFTData(std::shared_ptr<ProcessBuffer> buf0) {
 	rx->receive(buf0, 1, 0);
 }
 
-void R2T2Client::disconnected() {
+void R2T2ClientDSPQtRadio::disconnected() {
     delete this;
 }
 
-void R2T2Client::sendR2T2Msg() {
+void R2T2ClientDSPQtRadio::sendR2T2Msg() {
 
     mutex.lock();
     if (r2t2ServerMsg->ByteSize() == 0) {

@@ -14,6 +14,8 @@
 #include "Split.h"
 #include "AGC.h"
 #include "SMeter.h"
+#include "Notch.h"
+#include "Null.h"
 
 enum RXMode {
     RX_LSB,
@@ -42,6 +44,8 @@ class RX: public ProcessBlock
 		void setAGCDec(int);
         void setMode(RXMode);
         void setFilter(int32_t lo, int32_t high);
+        void setNotch(bool);
+        void setFFTAudio(bool);
 
 	private:
 		AMDemod *amDemod; 
@@ -55,6 +59,8 @@ class RX: public ProcessBlock
         Split *split, *nfSplit;
 		AGC *agc;
         SMeter *sMeter;
+        Notch *notch;
+        Null *null;
 
         RXMode rxMode;
         int32_t rxOffset;
