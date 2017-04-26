@@ -13,7 +13,7 @@
 SdrQtRadio::SdrQtRadio (QString ip, int port) : ip(ip), port(port) {
     qDebug() << "initial connect" << ip << port+rx;
     tcpSocket = new QTcpSocket(this);
-	tcpSocket->connectToHost(QHostAddress(ip), R2T2_SERVER_PORT);
+	// tcpSocket->connectToHost(QHostAddress(ip), port+rx);
 	connect(tcpSocket, SIGNAL(connected()), this, SLOT(connected()));
 	connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
     connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket::SocketError)));
@@ -21,7 +21,7 @@ SdrQtRadio::SdrQtRadio (QString ip, int port) : ip(ip), port(port) {
 	tcpTimer = new QTimer(this);
     tcpTimer->setSingleShot(true);
 	connect(tcpTimer, SIGNAL(timeout()), this, SLOT(tcpTimeout()));
-    tcpTimer->start(1000);
+    // tcpTimer->start(1000);
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(fftTime()));
 }

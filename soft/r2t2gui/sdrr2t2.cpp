@@ -20,7 +20,7 @@ SdrR2T2::SdrR2T2 (QString ip, int port) : ip(ip), port(port) {
     r2t2GuiMsgAnswer = new R2T2GuiProto::R2T2GuiMessageAnswer();
 
     tcpSocket = new QTcpSocket(this);
-	tcpSocket->connectToHost(QHostAddress(ip), port);
+	// tcpSocket->connectToHost(QHostAddress(ip), port);
 	connect(tcpSocket, SIGNAL(connected()), this, SLOT(connected()));
 	connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 	connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket::SocketError)));
@@ -28,7 +28,7 @@ SdrR2T2::SdrR2T2 (QString ip, int port) : ip(ip), port(port) {
 	tcpTimer = new QTimer(this);
     tcpTimer->setSingleShot(true);
 	connect(tcpTimer, SIGNAL(timeout()), this, SLOT(tcpTimeout()));
-    tcpTimer->start(1000);
+    // tcpTimer->start(1000);
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(fftTime()));
 }
@@ -82,7 +82,8 @@ void SdrR2T2::sendStartSeq() {
     r2t2GuiMsg->set_agc((R2T2GuiProto::R2T2GuiMessage_AGC)agc);
     r2t2GuiMsg->set_notch(notch);
     r2t2GuiMsg->set_fftrate(fftRate);
-    r2t2GuiMsg->set_gain(gain);
+    // not send, if not pressed
+    // r2t2GuiMsg->set_gain(gain);
     r2t2GuiMsg->set_txfreq(txFreq);
     r2t2GuiMsg->set_command(R2T2GuiProto::R2T2GuiMessage_Command_STARTAUDIO);
     sendR2T2GuiMsg();
@@ -198,6 +199,8 @@ void SdrR2T2::readServerTCPData() {
             if (r2t2GuiMsgAnswer->has_fftrate()) 
                 emit controlCommand(SRC_SDR, CMD_FFT_SAMPLE_RATE, r2t2GuiMsgAnswer->fftrate()); 
 #endif 
+            if (r2t2GuiMsgAnswer->has_gain()) 
+                emit controlCommand(SRC_SDR, CMD_PREAMP, r2t2GuiMsgAnswer->gain()); 
             
             if (r2t2GuiMsgAnswer->has_version()) 
                 std::cout << "connected to client version " << r2t2GuiMsgAnswer->version() << std::endl;

@@ -77,6 +77,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2GuiMessageAnswer, rssi_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2GuiMessageAnswer, version_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2GuiMessageAnswer, fftrate_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2GuiMessageAnswer, gain_),
   3,
   0,
   1,
@@ -84,11 +85,12 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   5,
   2,
   6,
+  7,
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 0, 18, sizeof(R2T2GuiMessage)},
-  { 32, 43, sizeof(R2T2GuiMessageAnswer)},
+  { 32, 44, sizeof(R2T2GuiMessageAnswer)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -156,15 +158,16 @@ void AddDescriptorsImpl() {
       "\007\n\003CWL\020\003\022\007\n\003CWU\020\004\022\006\n\002FM\020\005\022\006\n\002AM\020\006\022\010\n\004DIG"
       "U\020\007\022\010\n\004SPEC\020\010\022\010\n\004DIGL\020\t\022\007\n\003SAM\020\n\022\007\n\003DRM\020"
       "\013\";\n\003AGC\022\t\n\005fixed\020\000\022\010\n\004slow\020\001\022\007\n\003mid\020\002\022\010"
-      "\n\004fast\020\003\022\014\n\010veryfast\020\004\"\314\001\n\024R2T2GuiMessag"
+      "\n\004fast\020\003\022\014\n\010veryfast\020\004\"\332\001\n\024R2T2GuiMessag"
       "eAnswer\022;\n\007command\030\001 \001(\0162*.R2T2GuiProto."
       "R2T2GuiMessageAnswer.Command\022\016\n\006rxData\030\002"
       " \001(\014\022\017\n\007fftData\030\003 \001(\014\022\021\n\ttxDataAck\030\004 \001(\r"
       "\022\014\n\004rssi\030\005 \001(\001\022\017\n\007version\030\006 \001(\t\022\017\n\007fftRa"
-      "te\030\007 \001(\r\"\023\n\007Command\022\010\n\004NONE\020\000"
+      "te\030\007 \001(\r\022\014\n\004gain\030\010 \001(\005\"\023\n\007Command\022\010\n\004NON"
+      "E\020\000"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 829);
+      descriptor, 843);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "r2t2gui.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -1480,6 +1483,7 @@ const int R2T2GuiMessageAnswer::kTxDataAckFieldNumber;
 const int R2T2GuiMessageAnswer::kRssiFieldNumber;
 const int R2T2GuiMessageAnswer::kVersionFieldNumber;
 const int R2T2GuiMessageAnswer::kFftRateFieldNumber;
+const int R2T2GuiMessageAnswer::kGainFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 R2T2GuiMessageAnswer::R2T2GuiMessageAnswer()
@@ -1509,8 +1513,8 @@ R2T2GuiMessageAnswer::R2T2GuiMessageAnswer(const R2T2GuiMessageAnswer& from)
     version_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.version_);
   }
   ::memcpy(&command_, &from.command_,
-    reinterpret_cast<char*>(&fftrate_) -
-    reinterpret_cast<char*>(&command_) + sizeof(fftrate_));
+    reinterpret_cast<char*>(&gain_) -
+    reinterpret_cast<char*>(&command_) + sizeof(gain_));
   // @@protoc_insertion_point(copy_constructor:R2T2GuiProto.R2T2GuiMessageAnswer)
 }
 
@@ -1519,8 +1523,8 @@ void R2T2GuiMessageAnswer::SharedCtor() {
   rxdata_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   fftdata_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   version_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&command_, 0, reinterpret_cast<char*>(&fftrate_) -
-    reinterpret_cast<char*>(&command_) + sizeof(fftrate_));
+  ::memset(&command_, 0, reinterpret_cast<char*>(&gain_) -
+    reinterpret_cast<char*>(&command_) + sizeof(gain_));
 }
 
 R2T2GuiMessageAnswer::~R2T2GuiMessageAnswer() {
@@ -1573,9 +1577,9 @@ void R2T2GuiMessageAnswer::Clear() {
       (*version_.UnsafeRawStringPointer())->clear();
     }
   }
-  if (_has_bits_[0 / 32] & 120u) {
-    ::memset(&command_, 0, reinterpret_cast<char*>(&fftrate_) -
-      reinterpret_cast<char*>(&command_) + sizeof(fftrate_));
+  if (_has_bits_[0 / 32] & 248u) {
+    ::memset(&command_, 0, reinterpret_cast<char*>(&gain_) -
+      reinterpret_cast<char*>(&command_) + sizeof(gain_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -1685,6 +1689,19 @@ bool R2T2GuiMessageAnswer::MergePartialFromCodedStream(
         break;
       }
 
+      // optional int32 gain = 8;
+      case 8: {
+        if (tag == 64u) {
+          set_has_gain();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &gain_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -1753,6 +1770,11 @@ void R2T2GuiMessageAnswer::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(7, this->fftrate(), output);
   }
 
+  // optional int32 gain = 8;
+  if (has_gain()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->gain(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1810,6 +1832,11 @@ void R2T2GuiMessageAnswer::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(7, this->fftrate(), target);
   }
 
+  // optional int32 gain = 8;
+  if (has_gain()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->gain(), target);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -1827,7 +1854,7 @@ size_t R2T2GuiMessageAnswer::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         unknown_fields());
   }
-  if (_has_bits_[0 / 32] & 127u) {
+  if (_has_bits_[0 / 32] & 255u) {
     // optional bytes rxData = 2;
     if (has_rxdata()) {
       total_size += 1 +
@@ -1874,6 +1901,13 @@ size_t R2T2GuiMessageAnswer::ByteSizeLong() const {
           this->fftrate());
     }
 
+    // optional int32 gain = 8;
+    if (has_gain()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->gain());
+    }
+
   }
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -1901,7 +1935,7 @@ void R2T2GuiMessageAnswer::MergeFrom(const R2T2GuiMessageAnswer& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:R2T2GuiProto.R2T2GuiMessageAnswer)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from._has_bits_[0 / 32] & 127u) {
+  if (from._has_bits_[0 / 32] & 255u) {
     if (from.has_rxdata()) {
       set_has_rxdata();
       rxdata_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.rxdata_);
@@ -1925,6 +1959,9 @@ void R2T2GuiMessageAnswer::MergeFrom(const R2T2GuiMessageAnswer& from) {
     }
     if (from.has_fftrate()) {
       set_fftrate(from.fftrate());
+    }
+    if (from.has_gain()) {
+      set_gain(from.gain());
     }
   }
 }
@@ -1959,6 +1996,7 @@ void R2T2GuiMessageAnswer::InternalSwap(R2T2GuiMessageAnswer* other) {
   std::swap(txdataack_, other->txdataack_);
   std::swap(rssi_, other->rssi_);
   std::swap(fftrate_, other->fftrate_);
+  std::swap(gain_, other->gain_);
   std::swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -2253,6 +2291,30 @@ void R2T2GuiMessageAnswer::set_fftrate(::google::protobuf::uint32 value) {
   set_has_fftrate();
   fftrate_ = value;
   // @@protoc_insertion_point(field_set:R2T2GuiProto.R2T2GuiMessageAnswer.fftRate)
+}
+
+// optional int32 gain = 8;
+bool R2T2GuiMessageAnswer::has_gain() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+void R2T2GuiMessageAnswer::set_has_gain() {
+  _has_bits_[0] |= 0x00000080u;
+}
+void R2T2GuiMessageAnswer::clear_has_gain() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+void R2T2GuiMessageAnswer::clear_gain() {
+  gain_ = 0;
+  clear_has_gain();
+}
+::google::protobuf::int32 R2T2GuiMessageAnswer::gain() const {
+  // @@protoc_insertion_point(field_get:R2T2GuiProto.R2T2GuiMessageAnswer.gain)
+  return gain_;
+}
+void R2T2GuiMessageAnswer::set_gain(::google::protobuf::int32 value) {
+  set_has_gain();
+  gain_ = value;
+  // @@protoc_insertion_point(field_set:R2T2GuiProto.R2T2GuiMessageAnswer.gain)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

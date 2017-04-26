@@ -51,12 +51,12 @@ Control::Control(char *ip, char* audiodev, char* audiodevMixer, char* mixerVolum
     disp = new Display_touch(settings);
     //disp->start();
 
-    sdrqt = new SdrQtRadio(r2t2IP, 8000);
+    sdrqt = new SdrQtRadio(r2t2IP, QT_SERVER_PORT);
     sdrqt->setSampleRate(conf->get(CMD_SAMPLE_RATE));
     sdrqt->setFFT(conf->get(CMD_FFT_TIME), conf->get(CMD_FFT_SIZE));
     sdrqt->start();
 
-    sdrr2t2 = new SdrR2T2(r2t2IP, 8008);
+    sdrr2t2 = new SdrR2T2(r2t2IP, R2T2_SERVER_PORT);
     sdrr2t2->setSampleRate(conf->get(CMD_SAMPLE_RATE));
     sdrr2t2->setFFT(conf->get(CMD_FFT_TIME), conf->get(CMD_FFT_SIZE));
     sdrr2t2->start();
@@ -180,6 +180,8 @@ void Control::replyFinished(QNetworkReply *reply) {
     QList<QStringList>::iterator i;
     QStringList calls;
     QStringList serverInfo;
+    calls << "local"; 
+    serverInfo << QString("local ip: ") + r2t2IP;
     for (i=servers.begin(); i!=servers.end(); ++i) {
         // qDebug() << *i;
         // qDebug() << "CALL:" << calls;
@@ -236,7 +238,8 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
             audio->setMic(conf->get(CMD_MIC));
             break;
         case CMD_PREAMP:
-            sdr->setAttenuator(conf->get(CMD_PREAMP));	
+            if (src != SRC_SDR) 
+                sdr->setAttenuator(conf->get(CMD_PREAMP));	
             break;
         case CMD_ANT:
             sdr->setAnt(conf->get(CMD_ANT));	
@@ -325,6 +328,13 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
             sdr->selectPresel(conf->get(CMD_PRESEL));
             break;
         case CMD_CONNECT_SERVER:
+            if (par < 0)
+                break;
+            if (par == 0) {
+                sdr->setServer(r2t2IP, qtRadioMode ? QT_SERVER_PORT : R2T2_SERVER_PORT);
+                break;
+            }
+            par -= 1;
             if (servers.size() > par)
                 sdr->setServer(servers[par][7],servers[par][8].toInt());
             break;

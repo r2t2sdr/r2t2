@@ -62,4 +62,5 @@ message R2T2GuiMessageAnswer {
     optional double rssi            = 5;
     optional string version         = 6;
     optional uint32 fftRate         = 7;
+    optional int32 gain             = 8;
 }

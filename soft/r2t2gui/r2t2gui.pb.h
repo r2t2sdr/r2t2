@@ -665,6 +665,13 @@ class R2T2GuiMessageAnswer : public ::google::protobuf::Message /* @@protoc_inse
   ::google::protobuf::uint32 fftrate() const;
   void set_fftrate(::google::protobuf::uint32 value);
 
+  // optional int32 gain = 8;
+  bool has_gain() const;
+  void clear_gain();
+  static const int kGainFieldNumber = 8;
+  ::google::protobuf::int32 gain() const;
+  void set_gain(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:R2T2GuiProto.R2T2GuiMessageAnswer)
  private:
   void set_has_command();
@@ -681,6 +688,8 @@ class R2T2GuiMessageAnswer : public ::google::protobuf::Message /* @@protoc_inse
   void clear_has_version();
   void set_has_fftrate();
   void clear_has_fftrate();
+  void set_has_gain();
+  void clear_has_gain();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
@@ -692,6 +701,7 @@ class R2T2GuiMessageAnswer : public ::google::protobuf::Message /* @@protoc_inse
   ::google::protobuf::uint32 txdataack_;
   double rssi_;
   ::google::protobuf::uint32 fftrate_;
+  ::google::protobuf::int32 gain_;
   friend struct  protobuf_r2t2gui_2eproto::TableStruct;
 };
 // ===================================================================
@@ -1402,6 +1412,30 @@ inline void R2T2GuiMessageAnswer::set_fftrate(::google::protobuf::uint32 value) 
   set_has_fftrate();
   fftrate_ = value;
   // @@protoc_insertion_point(field_set:R2T2GuiProto.R2T2GuiMessageAnswer.fftRate)
+}
+
+// optional int32 gain = 8;
+inline bool R2T2GuiMessageAnswer::has_gain() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void R2T2GuiMessageAnswer::set_has_gain() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void R2T2GuiMessageAnswer::clear_has_gain() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void R2T2GuiMessageAnswer::clear_gain() {
+  gain_ = 0;
+  clear_has_gain();
+}
+inline ::google::protobuf::int32 R2T2GuiMessageAnswer::gain() const {
+  // @@protoc_insertion_point(field_get:R2T2GuiProto.R2T2GuiMessageAnswer.gain)
+  return gain_;
+}
+inline void R2T2GuiMessageAnswer::set_gain(::google::protobuf::int32 value) {
+  set_has_gain();
+  gain_ = value;
+  // @@protoc_insertion_point(field_set:R2T2GuiProto.R2T2GuiMessageAnswer.gain)
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS

@@ -10,7 +10,8 @@
 
 #define DEFAULT_SAMPLE_RATE	8000
 
-#define R2T2_SERVER_PORT 	8000
+#define QT_SERVER_PORT 	    8000
+#define R2T2_SERVER_PORT 	8008
 
 #define MODE_LSB		0
 #define MODE_USB		1
