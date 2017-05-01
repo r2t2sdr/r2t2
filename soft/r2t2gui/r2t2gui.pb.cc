@@ -143,7 +143,7 @@ void InitDefaults() {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] = {
-      "\n\rr2t2gui.proto\022\014R2T2GuiProto\"\316\004\n\016R2T2Gu"
+      "\n\rr2t2gui.proto\022\014R2T2GuiProto\"\333\004\n\016R2T2Gu"
       "iMessage\0225\n\007command\030\001 \001(\0162$.R2T2GuiProto"
       ".R2T2GuiMessage.Command\022\016\n\006txData\030\002 \001(\014\022"
       "\016\n\006rxFreq\030\003 \001(\004\022\016\n\006txFreq\030\004 \001(\004\022\017\n\007fftRa"
@@ -152,22 +152,22 @@ void AddDescriptorsImpl() {
       "in\030\010 \001(\005\022\017\n\007antenna\030\t \001(\r\022-\n\003agc\030\n \001(\0162 "
       ".R2T2GuiProto.R2T2GuiMessage.AGC\022\020\n\010filt"
       "erLo\030\013 \001(\005\022\020\n\010filterHi\030\014 \001(\005\022\017\n\007version\030"
-      "\r \001(\t\022\r\n\005notch\030\016 \001(\005\">\n\007Command\022\010\n\004NONE\020"
+      "\r \001(\t\022\r\n\005notch\030\016 \001(\005\"K\n\007Command\022\010\n\004NONE\020"
       "\000\022\016\n\nSTARTAUDIO\020\001\022\r\n\tSTOPAUDIO\020\002\022\n\n\006REQF"
-      "FT\020\003\"s\n\004Mode\022\007\n\003LSB\020\000\022\007\n\003USB\020\001\022\007\n\003DSB\020\002\022"
-      "\007\n\003CWL\020\003\022\007\n\003CWU\020\004\022\006\n\002FM\020\005\022\006\n\002AM\020\006\022\010\n\004DIG"
-      "U\020\007\022\010\n\004SPEC\020\010\022\010\n\004DIGL\020\t\022\007\n\003SAM\020\n\022\007\n\003DRM\020"
-      "\013\";\n\003AGC\022\t\n\005fixed\020\000\022\010\n\004slow\020\001\022\007\n\003mid\020\002\022\010"
-      "\n\004fast\020\003\022\014\n\010veryfast\020\004\"\332\001\n\024R2T2GuiMessag"
-      "eAnswer\022;\n\007command\030\001 \001(\0162*.R2T2GuiProto."
-      "R2T2GuiMessageAnswer.Command\022\016\n\006rxData\030\002"
-      " \001(\014\022\017\n\007fftData\030\003 \001(\014\022\021\n\ttxDataAck\030\004 \001(\r"
-      "\022\014\n\004rssi\030\005 \001(\001\022\017\n\007version\030\006 \001(\t\022\017\n\007fftRa"
-      "te\030\007 \001(\r\022\014\n\004gain\030\010 \001(\005\"\023\n\007Command\022\010\n\004NON"
-      "E\020\000"
+      "FT\020\003\022\013\n\007GETINFO\020\004\"s\n\004Mode\022\007\n\003LSB\020\000\022\007\n\003US"
+      "B\020\001\022\007\n\003DSB\020\002\022\007\n\003CWL\020\003\022\007\n\003CWU\020\004\022\006\n\002FM\020\005\022\006"
+      "\n\002AM\020\006\022\010\n\004DIGU\020\007\022\010\n\004SPEC\020\010\022\010\n\004DIGL\020\t\022\007\n\003"
+      "SAM\020\n\022\007\n\003DRM\020\013\";\n\003AGC\022\t\n\005fixed\020\000\022\010\n\004slow"
+      "\020\001\022\007\n\003mid\020\002\022\010\n\004fast\020\003\022\014\n\010veryfast\020\004\"\332\001\n\024"
+      "R2T2GuiMessageAnswer\022;\n\007command\030\001 \001(\0162*."
+      "R2T2GuiProto.R2T2GuiMessageAnswer.Comman"
+      "d\022\016\n\006rxData\030\002 \001(\014\022\017\n\007fftData\030\003 \001(\014\022\021\n\ttx"
+      "DataAck\030\004 \001(\r\022\014\n\004rssi\030\005 \001(\001\022\017\n\007version\030\006"
+      " \001(\t\022\017\n\007fftRate\030\007 \001(\r\022\014\n\004gain\030\010 \001(\005\"\023\n\007C"
+      "ommand\022\010\n\004NONE\020\000"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 843);
+      descriptor, 856);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "r2t2gui.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -196,6 +196,7 @@ bool R2T2GuiMessage_Command_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+    case 4:
       return true;
     default:
       return false;
@@ -207,6 +208,7 @@ const R2T2GuiMessage_Command R2T2GuiMessage::NONE;
 const R2T2GuiMessage_Command R2T2GuiMessage::STARTAUDIO;
 const R2T2GuiMessage_Command R2T2GuiMessage::STOPAUDIO;
 const R2T2GuiMessage_Command R2T2GuiMessage::REQFFT;
+const R2T2GuiMessage_Command R2T2GuiMessage::GETINFO;
 const R2T2GuiMessage_Command R2T2GuiMessage::Command_MIN;
 const R2T2GuiMessage_Command R2T2GuiMessage::Command_MAX;
 const int R2T2GuiMessage::Command_ARRAYSIZE;

@@ -3,7 +3,7 @@
 
 #include <complex>
 
-#define VERSION        		"0.1.0"
+#define VERSION        		"1.1.0"
 #define VERSION_INT    		00010
 
 #define RX_CLOCK            122880000LL

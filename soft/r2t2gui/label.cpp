@@ -32,7 +32,9 @@ void Label::setVal(int v) {
 }
 
 void Label::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
-	painter->setFont(QFont("Monospace", l->ySize*3/4-1));
+    QFont font("Monospace");
+    font.setPixelSize(l->ySize*3/4);
+	painter->setFont(font);
 	QFontMetrics fm = painter->fontMetrics();
 	// QPoint center = QPoint(( l->xSize-fm.width(l->name))/2, (l->ySize+fm.height())/2-5 );
 
@@ -40,12 +42,12 @@ void Label::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget 
 	painter->setBrush(QColor(0,0,0));
 	painter->drawPixmap(0,0, *buttonBackground);
 	painter->setPen(colorLabelName);
-	painter->drawText(2,l->ySize-2,l->name+":");
+	painter->drawText(2,l->ySize-4,l->name+":");
 	painter->setPen(colorLabelText);
-	if (l->val < MAX_MENU && entry[l->cmd][l->val].name != NULL)
-		painter->drawText(fm.width(l->name+":  "), l->ySize-2, QString("%1").arg(entry[l->cmd][l->val].name));
+	if (l->val < MAX_ENTRY && entry[l->cmd][l->val].name != NULL)
+		painter->drawText(fm.width(l->name+":  "), l->ySize-4, QString("%1").arg(entry[l->cmd][l->val].name));
 	else
-		painter->drawText(l->xSize/2-4, l->ySize-2, QString("%1").arg(l->val));
+		painter->drawText(l->xSize/2-4, l->ySize-4, QString("%1").arg(l->val));
 }
 
 QRectF Label::boundingRect() const {

@@ -1,12 +1,12 @@
-<?xml version='1.0' encoding='utf-8'?>
-<manifest android:versionCode="1" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.2" package="org.dl2stg.rasdr" android:installLocation="auto">
-    <application android:icon="@drawable/icon" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="RaSdr" >
-        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:label="RaSdr" android:screenOrientation="landscape">
+<?xml version="1.0"?>
+<manifest android:versionCode="1" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.1" package="org.dl2stg.r2t2" android:installLocation="auto">
+    <application android:icon="@drawable/icon" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="R2T2">
+        <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation" android:name="org.qtproject.qt5.android.bindings.QtActivity" android:label="R2T2" android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <meta-data android:value="-- %%INSERT_APP_LIB_NAME%% --" android:name="android.app.lib_name"/>
+            <meta-data android:value="r2t2" android:name="android.app.lib_name"/>
             <meta-data android:resource="@array/qt_sources" android:name="android.app.qt_sources_resource_id"/>
             <meta-data android:value="default" android:name="android.app.repository"/>
             <meta-data android:resource="@array/qt_libs" android:name="android.app.qt_libs_resource_id"/>
@@ -31,7 +31,7 @@
             <!-- Splash screen -->
         </activity>
     </application>
-    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="14"/>
+    <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="19"/>
     <supports-screens android:smallScreens="true" android:largeScreens="true" android:anyDensity="true" android:normalScreens="true"/>
     <!-- %%INSERT_PERMISSIONS -->
     <!-- %%INSERT_FEATURES -->

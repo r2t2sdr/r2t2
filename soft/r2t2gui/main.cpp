@@ -5,10 +5,15 @@
 #include "lib.h"
 #include "math.h"
 
-bool touchscreen = false;
 bool defaults = false;
 bool qtRadioMode = false;
+#ifdef ANDROID
+int layOut=0;
+bool touchscreen = true;
+#else
 int layOut=1;
+bool touchscreen = false;
+#endif
 
 void help(char *prog)
 {

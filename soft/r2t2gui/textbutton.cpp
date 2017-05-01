@@ -8,9 +8,10 @@
 #include "lib.h"
 
 TextButton::TextButton(QSettings *settings, text_button_t *button) : settings(settings) {
-	//setFlags(QGraphicsItem::ItemIsMovable);
+	// setFlags(QGraphicsItem::ItemIsMovable);
 	b = button;
 	isPressed = false;
+    isActiv = false;
 
 	buttonBackground = new QPixmap(b->xSize, b->ySize);
 	QPainter painter(buttonBackground);
@@ -27,6 +28,14 @@ TextButton::TextButton(QSettings *settings, text_button_t *button) : settings(se
 	linearGradP.setColorAt(1, QColor(getSettings(settings,"display/colorButtonPressedBackground2","#282828")));
 	painterP.setBrush(QBrush(linearGradP));
 	painterP.drawRect(buttonBackgroundP->rect());
+
+	buttonBackgroundA = new QPixmap(b->xSize, b->ySize);
+	QPainter painterA(buttonBackgroundA);
+	QLinearGradient linearGradA(QPointF(b->xSize/2, b->ySize/4), QPointF(b->xSize/1, b->ySize*3/4));
+	linearGradA.setColorAt(0, QColor(getSettings(settings,"display/colorButtonActive1","#2828af")));
+	linearGradA.setColorAt(1, QColor(getSettings(settings,"display/colorButtonActive2","#4b4b4b")));
+	painterA.setBrush(QBrush(linearGradA));
+	painterA.drawRect(buttonBackgroundA->rect());
 
 	colorButtonFrame = QColor(getSettings(settings,"display/colorButtonFrame","#000000"));
 	colorButtonText  = QColor(getSettings(settings,"display/colorButtonText","#ffffff"));
@@ -47,6 +56,7 @@ TextButton::TextButton(QSettings *settings, text_button_t *button) : settings(se
 TextButton::~TextButton() {
 	delete buttonBackground;
 	delete buttonBackgroundP;
+	delete buttonBackgroundA;
 }
 
 void TextButton::setCmd(int cmd, QString name) {
@@ -95,14 +105,19 @@ void TextButton::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWi
 		else
 			text = QString("%1").arg(pos);
 	}
-	painter->setFont(QFont("Monospace", b->ySize/4+1));
+    QFont font("Monospace");
+    font.setPixelSize(b->ySize*2/5);
+	painter->setFont(font);
 	QFontMetrics fm = painter->fontMetrics();
 	QPoint center = QPoint(( b->xSize-fm.width(text))/2, ( b->ySize+fm.height())/2-5 );
 
 	painter->setPen(Qt::white);
 	painter->setBrush(colorButtonFrame);
+
 	if (isPressed)
 		painter->drawPixmap(0,0, *buttonBackgroundP);
+    else if (isActiv)
+		painter->drawPixmap(0,0, *buttonBackgroundA);
 	else
 		painter->drawPixmap(0,0, *buttonBackground);
 	painter->setPen(colorButtonText);
@@ -203,3 +218,6 @@ void TextButton::doUpdate() {
 	update();
 }
 
+void TextButton::setActive(bool activ) {
+    isActiv = activ;
+}

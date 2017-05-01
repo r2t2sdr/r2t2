@@ -56,11 +56,12 @@ enum R2T2GuiMessage_Command {
   R2T2GuiMessage_Command_NONE = 0,
   R2T2GuiMessage_Command_STARTAUDIO = 1,
   R2T2GuiMessage_Command_STOPAUDIO = 2,
-  R2T2GuiMessage_Command_REQFFT = 3
+  R2T2GuiMessage_Command_REQFFT = 3,
+  R2T2GuiMessage_Command_GETINFO = 4
 };
 bool R2T2GuiMessage_Command_IsValid(int value);
 const R2T2GuiMessage_Command R2T2GuiMessage_Command_Command_MIN = R2T2GuiMessage_Command_NONE;
-const R2T2GuiMessage_Command R2T2GuiMessage_Command_Command_MAX = R2T2GuiMessage_Command_REQFFT;
+const R2T2GuiMessage_Command R2T2GuiMessage_Command_Command_MAX = R2T2GuiMessage_Command_GETINFO;
 const int R2T2GuiMessage_Command_Command_ARRAYSIZE = R2T2GuiMessage_Command_Command_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* R2T2GuiMessage_Command_descriptor();
@@ -226,6 +227,8 @@ class R2T2GuiMessage : public ::google::protobuf::Message /* @@protoc_insertion_
     R2T2GuiMessage_Command_STOPAUDIO;
   static const Command REQFFT =
     R2T2GuiMessage_Command_REQFFT;
+  static const Command GETINFO =
+    R2T2GuiMessage_Command_GETINFO;
   static inline bool Command_IsValid(int value) {
     return R2T2GuiMessage_Command_IsValid(value);
   }

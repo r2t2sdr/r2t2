@@ -46,7 +46,9 @@ void Analog::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
 	painter->setBrush(colorAnalogSlider);
 	painter->drawRect(1, a->ySize-((a->pos - a->min)*a->ySize/(a->max-a->min) + 3), a->xSize-2, 6);
 
-	painter->setFont(QFont("Monospace", a->ySize/8-1));
+    QFont font("Monospace");
+    font.setPixelSize(a->ySize/6);
+	painter->setFont(font);
 	QFontMetrics fm = painter->fontMetrics();
 	painter->setPen(colorAnalogName);
 	painter->drawText((a->xSize-fm.width(a->name))/2, a->ySize-8, a->name);

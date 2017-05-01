@@ -140,6 +140,7 @@ class Display_touch : public Display_base
 		int volume;
 		int encSens, encDelta;
         bool connected;
+        int curLayout = -1;
 };
 
 #endif

@@ -70,16 +70,18 @@ void FilterGraph::setDisplayMode(int m) {
 }
 
 void FilterGraph::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
-	painter->setFont(QFont("Monospace", 10));
+    QFont font("Monospace");
+    font.setPixelSize(16);
+	painter->setFont(font);
 	painter->drawPixmap(MIN(filterLoMarkerPos-xViewPos, filterHiMarkerPos-xViewPos),0,filterPixmap);
-	    painter->setPen(QColor(0,0,80));
-	    painter->drawText(0,ySize,QString ("SVN %1").arg(SVNREV));
+    painter->setPen(QColor(0,0,80));
+    painter->drawText(0,ySize,QString ("SVN %1").arg(SVNREV));
 
 	painter->setPen(colorSpecFreq);
 	painter->drawLine(fftFreqMarkerPos-xViewPos, 0, fftFreqMarkerPos-xViewPos, ySize);
 
 	int marker;
-	int st = sampleRate/fftSize*100;
+	int st = sampleRate/fftSize*200;
 	int step=1000; // min 1kHz
 	while(step*10 < st) step*=10;
 	while(step*5 < st) step*=5;
@@ -95,6 +97,7 @@ void FilterGraph::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QW
 
 	switch (dispMode) {
 		case GRAPH_FFT:
+            fft_scale = 2;
 			painter->setPen(colorSpecGrid);
 			for (int i=10;i<=160;i+=10) {
 				int y = i*fft_scale;
@@ -108,9 +111,10 @@ void FilterGraph::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QW
 			break;
 		case GRAPH_DUAL:
 		case GRAPH_DUAL2:
+            fft_scale = 1;
 			painter->setPen(colorSpecGrid);
 
-			for (int i=DUAL_OFFSET;i<=130;i+=10) {
+			for (int i=DUAL_OFFSET;i<=130;i+=20) {
 				int y = (i-DUAL_OFFSET)*fft_scale;
 				if (y>ySize)
 					break;

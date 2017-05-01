@@ -44,7 +44,11 @@ int Numeric::getVal() {
 
 void Numeric::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
 	QString s = QString("%1").arg(val+dispOffset,digits);
-	painter->setFont(QFont("Monospace", ySize*0.6));
+
+
+    QFont font("Monospace");
+    font.setPixelSize(ySize*3/4);
+	painter->setFont(font);
 	QFontMetrics fm = painter->fontMetrics();
 //	QPoint center = QPoint(( xSize-fm.width(s))/2, ( ySize+fm.height())/2 );
 
@@ -61,7 +65,6 @@ void Numeric::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidge
 			painter->drawRect(i*xStep+2,yPos, 2,2);
 		}
 	}
-	painter->setFont(QFont("Monospace", 10));
 	painter->setPen(colorNumericName);
 	painter->drawText(0,ySize/2,label);
 }

@@ -1,9 +1,7 @@
-QT       += core gui network
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core gui network widgets
 
 TARGET = r2t2 
 
-# CONFIG   -= app_bundle
 CONFIG += qt debug_and_release
 
 QMAKE_CXXFLAGS += -std=c++0x
@@ -20,7 +18,7 @@ win32 {
 	QT += multimedia
 }
 
-unix:!android {
+unix {
 	DEFINES += UNIX 
 	CONFIG   += console
 	SVNDEV = $$system(svnversion)
@@ -28,13 +26,6 @@ unix:!android {
 	#LIBS += -lasound
 	#LIBS += -lwiringPi
 	QT += multimedia
-} 
-
-unix:android {
-	QT += multimedia
-	DEFINES += ANDROID
-	SVNDEV = $$system(svnversion)
-	DEFINES += SVNREV=\'\"$$SVNDEV\"\'
 } 
 
 INCLUDEPATH += /usr/local/include/ 
@@ -49,14 +40,10 @@ SOURCES += conf.cpp
 
 LIBS += -lprotobuf
 
-unix:!android {
+unix {
 	#SOURCES += keyreader.cpp audio.cpp
 	#SOURCES += audioQt.cpp
 	#SOURCES += audio.cpp
-	SOURCES += audioQt.cpp
-}
-
-unix:android {
 	SOURCES += audioQt.cpp
 }
 
@@ -68,14 +55,10 @@ win32 {
 HEADERS += control.h sdr.h sdrr2t2.h sdrqtradio.h display_lcd.h display_touch.h display_base.h smeter.h clock.h
 HEADERS += textbutton.h numeric.h fftGraph.h filterGraph.h analog.h label.h sdrgraphicsitem.h
 
-unix:!android {
+unix {
 	#HEADERS += keyreader.h audio.h
 	# HEADERS += audioQt.h
 	HEADERS += audio.h
-}
-
-unix:android {
-	HEADERS += audioQt.h
 }
 
 win32 {
@@ -84,9 +67,4 @@ win32 {
 }
 
 FORMS    += display_touch.ui
-
-ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-
-OTHER_FILES += \
-    android/AndroidManifest.xml
 

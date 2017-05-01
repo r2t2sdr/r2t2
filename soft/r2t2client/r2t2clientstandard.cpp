@@ -346,14 +346,16 @@ void R2T2ClientStandard::readGuiTCPData() {
 
             if (buf[0]!='R' || buf[1]!='2') {
                 qDebug("sync error: magic");
-                return;
+                len = 0 ;
+                continue;
             }
 
             int pktLen = buf[pos+2]+(buf[pos+3]<<8);
 
             if (pktLen > len) {
                 qDebug() << "server sync error: len" << pktLen << len;
-                return;
+                len = 0 ;
+                continue;
             }
 
             if (r2t2GuiMsg->ParseFromArray(&buf[pos+4], pktLen)) {

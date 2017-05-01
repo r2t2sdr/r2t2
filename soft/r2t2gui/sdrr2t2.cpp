@@ -73,6 +73,7 @@ void SdrR2T2::connectServer(bool con) {
 void SdrR2T2::sendStartSeq() {
     qDebug() << "send start";
     cmdmutex.lock();
+    r2t2GuiMsg->Clear();
     r2t2GuiMsg->set_rxfreq(rxFreq);
     r2t2GuiMsg->set_fftsize(fftSize);
     r2t2GuiMsg->set_mode((R2T2GuiProto::R2T2GuiMessage_Mode)mode);
@@ -327,6 +328,8 @@ void SdrR2T2::setFilter(int lo, int hi) {
 void SdrR2T2::setFFT(int time, int size) {
     fftSize = size;
     fftTimeRep = time;
+    timer->stop();
+    timer->start(fftTimeRep);
     r2t2GuiMsg->set_fftsize(fftSize);
     sendR2T2GuiMsg();
 }

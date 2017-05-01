@@ -314,6 +314,7 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
             sdr->setSquelch(conf->get(CMD_SQUELCH));
             break;
         case CMD_FFT_SIZE:
+        case CMD_FFT_TIME:
             sdr->setFFT(conf->get(CMD_FFT_TIME), conf->get(CMD_FFT_SIZE));
             break;
         case CMD_LAYOUT_CHANGED:
@@ -335,8 +336,11 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
                 break;
             }
             par -= 1;
-            if (servers.size() > par)
+            if (servers.size() > par) {
                 sdr->setServer(servers[par][7],servers[par][8].toInt());
+            } else {
+                sdr->setServer("0.0.0.0",0);
+            }
             break;
         case CMD_CONNECT:
             if (src == SRC_SDR) 
@@ -373,13 +377,13 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
         case CMD_CONNECT_INFO:
         case CMD_MENU:
         case CMD_RSSI:
-        case CMD_FFT_TIME:
         case CMD_FILTER_TX_LO:
         case CMD_FILTER_TX_HI:
         case CMD_SMETER_MODE:
         case CMD_WATERFALL_MAX:
         case CMD_WATERFALL_MIN:
         case CMD_INPUT_FREQ:
+        case CMD_NUMBER:
             break;
         default:
             assert(0);

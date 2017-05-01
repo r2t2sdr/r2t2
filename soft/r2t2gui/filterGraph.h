@@ -51,5 +51,5 @@ class FilterGraph: public QObject, public SdrGraphicsItem  {
 	int fft_scale, shadow;
 	int startMoveFreq;
 	int startMovePos;
-	int freqOffset;
+	int freqOffset = 0;
 };

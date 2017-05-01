@@ -14,7 +14,7 @@ Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixe
 	mute = false;
 	noutput_items = AUDIO_BUF_SIZE;
 
-	QAudioFormat format;
+    QAudioFormat format;
 	format.setSampleRate(rate);
 	format.setChannelCount(1);
 	format.setSampleSize(16);
@@ -42,14 +42,15 @@ Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixe
 	audioOutDev = NULL;
 	audioOutDev = audioOutput->start();
     periodSize = audioOutput->periodSize();
+    periodTimeMS = 1000*periodSize/(rate*8)-1;
 	
 	mutex = new QMutex();
 	timer = new QTimer(this);
 
-    // qDebug() << "period" << 1000*periodSize/(rate*2) << audioOutput->notifyInterval();
+    // qWarning() << "period" << periodTimeMS << audioOutput->notifyInterval();
 
-	timer->start(1000*periodSize/(rate*2)-1);
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    // timer->start(periodTimeMS);
     audioRun = true;
 }
 
@@ -65,13 +66,16 @@ void Audio::audioMute(bool m) {
 	mute = m;
 }
 
-void Audio::setTX(bool m) {
+void Audio::setTX(bool /*m*/) {
+// no tx, crash in win32 in audioInDev->readAll()
+#if 0
 	if (m)
 		audioInDev = audioInput->start();
 	else {
 		audioInput->stop();
 		audioInDev = NULL;
 	}
+#endif
 }
 
 void Audio::audioRX(QByteArray out) {
@@ -79,33 +83,19 @@ void Audio::audioRX(QByteArray out) {
 		return;
 
     if (audioOutBuf.size()>AUDIO_BUF_SIZE) {
-        qDebug() << "# skip" << audioOutBuf.size();
+        qWarning() << "# skip" << audioOutBuf.size();
         return;
     }
     mutex->lock();
 	audioOutBuf.append(out);
     if (audioOutBuf.size() < AUDIO_BUF_SIZE/2) {
         audioOutBuf.append(out);
-        qDebug() << "# insert" << out.size() << audioOutput->bytesFree();
+        qWarning() << "# insert" << out.size() << audioOutput->bytesFree();
     }
     mutex->unlock();
 }
 
 void Audio::timeout() {
-    //qDebug() << audioOutput->state();
-    mutex->lock();
-    if (audioOutput->bytesFree()>=periodSize) {
-        int len = audioOutDev->write(audioOutBuf);
-        audioOutBuf.remove(0, len);
-        //qDebug() <<  "write" << len << audioOutBuf.size() << audioOutput->bytesFree();
-    }
-    mutex->unlock();
-
-	if (audioInDev) {
-		QByteArray audioInData =  audioInDev->readAll();
-		if (audioInData.size())
-			emit audioTX(QByteArray(audioInData));
-	}
 }
 
 void Audio::terminate() {
@@ -114,8 +104,22 @@ void Audio::terminate() {
 
 void Audio::run() {
     while(audioRun) {
-		msleep(200);
-	}
+        // qWarning() << "in imeout" << audioOutput->bytesFree() << audioOutput->state();
+        mutex->lock();
+        if (audioOutput->bytesFree()>=periodSize) {
+            int len = audioOutDev->write(audioOutBuf);
+            audioOutBuf.remove(0, len);
+            // qWarning() <<  "write" << len << audioOutBuf.size() << audioOutput->bytesFree() << periodSize;
+        }
+        mutex->unlock();
+
+        if (audioInDev) {
+            QByteArray audioInData =  audioInDev->readAll();
+            if (audioInData.size())
+                emit audioTX(QByteArray(audioInData));
+        }
+        msleep(periodTimeMS);
+    }
 }
 
 void Audio::setVolume(int volume) {

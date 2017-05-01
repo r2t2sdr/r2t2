@@ -35,7 +35,9 @@ void Clock::setSize(int x, int y) {
 void Clock::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
 	QDateTime dt = QDateTime::currentDateTime();
 	QString s = QString("%1:%2:%3").arg(dt.time().hour()).arg(dt.time().minute(),2,10,QChar('0')).arg(dt.time().second(),2,10,QChar('0'));
-	painter->setFont(QFont("Monospace", ySize*3/4));
+    QFont font("Monospace");
+    font.setPixelSize(ySize*4/5);
+	painter->setFont(font);
 	QFontMetrics fm = painter->fontMetrics();
 //	QPoint center = QPoint(( xSize-fm.width(s))/2, ( ySize+fm.height())/2 );
 
@@ -48,7 +50,6 @@ void Clock::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget 
 	for (int i=0;i<s.size();i++) {
 		painter->drawText(xOff + i*xStep, yPos, s.mid(i,1));
 	}
-	painter->setFont(QFont("Monospace", 12));
 	painter->setPen(colorClockName);
 }
 

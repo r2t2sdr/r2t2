@@ -16,7 +16,7 @@ struct text_button_t {
 	int cmd;
 	int xPos;
 	int yPos;
-	int xSize;
+    int xSize;
 	int ySize;
 };
 
@@ -33,6 +33,7 @@ class TextButton: public QObject, public QGraphicsItem  {
 		void doUpdate();
 		void setCmd(int cmd,QString name=QString());
 		void pressed(bool left, bool autoUp);
+        void setActive(bool);
 
     signals:
 		void pressed(int, int);
@@ -41,9 +42,11 @@ class TextButton: public QObject, public QGraphicsItem  {
 		QSettings *settings;
 		QPixmap *buttonBackground;
 		QPixmap *buttonBackgroundP;
+		QPixmap *buttonBackgroundA;
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 		text_button_t *b;
 		bool isPressed;
+		bool isActiv;
 		QColor colorButtonFrame, colorButtonText, colorButtonName, colorButtonLedOn, colorButtonLedOff;
 		QColor colorButtonPosOn, colorButtonPosOff;
 		

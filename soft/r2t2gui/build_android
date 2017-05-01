@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#sudo archlinux-java  set java-8-openjdk
+export ANDROID_SDK_ROOT=/opt/android-sdk
+# export ANDROID_NDK_ROOT=/opt/android-sdk/ndk-bundle
+export ANDROID_NDK_ROOT=/opt/android-ndk-r10e
+export ANDROID_HOME=/opt/android-sdk
+
+ ~/Qt/5.8/android_armv7/bin/qmake r2t2.pro -spec android-g++ CONFIG+=debug CONFIG+=qml_debug
+# ~/Qt/5.8/android_armv7/bin/qmake r2t2.pro -spec android-g++
+# make release -j4
+make debug -j4
+make install INSTALL_ROOT=android_release
+~/Qt/5.8/android_armv7/bin/androiddeployqt --input android-libr2t2.so-deployment-settings.json --output android_release --deployment bundled --android-platform android-21 --jdk /usr/lib/jvm/default
+
+
+

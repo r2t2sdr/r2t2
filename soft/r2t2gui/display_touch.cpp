@@ -1,5 +1,6 @@
 #include <math.h>
 #include <assert.h>
+#include <unistd.h>
 #include "config.h"
 #include "display_touch.h"
 #include "ui_display_touch.h"
@@ -24,29 +25,33 @@ extern bool touchscreen;
 extern bool defaults;
 extern int layOut;
 
-extern MenuEntry menuMain[MAX_MENU];
-extern MenuEntry menuMain1[MAX_MENU];
-extern MenuEntry menuAnt[MAX_MENU];
-extern MenuEntry menuFreq[MAX_MENU];
-extern MenuEntry menuMode[MAX_MENU];
-extern MenuEntry menuDisplay[MAX_MENU];
-extern MenuEntry menuAtt[MAX_MENU];
-extern MenuEntry menuStep[MAX_MENU];
-extern MenuEntry menuFilterRxLo[MAX_MENU];
-extern MenuEntry menuFilterRxHi[MAX_MENU];
 extern MenuEntry menuAGC[MAX_MENU];
+extern MenuEntry menuAnt[MAX_MENU];
+extern MenuEntry menuAtt[MAX_MENU];
+extern MenuEntry menuConnect[MAX_MENU];
+extern MenuEntry menuDisplay[MAX_MENU];
+extern MenuEntry menuFilterRxHi[MAX_MENU];
+extern MenuEntry menuFilterRxLo[MAX_MENU];
+extern MenuEntry menuFreq[MAX_MENU];
+extern MenuEntry menuMain1[MAX_MENU];
+extern MenuEntry menuMain[MAX_MENU];
+extern MenuEntry menuMode[MAX_MENU];
 extern MenuEntry menuRecallMemory[MAX_MENU];
-extern MenuEntry menuStoreMemory[MAX_MENU];
 extern MenuEntry menuSettings[MAX_MENU];
+extern MenuEntry menuStep[MAX_MENU];
+extern MenuEntry menuStoreMemory[MAX_MENU];
+extern MenuEntry menuConnect[MAX_MENU];
+extern MenuEntry menuConnect1[MAX_MENU];
+extern MenuEntry menuConnect2[MAX_MENU];
 
 Entry entry[CMD_LAST][MAX_ENTRY] = {
-	/* "NONE" */				{{"<-",0}},
+	/* "NONE" */				{{"<- back",0}},
 	/* "AGC_DEC" */				{{"fixed",0},{"long",1},{"slow",2},{"medium",3}, {"fast",4}},
 	/* "ANT" */					{{"1",0},{"2",1}},
 	/* "DISP_MODE" */			{{"Water",0},{"FFT",1},{"Dual",2},{"Dual2",3}},
 	/* "FFT_SAMPLE_RATE" */		{{"192k",192000},{"16k",16000}},
 	/* "FFT_SIZE" */			{{"256",256},{"512",512},{"1024",1024},{"2048",2048},{"4096",4096}},
-	/* "FFT_TIME" */			{},
+	/* "FFT_TIME" */			{{"50 ms",50}, {"100 ms",100},{"200 ms",200},{"500 ms",500}, {"1 s",1000}},
 	/* "FILTER_RX_HI" */		{{"1500",1500},{"1800",1800},{"2100",2100},{"2400",2400},{"2700",2700},{"3000",3000},{"3300",3300},{"3600",3600},{"3900",3900}},
 	/* "FILTER_RX_LO" */		{{"50",50},{"100",100},{"200",200},{"300",300},{"500",500},{"700",700},{"1000",1000}},
 	/* "FILTER_TX_HI" */		{},
@@ -54,7 +59,7 @@ Entry entry[CMD_LAST][MAX_ENTRY] = {
 	/* "GAIN" */				{{"ANALOG",101},{"",0}},
 	/* "MODE" */				{{"LSB",0},{"USB",1},{"DSB",2},{"CW",3},{"AM",6},{"FM",5}},
 	/* "PRESEL" */				{{"off",0,},{"auto",1},{"160 m",2},{"80 m",3},{"40 m",4},{"30 m",5},{"20 m",6},{"17 m",7},{"15 m",8},{"12 m",9},{"10 m",10},{"6 m",11},{"Transverter",12},{"-",13}},
-	/* "PREAMP" */				{{"-30 dB",-30},{"-20 dB",-20},{"-10 dB",-10},{"-0 dB",0},{"10 dB", 10},{"20 dB",20},{"30 dB",30}},
+	/* "PREAMP" */				{{"-30 dB",-30},{"-20 dB",-20},{"-10 dB",-10},{"0 dB",0},{"10 dB", 10},{"20 dB",20},{"30 dB",30}},
 	/* "RX_FREQ" */				{},
 	/* "SAMPLE_RATE */			{},
 	/* "SMETER_MODE */			{{"rssi",0},{"level",1},{"power",2},{"swr",3}},
@@ -72,9 +77,9 @@ Entry entry[CMD_LAST][MAX_ENTRY] = {
 	/* "NB_LEVEL */				{{"ANALOG",256},{"",0}},
 	/* "NOTCH */				{{"off",0},{"on",1}},
 	/* "SQUELCH */				{{"ANALOG",256},{"",0}},
-	/* "DISP_COLOR */			{{"sw",0},{"color1",1},{"color2",2}},
+	/* "DISP_COLOR */			{{"sw",0},{"1",1},{"2",2}},
 	/* "AUDIO_COMP */			{{"off",0},{"6-6 dB",1},{"12-12 dB",2},{"20-20 dB",3},{"6-12 dB",4},{"12-20 dB",5}},
-	/* "QTRADIO_MODE */			{{" ",0},{" ",1}},
+	/* "QTRADIO_MODE */			{{"off",0},{"on",1}},
 	/* "QTRADIO_RX */			{{"0",0},{"1",1},{"2",2},{"3",3},{"4",4},{"5",5},{"6",6},{"7",7}},
 	/* "INIT_END */				{},
 	/* "EXIT */					{{"exit",0}},
@@ -101,37 +106,43 @@ Entry entry[CMD_LAST][MAX_ENTRY] = {
 
 MenuEntry menuAGC[MAX_MENU] = {
 	{&entry[CMD_NONE][0],      CMD_NONE,    &menuMain},
-	{&entry[CMD_AGC][0],       CMD_AGC,     &menuMain},
-	{&entry[CMD_AGC][1],       CMD_AGC,     &menuMain},
-	{&entry[CMD_AGC][2],       CMD_AGC,     &menuMain},
+    {},
+	{&entry[CMD_AGC][0],       CMD_AGC,     &menuAGC},
+	{&entry[CMD_AGC][1],       CMD_AGC,     &menuAGC},
+	{&entry[CMD_AGC][2],       CMD_AGC,     &menuAGC},
+	{&entry[CMD_AGC][3],       CMD_AGC,     &menuAGC},
+	{&entry[CMD_AGC][4],       CMD_AGC,     &menuAGC},
 };
 
 MenuEntry menuFilterRxLo[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
-	{&entry[CMD_FILTER_RX_LO][0], CMD_FILTER_RX_LO, &menuMain},
-	{&entry[CMD_FILTER_RX_LO][1], CMD_FILTER_RX_LO, &menuMain},
-	{&entry[CMD_FILTER_RX_LO][2], CMD_FILTER_RX_LO, &menuMain},
-	{&entry[CMD_FILTER_RX_LO][3], CMD_FILTER_RX_LO, &menuMain},
-	{&entry[CMD_FILTER_RX_LO][4], CMD_FILTER_RX_LO, &menuMain},
-	{&entry[CMD_FILTER_RX_LO][5], CMD_FILTER_RX_LO, &menuMain},
-	{&entry[CMD_FILTER_RX_LO][6], CMD_FILTER_RX_LO, &menuMain},
+    {},
+	{&entry[CMD_FILTER_RX_LO][0], CMD_FILTER_RX_LO, &menuFilterRxLo},
+	{&entry[CMD_FILTER_RX_LO][1], CMD_FILTER_RX_LO, &menuFilterRxLo},
+	{&entry[CMD_FILTER_RX_LO][2], CMD_FILTER_RX_LO, &menuFilterRxLo},
+	{&entry[CMD_FILTER_RX_LO][3], CMD_FILTER_RX_LO, &menuFilterRxLo},
+	{&entry[CMD_FILTER_RX_LO][4], CMD_FILTER_RX_LO, &menuFilterRxLo},
+	{&entry[CMD_FILTER_RX_LO][5], CMD_FILTER_RX_LO, &menuFilterRxLo},
+	{&entry[CMD_FILTER_RX_LO][6], CMD_FILTER_RX_LO, &menuFilterRxLo},
 };
 
 MenuEntry menuFilterRxHi[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
-	{&entry[CMD_FILTER_RX_HI][0], CMD_FILTER_RX_HI, &menuMain},
-	{&entry[CMD_FILTER_RX_HI][1], CMD_FILTER_RX_HI, &menuMain},
-	{&entry[CMD_FILTER_RX_HI][2], CMD_FILTER_RX_HI, &menuMain},
-	{&entry[CMD_FILTER_RX_HI][3], CMD_FILTER_RX_HI, &menuMain},
-	{&entry[CMD_FILTER_RX_HI][4], CMD_FILTER_RX_HI, &menuMain},
-	{&entry[CMD_FILTER_RX_HI][5], CMD_FILTER_RX_HI, &menuMain},
-	{&entry[CMD_FILTER_RX_HI][6], CMD_FILTER_RX_HI, &menuMain},
-	{&entry[CMD_FILTER_RX_HI][7], CMD_FILTER_RX_HI, &menuMain},
-	{&entry[CMD_FILTER_RX_HI][8], CMD_FILTER_RX_HI, &menuMain},
+    {},
+	{&entry[CMD_FILTER_RX_HI][0], CMD_FILTER_RX_HI, &menuFilterRxHi},
+	{&entry[CMD_FILTER_RX_HI][1], CMD_FILTER_RX_HI, &menuFilterRxHi},
+	{&entry[CMD_FILTER_RX_HI][2], CMD_FILTER_RX_HI, &menuFilterRxHi},
+	{&entry[CMD_FILTER_RX_HI][3], CMD_FILTER_RX_HI, &menuFilterRxHi},
+	{&entry[CMD_FILTER_RX_HI][4], CMD_FILTER_RX_HI, &menuFilterRxHi},
+	{&entry[CMD_FILTER_RX_HI][5], CMD_FILTER_RX_HI, &menuFilterRxHi},
+	{&entry[CMD_FILTER_RX_HI][6], CMD_FILTER_RX_HI, &menuFilterRxHi},
+	{&entry[CMD_FILTER_RX_HI][7], CMD_FILTER_RX_HI, &menuFilterRxHi},
+	{&entry[CMD_FILTER_RX_HI][8], CMD_FILTER_RX_HI, &menuFilterRxHi},
 };
 
 MenuEntry menuStep[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
+    {},
 	{&entry[CMD_STEP][0], CMD_STEP, &menuMain},
 	{&entry[CMD_STEP][1], CMD_STEP, &menuMain},
 	{&entry[CMD_STEP][2], CMD_STEP, &menuMain},
@@ -142,10 +153,26 @@ MenuEntry menuStep[MAX_MENU] = {
 	{&entry[CMD_STEP][7], CMD_STEP, &menuMain},
 	{&entry[CMD_STEP][8], CMD_STEP, &menuMain},
 	{&entry[CMD_STEP][9], CMD_STEP, &menuMain},
-	{&entry[CMD_STEP][10], CMD_STEP, &menuMain},
+//	{&entry[CMD_STEP][10], CMD_STEP, &menuMain},
 };
 
-extern MenuEntry menuConnect[MAX_MENU];
+Entry entryMore = {"-> next", 0};
+MenuEntry menuConnect2[MAX_MENU] = {
+	{&entry[CMD_NONE][0],     CMD_NONE, &menuConnect1},
+	{&entry[CMD_CONNECT_SERVER][20], CMD_CONNECT_SERVER, &menuConnect2},
+	{&entry[CMD_CONNECT_SERVER][21], CMD_CONNECT_SERVER, &menuConnect2},
+	{&entry[CMD_CONNECT_SERVER][22], CMD_CONNECT_SERVER, &menuConnect2},
+	{&entry[CMD_CONNECT_SERVER][23], CMD_CONNECT_SERVER, &menuConnect2},
+	{&entry[CMD_CONNECT_SERVER][24], CMD_CONNECT_SERVER, &menuConnect2},
+	{&entry[CMD_CONNECT_SERVER][25], CMD_CONNECT_SERVER, &menuConnect2},
+	{&entry[CMD_CONNECT_SERVER][26], CMD_CONNECT_SERVER, &menuConnect2},
+	{&entry[CMD_CONNECT_SERVER][27], CMD_CONNECT_SERVER, &menuConnect2},
+	{&entry[CMD_CONNECT_SERVER][28], CMD_CONNECT_SERVER, &menuConnect2},
+	{&entry[CMD_CONNECT_SERVER][29], CMD_CONNECT_SERVER, &menuConnect2},
+	{&entry[CMD_CONNECT_SERVER][30], CMD_CONNECT_SERVER, &menuConnect2},
+};
+
+
 MenuEntry menuConnect1[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuConnect},
 	{&entry[CMD_CONNECT_SERVER][10], CMD_CONNECT_SERVER, &menuConnect1},
@@ -158,10 +185,9 @@ MenuEntry menuConnect1[MAX_MENU] = {
 	{&entry[CMD_CONNECT_SERVER][17], CMD_CONNECT_SERVER, &menuConnect1},
 	{&entry[CMD_CONNECT_SERVER][18], CMD_CONNECT_SERVER, &menuConnect1},
 	{&entry[CMD_CONNECT_SERVER][19], CMD_CONNECT_SERVER, &menuConnect1},
-	{&entry[CMD_CONNECT_SERVER][20], CMD_CONNECT_SERVER, &menuConnect1},
+	{&entryMore, CMD_NONE, &menuConnect2},
 };
 
-Entry entryMore = {"more", 0};
 MenuEntry menuConnect[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
 	{&entry[CMD_CONNECT_SERVER][0], CMD_CONNECT_SERVER, &menuConnect},
@@ -174,42 +200,47 @@ MenuEntry menuConnect[MAX_MENU] = {
 	{&entry[CMD_CONNECT_SERVER][7], CMD_CONNECT_SERVER, &menuConnect},
 	{&entry[CMD_CONNECT_SERVER][8], CMD_CONNECT_SERVER, &menuConnect},
 	{&entry[CMD_CONNECT_SERVER][9], CMD_CONNECT_SERVER, &menuConnect},
-	{&entryMore, CMD_CONNECT_SERVER, &menuConnect1},
+	{&entryMore, CMD_NONE, &menuConnect1},
 };
 
 MenuEntry menuAtt[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
-	{&entry[CMD_PREAMP][0], CMD_PREAMP, &menuMain},
-	{&entry[CMD_PREAMP][1], CMD_PREAMP, &menuMain},
-	{&entry[CMD_PREAMP][2], CMD_PREAMP, &menuMain},
-	{&entry[CMD_PREAMP][3], CMD_PREAMP, &menuMain},
-	{&entry[CMD_PREAMP][4], CMD_PREAMP, &menuMain},
-	{&entry[CMD_PREAMP][5], CMD_PREAMP, &menuMain},
-	{&entry[CMD_PREAMP][6], CMD_PREAMP, &menuMain},
+    {},
+	{&entry[CMD_PREAMP][0], CMD_PREAMP, &menuAtt},
+	{&entry[CMD_PREAMP][1], CMD_PREAMP, &menuAtt},
+	{&entry[CMD_PREAMP][2], CMD_PREAMP, &menuAtt},
+	{&entry[CMD_PREAMP][3], CMD_PREAMP, &menuAtt},
+	{&entry[CMD_PREAMP][4], CMD_PREAMP, &menuAtt},
+	{&entry[CMD_PREAMP][5], CMD_PREAMP, &menuAtt},
+	{&entry[CMD_PREAMP][6], CMD_PREAMP, &menuAtt},
 };
 
 MenuEntry menuDisplay[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
-	{&entry[CMD_DISP_MODE][0], CMD_DISP_MODE, &menuMain},
-	{&entry[CMD_DISP_MODE][1], CMD_DISP_MODE, &menuMain},
-	{&entry[CMD_DISP_MODE][2], CMD_DISP_MODE, &menuMain},
-	{&entry[CMD_DISP_MODE][3], CMD_DISP_MODE, &menuMain},
+    {},
+	{&entry[CMD_DISP_MODE][0], CMD_DISP_MODE, &menuDisplay},
+	{&entry[CMD_DISP_MODE][1], CMD_DISP_MODE, &menuDisplay},
+	{&entry[CMD_DISP_MODE][2], CMD_DISP_MODE, &menuDisplay},
+	{&entry[CMD_DISP_MODE][3], CMD_DISP_MODE, &menuDisplay},
 };
 
 MenuEntry menuAudioComp[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
-	{&entry[CMD_AUDIO_COMP][1],CMD_AUDIO_COMP, &menuMain},
-	{&entry[CMD_AUDIO_COMP][2],CMD_AUDIO_COMP, &menuMain},
-	{&entry[CMD_AUDIO_COMP][3],CMD_AUDIO_COMP, &menuMain},
+    {},
+	{&entry[CMD_AUDIO_COMP][1],CMD_AUDIO_COMP, &menuAudioComp},
+	{&entry[CMD_AUDIO_COMP][2],CMD_AUDIO_COMP, &menuAudioComp},
+	{&entry[CMD_AUDIO_COMP][3],CMD_AUDIO_COMP, &menuAudioComp},
 };
 
 MenuEntry menuMode[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
-	{&entry[CMD_MODE][0], CMD_MODE, &menuMain},
-	{&entry[CMD_MODE][1], CMD_MODE, &menuMain},
-	{&entry[CMD_MODE][2], CMD_MODE, &menuMain},
-	{&entry[CMD_MODE][3], CMD_MODE, &menuMain},
-	{&entry[CMD_MODE][4], CMD_MODE, &menuMain},
+    {},
+	{&entry[CMD_MODE][0], CMD_MODE, &menuMode},
+	{&entry[CMD_MODE][1], CMD_MODE, &menuMode},
+	{&entry[CMD_MODE][2], CMD_MODE, &menuMode},
+	{&entry[CMD_MODE][3], CMD_MODE, &menuMode},
+	{&entry[CMD_MODE][4], CMD_MODE, &menuMode},
+	{&entry[CMD_MODE][5], CMD_MODE, &menuMode},
 };
 
 MenuEntry menuFreq[MAX_MENU] = {
@@ -229,17 +260,17 @@ MenuEntry menuFreq[MAX_MENU] = {
 
 MenuEntry menuPresel[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
-	{&entry[CMD_PRESEL][0],  CMD_PRESEL, &menuMain},
-	{&entry[CMD_PRESEL][1],  CMD_PRESEL, &menuMain},
-	{&entry[CMD_PRESEL][2],  CMD_PRESEL, &menuMain},
-	{&entry[CMD_PRESEL][3],  CMD_PRESEL, &menuMain},
-	{&entry[CMD_PRESEL][4],  CMD_PRESEL, &menuMain},
-	{&entry[CMD_PRESEL][5],  CMD_PRESEL, &menuMain},
-	{&entry[CMD_PRESEL][6],  CMD_PRESEL, &menuMain},
-	{&entry[CMD_PRESEL][7],  CMD_PRESEL, &menuMain},
-	{&entry[CMD_PRESEL][8],  CMD_PRESEL, &menuMain},
-	{&entry[CMD_PRESEL][9],  CMD_PRESEL, &menuMain},
-	{&entry[CMD_PRESEL][10],  CMD_PRESEL, &menuMain},
+	{&entry[CMD_PRESEL][0],  CMD_PRESEL, &menuPresel},
+	{&entry[CMD_PRESEL][1],  CMD_PRESEL, &menuPresel},
+	{&entry[CMD_PRESEL][2],  CMD_PRESEL, &menuPresel},
+	{&entry[CMD_PRESEL][3],  CMD_PRESEL, &menuPresel},
+	{&entry[CMD_PRESEL][4],  CMD_PRESEL, &menuPresel},
+	{&entry[CMD_PRESEL][5],  CMD_PRESEL, &menuPresel},
+	{&entry[CMD_PRESEL][6],  CMD_PRESEL, &menuPresel},
+	{&entry[CMD_PRESEL][7],  CMD_PRESEL, &menuPresel},
+	{&entry[CMD_PRESEL][8],  CMD_PRESEL, &menuPresel},
+	{&entry[CMD_PRESEL][9],  CMD_PRESEL, &menuPresel},
+	{&entry[CMD_PRESEL][10],  CMD_PRESEL, &menuPresel},
 };
 
 MenuEntry menuRecallMemory[MAX_MENU] = {
@@ -274,30 +305,80 @@ MenuEntry menuStoreMemory[MAX_MENU] = {
 
 MenuEntry menuTxDelay[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
-	{&entry[CMD_TX_DELAY][0], CMD_TX_DELAY, &menuMain},
-	{&entry[CMD_TX_DELAY][1], CMD_TX_DELAY, &menuMain},
-	{&entry[CMD_TX_DELAY][2], CMD_TX_DELAY, &menuMain},
-	{&entry[CMD_TX_DELAY][3], CMD_TX_DELAY, &menuMain},
-	{&entry[CMD_TX_DELAY][4], CMD_TX_DELAY, &menuMain},
-	{&entry[CMD_TX_DELAY][5], CMD_TX_DELAY, &menuMain},
-	{&entry[CMD_TX_DELAY][6], CMD_TX_DELAY, &menuMain},
-	{&entry[CMD_TX_DELAY][7], CMD_TX_DELAY, &menuMain},
-	{&entry[CMD_TX_DELAY][8], CMD_TX_DELAY, &menuMain},
-	{&entry[CMD_TX_DELAY][9], CMD_TX_DELAY, &menuMain},
-	{&entry[CMD_TX_DELAY][10], CMD_TX_DELAY, &menuMain},
+	{&entry[CMD_TX_DELAY][0], CMD_TX_DELAY, &menuTxDelay},
+	{&entry[CMD_TX_DELAY][1], CMD_TX_DELAY, &menuTxDelay},
+	{&entry[CMD_TX_DELAY][2], CMD_TX_DELAY, &menuTxDelay},
+	{&entry[CMD_TX_DELAY][3], CMD_TX_DELAY, &menuTxDelay},
+	{&entry[CMD_TX_DELAY][4], CMD_TX_DELAY, &menuTxDelay},
+	{&entry[CMD_TX_DELAY][5], CMD_TX_DELAY, &menuTxDelay},
+	{&entry[CMD_TX_DELAY][6], CMD_TX_DELAY, &menuTxDelay},
+	{&entry[CMD_TX_DELAY][7], CMD_TX_DELAY, &menuTxDelay},
+	{&entry[CMD_TX_DELAY][8], CMD_TX_DELAY, &menuTxDelay},
+	{&entry[CMD_TX_DELAY][9], CMD_TX_DELAY, &menuTxDelay},
+	{&entry[CMD_TX_DELAY][10], CMD_TX_DELAY, &menuTxDelay},
 };
 
-Entry settingsEntry[] = {{"TxDelay",0},{"TxCompr", 0}};
+MenuEntry menuFFTTime[MAX_MENU] = {
+	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
+    {},
+	{&entry[CMD_FFT_TIME][0], CMD_FFT_TIME, &menuFFTTime},
+	{&entry[CMD_FFT_TIME][1], CMD_FFT_TIME, &menuFFTTime},
+	{&entry[CMD_FFT_TIME][2], CMD_FFT_TIME, &menuFFTTime},
+	{&entry[CMD_FFT_TIME][3], CMD_FFT_TIME, &menuFFTTime},
+	{&entry[CMD_FFT_TIME][4], CMD_FFT_TIME, &menuFFTTime},
+};
+
+MenuEntry menuFFTSampleRate[MAX_MENU] = {
+	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
+    {},
+	{&entry[CMD_FFT_SAMPLE_RATE][0], CMD_FFT_SAMPLE_RATE, &menuFFTSampleRate},
+	{&entry[CMD_FFT_SAMPLE_RATE][1], CMD_FFT_SAMPLE_RATE, &menuFFTSampleRate},
+};
+
+MenuEntry menuFFTSize[MAX_MENU] = {
+	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
+    {},
+	{&entry[CMD_FFT_SIZE][0], CMD_FFT_SIZE, &menuFFTSize},
+	{&entry[CMD_FFT_SIZE][1], CMD_FFT_SIZE, &menuFFTSize},
+	{&entry[CMD_FFT_SIZE][2], CMD_FFT_SIZE, &menuFFTSize},
+	{&entry[CMD_FFT_SIZE][3], CMD_FFT_SIZE, &menuFFTSize},
+	{&entry[CMD_FFT_SIZE][4], CMD_FFT_SIZE, &menuFFTSize},
+};
+
+MenuEntry menuQtRadioMode[MAX_MENU] = {
+	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
+    {},
+	{&entry[CMD_QTRADIO_MODE][0], CMD_QTRADIO_MODE, &menuQtRadioMode},
+	{&entry[CMD_QTRADIO_MODE][1], CMD_QTRADIO_MODE, &menuQtRadioMode},
+};
+
+MenuEntry menuQtRadioRx[MAX_MENU] = {
+	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
+    {},
+	{&entry[CMD_QTRADIO_RX][0], CMD_QTRADIO_RX, &menuMain},
+	{&entry[CMD_QTRADIO_RX][1], CMD_QTRADIO_RX, &menuMain},
+	{&entry[CMD_QTRADIO_RX][2], CMD_QTRADIO_RX, &menuMain},
+	{&entry[CMD_QTRADIO_RX][3], CMD_QTRADIO_RX, &menuMain},
+	{&entry[CMD_QTRADIO_RX][4], CMD_QTRADIO_RX, &menuMain},
+	{&entry[CMD_QTRADIO_RX][5], CMD_QTRADIO_RX, &menuMain},
+	{&entry[CMD_QTRADIO_RX][6], CMD_QTRADIO_RX, &menuMain},
+	{&entry[CMD_QTRADIO_RX][7], CMD_QTRADIO_RX, &menuMain},
+};
+
+Entry settingsEntry[] = {{"FFT Time",0}};
 MenuEntry menuSettings[MAX_MENU] = {
 	{&entry[CMD_NONE][0], CMD_NONE, &menuMain},
-	{&settingsEntry[0], 0, &menuTxDelay},
-	{&settingsEntry[1], 0, &menuAudioComp},
+    {},
+	{&settingsEntry[0], 0, &menuFFTTime},
+	//{&settingsEntry[0], 0, &menuTxDelay},
+	//{&settingsEntry[1], 0, &menuAudioComp},
 };
 
 MenuEntry menuAnt[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
-	{&entry[CMD_ANT][0],  CMD_ANT, &menuMain},
-	{&entry[CMD_ANT][1],  CMD_ANT, &menuMain},
+    {},
+	{&entry[CMD_ANT][0],  CMD_ANT, &menuAnt},
+	{&entry[CMD_ANT][1],  CMD_ANT, &menuAnt},
 };
 
 MenuEntry menuTxSrc[MAX_MENU] = {
@@ -311,48 +392,85 @@ MenuEntry menuTxSrc[MAX_MENU] = {
 
 MenuEntry menuBand[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
-	{&entry[CMD_BAND][1], CMD_BAND, &menuMain},
-	{&entry[CMD_BAND][2], CMD_BAND, &menuMain},
-	{&entry[CMD_BAND][3], CMD_BAND, &menuMain},
-	{&entry[CMD_BAND][4], CMD_BAND, &menuMain},
-	{&entry[CMD_BAND][5], CMD_BAND, &menuMain},
-	{&entry[CMD_BAND][6], CMD_BAND, &menuMain},
-	{&entry[CMD_BAND][7], CMD_BAND, &menuMain},
-	{&entry[CMD_BAND][8], CMD_BAND, &menuMain},
-	{&entry[CMD_BAND][9], CMD_BAND, &menuMain},
-	{&entry[CMD_BAND][10], CMD_BAND, &menuMain},
+	{&entry[CMD_BAND][1], CMD_BAND, &menuBand},
+	{&entry[CMD_BAND][2], CMD_BAND, &menuBand},
+	{&entry[CMD_BAND][3], CMD_BAND, &menuBand},
+	{&entry[CMD_BAND][4], CMD_BAND, &menuBand},
+	{&entry[CMD_BAND][5], CMD_BAND, &menuBand},
+	{&entry[CMD_BAND][6], CMD_BAND, &menuBand},
+	{&entry[CMD_BAND][7], CMD_BAND, &menuBand},
+	{&entry[CMD_BAND][8], CMD_BAND, &menuBand},
+	{&entry[CMD_BAND][9], CMD_BAND, &menuBand},
+	{&entry[CMD_BAND][10], CMD_BAND, &menuBand},
 };
 
 MenuEntry menuNotch[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
-	{&entry[CMD_NOTCH][0],  CMD_NOTCH, &menuMain},
-	{&entry[CMD_NOTCH][1],  CMD_NOTCH, &menuMain},
+    {},
+	{&entry[CMD_NOTCH][0],  CMD_NOTCH, &menuNotch},
+	{&entry[CMD_NOTCH][1],  CMD_NOTCH, &menuNotch},
 };
 
-Entry mainMenu[] = {{"MStore", 0},{"Settings", 0},  {"TX-Src", 0}, {"Notch", 0}, {"Presel", 0}, {"FreqOffs", 0}, {"AGC", 0}};
+MenuEntry menuDispColor[MAX_MENU] = {
+	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
+    {},
+	{&entry[CMD_DISP_COLOR][0],  CMD_DISP_COLOR, &menuDispColor},
+	{&entry[CMD_DISP_COLOR][1],  CMD_DISP_COLOR, &menuDispColor},
+	{&entry[CMD_DISP_COLOR][2],  CMD_DISP_COLOR, &menuDispColor},
+};
+
+Entry mainMenu[] = {
+    {"Settings", 0}, 
+    {"QtRadio", 0}, 
+    {"QtRadio RX",0}, 
+    {"FFT Rate", 0}, 
+    {"Color", 0}, 
+    {"Notch", 0}, 
+    {"Step", 0}, 
+    {"Mode", 0}, 
+    {"Ant",0}
+};
+
 MenuEntry menuMain1[MAX_MENU] = {
 	{&entry[CMD_NONE][0],     CMD_NONE, &menuMain},
-	{ &mainMenu[0], 0, &menuStoreMemory},
-	{ &mainMenu[1], 0, &menuSettings},
-	{ &mainMenu[2], 0, &menuTxSrc},
-	{ &mainMenu[3], 0, &menuNotch},
-	{ &mainMenu[4], 0, &menuPresel},
-	{ &mainMenu[6], 0, &menuAGC},
+	{ &mainMenu[0], 0, &menuSettings},
+	{ &mainMenu[1], 0, &menuQtRadioMode},
+	{ &mainMenu[2], 0, &menuQtRadioRx},
+	{ &mainMenu[3], 0, &menuFFTSampleRate},
+	{ &mainMenu[4], 0, &menuDispColor},
+	{ &mainMenu[5], 0, &menuNotch},
+	{ &mainMenu[6], 0, &menuStep},
+	{ &mainMenu[7], 0, &menuMode},
+	{ &mainMenu[8], 0, &menuAnt},
 };
 
-Entry mainMenu1[] = {{"Freq", 0}, {"Step", 0}, {"Band", 0}, {"Mode", 0}, {"Display", 0}, {"Ant", 0}, {"Att", 0}, {"Fi Lo", 0}, {"Fi Hi", 0}, {"Server", 0}, {"MRecall", 0}, {"more", 0}};
+Entry mainMenu1[] = {
+    {"Freq", 0}, 
+    {"Display", 0}, 
+    {"Band", 0}, 
+    {"Filt Lo", 0}, 
+    {"Filt Hi", 0}, 
+    {"Att", 0}, 
+    {"AGC", 0}, 
+    {"Server", 0}, 
+    {"MRecall", 0}, 
+    {"MStore", 0}, 
+    {"FFT Size", 0},  
+    {"-> next", 0}
+};
+
 MenuEntry menuMain[MAX_MENU] = {
 	{ &mainMenu1[0], 0, &menuFreq},
-	{ &mainMenu1[1], 0, &menuStep},
+	{ &mainMenu1[1], 0, &menuDisplay},
 	{ &mainMenu1[2], 0, &menuBand},
-	{ &mainMenu1[3], 0, &menuMode},
-	{ &mainMenu1[4], 0, &menuDisplay},
-	{ &mainMenu1[5], 0, &menuAnt},
-	{ &mainMenu1[6], 0, &menuAtt},
-	{ &mainMenu1[7], 0, &menuFilterRxLo},
-	{ &mainMenu1[8], 0, &menuFilterRxHi},
-	{ &mainMenu1[9], 0, &menuConnect},
-	{ &mainMenu1[10], 0, &menuRecallMemory},
+	{ &mainMenu1[3], 0, &menuFilterRxLo},
+	{ &mainMenu1[4], 0, &menuFilterRxHi},
+	{ &mainMenu1[5], 0, &menuAtt},
+	{ &mainMenu1[6], 0, &menuAGC},
+	{ &mainMenu1[7], 0, &menuConnect},
+	{ &mainMenu1[8], 0, &menuRecallMemory},
+	{ &mainMenu1[9], 0, &menuStoreMemory},
+	{ &mainMenu1[10], 0, &menuFFTSize},
 	{ &mainMenu1[11], 0, &menuMain1},
 }; 
 
@@ -489,8 +607,13 @@ Display_touch::Display_touch(QSettings *settings, QWidget* /*parent*/) : Display
 	connect(filterGraph, SIGNAL(freqChanged(int)), this, SLOT(setFreq(int)));
 
 	initReady = true;
+#ifdef ANDROID
+    resizeDisp(QGuiApplication::primaryScreen()->availableSize());
+#else
+	//resizeDisp(settings->value("Size",QSize(DSIZE_X,DSIZE_Y)).toSize()); 
 	resize(settings->value("Size",QSize(DSIZE_X,DSIZE_Y)).toSize()); 
-	resizeDisp(settings->value("Size",QSize(DSIZE_X,DSIZE_Y)).toSize()); 
+#endif
+
 }
 
 
@@ -505,12 +628,12 @@ void Display_touch::start() {
 void Display_touch::setServers(QStringList servers, QStringList info) {
 
     QStringList::iterator i;
-    int k=0;
     for (int i=0;i<MAX_ENTRY;i++) {
         sprintf(entry[CMD_CONNECT_SERVER][i].name, "-");
         entry[CMD_CONNECT_SERVER][i].par = i;
     }
-    for (i=servers.begin(); i!=servers.end(); ++i) {
+    int k=0;
+    for (i=servers.begin(); i!=servers.end();i++ ) {
         std::string s = (*i).toStdString();;
         memset(entry[CMD_CONNECT_SERVER][k].name, 0, 9);
         strncpy(entry[CMD_CONNECT_SERVER][k++].name, s.data(), std::min((int)s.size(), (int)8));
@@ -518,7 +641,7 @@ void Display_touch::setServers(QStringList servers, QStringList info) {
             break;
     }
     k=0;
-    for (i=info.begin(); i!=info.end(); ++i) {
+    for (i=info.begin(); i!=info.end(); i++) {
         std::string s = (*i).toStdString();;
         memset(entry[CMD_CONNECT_INFO][k].name, 0, 128);
         strncpy(entry[CMD_CONNECT_INFO][k++].name, s.data(), std::min((int)s.size(), (int)127));
@@ -526,8 +649,10 @@ void Display_touch::setServers(QStringList servers, QStringList info) {
             break;
     }
     for (int i=0;i<MAX_MENU;i++) {
-        button[menuStartIdx + i].buttonText[0] = (*curMenu)[i].entry->name;
-        button[menuStartIdx + i].button->doUpdate();
+        if (button[menuStartIdx+i].cmd != CMD_NONE && curMenu) {
+            button[menuStartIdx + i].buttonText[0] = (*curMenu)[i].entry->name;
+            button[menuStartIdx + i].button->doUpdate();
+        }
     }
 }
 
@@ -541,50 +666,47 @@ void Display_touch::resizeEvent(QResizeEvent* event) {
 void Display_touch::resizeDisp(QSize size) {
 	int xs = size.width();
 	int ys = size.height();
+    QTransform transform;
+    transform.scale(1.0*xs/DSIZE_X, 1.0*ys/DSIZE_Y);
 
 	if (!initReady)
 		return;
-#if 0
-#ifndef ANDROID
-	if (layOut == 0 && xs>=1072)
-		setLayout(2);
-	if (layOut == 1 && xs< 1072)
-		setLayout(1);
-#endif
-#endif
 
 	if (!smtr)
 		return;
 	scene->setSceneRect(0,0,xs-4,ys-4);
 
 	// Buttons
-
-	switch (layOut) {
+	switch (curLayout) {
 		case 0:
 			for (int i=0;i<arraysize(button);i++) {
 				if (button[i].cmd != CMD_NONE) {
 					button[i].button->setPos(button[i].xPos*xs/DSIZE_X, button[i].yPos*ys/DSIZE_Y);
-					button[i].button->setScale(1.0*xs/DSIZE_X);
+                    button[i].button->setTransform(transform);
 				}
 				if (analog[i].cmd != CMD_NONE) {
 					analog[i].analog->setPos(analog[i].xPos*xs/DSIZE_X, analog[i].yPos*ys/DSIZE_Y);
-					analog[i].analog->setScale(1.0*xs/DSIZE_X);
+                    analog[i].analog->setTransform(transform);
 				}
 				if (label[i].cmd != CMD_NONE) {
 					label[i].label->setPos(label[i].xPos*xs/DSIZE_X, label[i].yPos*ys/DSIZE_Y);
-					label[i].label->setScale(1.0*xs/DSIZE_X);
+					label[i].label->setTransform(transform);
 				}
 			}
 			for (int i=0;i<ITEM_MAX;i++) {
 				if (items[i].it) {
 					items[i].it->setPos (items[i]. xPos*xs/DSIZE_X, items[i]. yPos*ys/DSIZE_Y);
-					items[i].it->setSize(items[i].xSize*xs/DSIZE_X, items[i].ySize*ys/DSIZE_Y);
+                    if ( i== ITEM_FILTERGRAPH || i == ITEM_FFTGRAPH) {
+                        items[i].it->setSize(items[i].xSize*xs/DSIZE_X, items[i].ySize*ys/DSIZE_Y);
+                    } else {
+                        items[i].it->setSize(items[i].xSize, items[i].ySize);
+                        items[i].it->setTransform(transform);
+                    }
 				}
 			}
 			break;
 
 		case 1:
-        default:
 			for (int i=0;i<arraysize(button);i++) {
 				if (button[i].cmd != CMD_NONE) 
 					button[i].button->setPos(button[i].xPos, ys-DSIZE_Y + button[i].yPos);
@@ -605,16 +727,22 @@ void Display_touch::resizeDisp(QSize size) {
 				}
 			}
 			break;
+
+        default:
+            ;
 	}
 }
 
 void Display_touch::setLayout(int l) {
-	int aIdx = 0;
-	int bIdx = 0;
-	int lIdx = 0;
-	int xp,yp,xs,ys;
+    int aIdx = 0;
+    int bIdx = 0;
+    int lIdx = 0;
+    int xp,yp,xs,ys;
 
-	layOut = l;
+    if (curLayout == l) 
+        return;
+
+    curLayout = l;
 
 	for (int i=0;i<arraysize(button);i++) {
 		if (analog[i].cmd != CMD_NONE) {
@@ -634,80 +762,63 @@ void Display_touch::setLayout(int l) {
 		}
 	}
 
-	switch (layOut) {
+	switch (curLayout) {
 		case 0:
-			items[ITEM_SMTR]        = {smtr,        16*GRID_SIZE,  7*GRID_SIZE, 74*GRID_SIZE,  1*GRID_SIZE};
+			items[ITEM_SMTR]        = {smtr,        16*GRID_SIZE,  7*GRID_SIZE, 75*GRID_SIZE,  1*GRID_SIZE};
 			items[ITEM_RXFREQ]      = {rxfreq,      36*GRID_SIZE,  7*GRID_SIZE,  1*GRID_SIZE,  1*GRID_SIZE};
-			items[ITEM_TXFREQ]      = {txfreq,      36*GRID_SIZE,  7*GRID_SIZE, 37*GRID_SIZE,  1*GRID_SIZE};
-			items[ITEM_INPUT]       = {input,       12*GRID_SIZE,  3*GRID_SIZE,  1*GRID_SIZE,  9*GRID_SIZE};
-			items[ITEM_FILTERGRAPH] = {filterGraph, 64*GRID_SIZE, 29*GRID_SIZE,  1*GRID_SIZE, 13*GRID_SIZE};
-			items[ITEM_FFTGRAPH]    = {fftGraph,    64*GRID_SIZE, 29*GRID_SIZE,  1*GRID_SIZE, 13*GRID_SIZE};
-			items[ITEM_CLOCK]       = {clock,       17*GRID_SIZE,  3*GRID_SIZE, 14*GRID_SIZE,  9*GRID_SIZE};
+			items[ITEM_TXFREQ]      = {txfreq,      36*GRID_SIZE,  7*GRID_SIZE, 38*GRID_SIZE,  1*GRID_SIZE};
+			items[ITEM_FILTERGRAPH] = {filterGraph, 73*GRID_SIZE, 30*GRID_SIZE,  1*GRID_SIZE,  9*GRID_SIZE};
+			items[ITEM_FFTGRAPH]    = {fftGraph,    73*GRID_SIZE, 30*GRID_SIZE,  1*GRID_SIZE,  9*GRID_SIZE};
 
-			xp = 32*GRID_SIZE; yp = 9*GRID_SIZE; xs = 7*GRID_SIZE; ys = 3*GRID_SIZE; 
-			NEW_BUTTON("Color", 0, CMD_DISP_COLOR); RIGHT;
-			NEW_BUTTON("Zoom", 2, CMD_FFT_SIZE); RIGHT; 
-			NEW_BUTTON("Notch", 0, CMD_NOTCH); RIGHT; 
-			NEW_BUTTON("TX=RX", 1, CMD_TX_RX);
+			items[ITEM_CLOCK]       = {clock,       16*GRID_SIZE,  3*GRID_SIZE, 75*GRID_SIZE,  9*GRID_SIZE};
+			items[ITEM_INPUT]       = {input,       16*GRID_SIZE,  2*GRID_SIZE, 75*GRID_SIZE, 13*GRID_SIZE};
 
-			xp = 66*GRID_SIZE; yp = 13*GRID_SIZE; xs = 5*GRID_SIZE; ys = 14*GRID_SIZE; 
-			NEW_ANALOG("Max", -120,WATERFALL_MAX,-50,CMD_WATERFALL_MAX); DOWN;
-			NEW_ANALOG("Min", WATERFALL_MIN,-50,-120,CMD_WATERFALL_MIN); 
-			xp = 72*GRID_SIZE; yp =  9*GRID_SIZE; xs = 12*GRID_SIZE; ys =  6*GRID_SIZE; 
+			xp =  1*GRID_SIZE; yp = 40*GRID_SIZE; xs =  10*GRID_SIZE; ys = 5*GRID_SIZE; 
+			NEW_BUTTON("OFF", 0, CMD_EXIT); DOWN; 
+            DOWN;
+			NEW_BUTTON("Connect", 0, CMD_CONNECT); RIGHT;
 
-			NEW_BUTTON("Filter hi", 4, CMD_FILTER_RX_HI); DOWN;
-			NEW_BUTTON("Filter lo", 3, CMD_FILTER_RX_LO); DOWN;
-			NEW_BUTTON("Step", 2, CMD_STEP); DOWN;
-			xs = 6*GRID_SIZE;
-			NEW_BUTTON("", 0, CMD_FREQ_STEP_DOWN); xp+=xs;
-			NEW_BUTTON("", 0, CMD_FREQ_STEP_UP); xp-=xs; DOWN;
-			xs = 12*GRID_SIZE; ys =  7*GRID_SIZE; 
-			NEW_BUTTON("TX-Src", 0, CMD_TWO_TONE_TEST);
+			xp =  12*GRID_SIZE; yp = 52*GRID_SIZE; xs =  15*GRID_SIZE; ys = 5*GRID_SIZE; 
 
-			xp = 85*GRID_SIZE; yp =  9*GRID_SIZE; xs = 12*GRID_SIZE; ys =  6*GRID_SIZE; 
-			NEW_BUTTON("Mode", 0, CMD_MODE); DOWN;
-			NEW_BUTTON("Antenna", 0, CMD_ANT); DOWN;
-			NEW_BUTTON("Preamp", 0, CMD_PREAMP); DOWN;
-			NEW_BUTTON("AGC",  1, CMD_AGC); DOWN;
-			NEW_BUTTON("Display", 0, CMD_DISP_MODE); DOWN;
-
-			xs = 12*GRID_SIZE; ys =  7*GRID_SIZE; 
-			NEW_BUTTON("TX", 0, CMD_TX);
-
-			xp = 89*GRID_SIZE; yp = 1*GRID_SIZE; xs = 8*GRID_SIZE; ys = 7 *GRID_SIZE; 
-			NEW_BUTTON("", 0, CMD_SMETER_MODE);
-
-			xp =  1*GRID_SIZE; yp = 43*GRID_SIZE; xs =  7*GRID_SIZE; ys = 4*GRID_SIZE; 
-			NEW_BUTTON("OFF", 0, CMD_EXIT); RIGHT; 
-
-			yp = 43*GRID_SIZE; xs = 7*GRID_SIZE; ys=8*GRID_SIZE;
-			NEW_ANALOG("Volume", 0,255,30,CMD_VOLUME); RIGHT;
-			NEW_ANALOG("Mic", 0,255,0,CMD_MIC); RIGHT;
-			NEW_ANALOG("TX",0,255,30,CMD_TX_POWER); RIGHT;
-			NEW_ANALOG("Gain",0,100,0,CMD_GAIN);  RIGHT;
-			NEW_ANALOG("NB",0,255,255,CMD_NB_LEVEL);  RIGHT;
-			NEW_ANALOG("Squelch",0,255,255,CMD_SQUELCH);  RIGHT;
-
-			xs =12*GRID_SIZE, ys=2*GRID_SIZE;
-			NEW_LABEL("Gain",CMD_GAIN); yp+=ys;
-			NEW_LABEL("Vol",CMD_VOLUME); yp+=ys;
-			NEW_LABEL("Mode",CMD_MODE); yp+=ys;
-			NEW_LABEL("SWR",CMD_SWR);
-
-			xp = 1*GRID_SIZE; yp = 52*GRID_SIZE; xs = 7*GRID_SIZE; ys =  5*GRID_SIZE; 
 			menuStartIdx = bIdx;
-			NEW_BUTTON("", 0, CMD_MENU); RIGHT;
-			NEW_BUTTON("", 0, CMD_MENU); RIGHT;
-			NEW_BUTTON("", 0, CMD_MENU); RIGHT;
-			NEW_BUTTON("", 0, CMD_MENU); RIGHT;
-			NEW_BUTTON("", 0, CMD_MENU); RIGHT;
-			NEW_BUTTON("", 0, CMD_MENU); RIGHT;
-			NEW_BUTTON("", 0, CMD_MENU); RIGHT;
-			NEW_BUTTON("", 0, CMD_MENU); RIGHT;
-			NEW_BUTTON("", 0, CMD_MENU); RIGHT;
-			NEW_BUTTON("", 0, CMD_MENU); RIGHT;
-			NEW_BUTTON("", 0, CMD_MENU); RIGHT;
-			NEW_BUTTON("", 0, CMD_MENU); RIGHT;
+			NEW_BUTTON("", 0, CMD_MENU); UP; 
+			NEW_BUTTON("", 0, CMD_MENU); UP; 
+
+			RIGHT2; DOWN; DOWN;
+			NEW_BUTTON("", 0, CMD_MENU); RIGHT2; 
+			NEW_BUTTON("", 0, CMD_MENU); RIGHT2; 
+			NEW_BUTTON("", 0, CMD_MENU); 
+
+			LEFT2; LEFT2; UP;
+			NEW_BUTTON("", 0, CMD_MENU); RIGHT2; 
+			NEW_BUTTON("", 0, CMD_MENU); RIGHT2; 
+			NEW_BUTTON("", 0, CMD_MENU); 
+			
+			LEFT2; LEFT2; UP;
+			NEW_BUTTON("", 0, CMD_MENU); RIGHT2; 
+			NEW_BUTTON("", 0, CMD_MENU); RIGHT2; 
+			NEW_BUTTON("", 0, CMD_MENU); 
+
+			xp =  12*GRID_SIZE; yp = 52*GRID_SIZE;
+            UP; UP; 
+			NEW_BUTTON("", 0, CMD_MENU); 
+
+			xp = 92*GRID_SIZE; yp =  1*GRID_SIZE; xs = 6*GRID_SIZE; ys = 18*GRID_SIZE; 
+			NEW_ANALOG("Max", -120,WATERFALL_MAX,-50,CMD_WATERFALL_MAX); DOWN;
+			NEW_ANALOG("Min", WATERFALL_MIN,-50,-120,CMD_WATERFALL_MIN); DOWN;
+			NEW_ANALOG("Vol", 0,255,30,CMD_VOLUME); 
+
+			xp =  75*GRID_SIZE; yp = 16*GRID_SIZE; xs =  16*GRID_SIZE; ys = 5*GRID_SIZE; 
+			NEW_BUTTON("FFT Width", 0, CMD_FFT_SAMPLE_RATE); DOWN;
+			NEW_BUTTON("Antenna", 0, CMD_ANT); DOWN;
+			NEW_BUTTON("Notch", 0, CMD_NOTCH); DOWN; 
+			NEW_BUTTON("Mode", 0, CMD_MODE); DOWN;
+			NEW_BUTTON("Step", 2, CMD_STEP); DOWN;
+			NEW_BUTTON("", 0, CMD_FREQ_STEP_UP); DOWN;
+			NEW_BUTTON("", 0, CMD_FREQ_STEP_DOWN); DOWN;
+
+			xp =  0*GRID_SIZE; yp = 58*GRID_SIZE; xs =  160*GRID_SIZE; ys = 2*GRID_SIZE; 
+			NEW_LABEL("Server", CMD_CONNECT_INFO); 
 
 			curMenu = &menuMain;
 			for (int i=0;i<MAX_MENU;i++) {
@@ -738,15 +849,6 @@ void Display_touch::setLayout(int l) {
 
 			xs = 5*GRID_SIZE; ys =13*GRID_SIZE; 
 			NEW_ANALOG("Vol", 0,255,30,CMD_VOLUME); RIGHT2;
-			// NEW_ANALOG("Mic", 0,255,0,CMD_MIC); RIGHT2;
-			// NEW_ANALOG("TX",0,255,30,CMD_TX_POWER); RIGHT2;
-			// NEW_ANALOG("--",0,255,30,CMD_TX_POWER); RIGHT2;
-			// NEW_ANALOG("Gain",0,100,0,CMD_GAIN);  RIGHT2;
-			// NEW_ANALOG("--",0,100,0,CMD_GAIN);  RIGHT2;
-			// NEW_ANALOG("NB",0,255,255,CMD_NB_LEVEL);  RIGHT2;
-			// NEW_ANALOG("--",0,255,255,CMD_NB_LEVEL);  RIGHT2;
-			// NEW_ANALOG("Squ",0,255,255,CMD_SQUELCH);  RIGHT2;
-			// NEW_ANALOG("--",0,255,255,CMD_SQUELCH);  RIGHT2;
 			NEW_ANALOG("Max", -120,WATERFALL_MAX,-50,CMD_WATERFALL_MAX); RIGHT2;
 			NEW_ANALOG("Min", WATERFALL_MIN,-50,-120,CMD_WATERFALL_MIN); RIGHT2; 
 
@@ -782,7 +884,8 @@ void Display_touch::setLayout(int l) {
 
 			menuStartIdx = bIdx;
 
-			xp += GRID_SIZE*2; RIGHT2; RIGHT2; RIGHT2; RIGHT2; UP2; 
+			xs = 10*GRID_SIZE; ys =  4*GRID_SIZE + GRID_SIZE/2; 
+			xp += GRID_SIZE*2; RIGHT2; RIGHT2; RIGHT2; UP2; 
 			NEW_BUTTON("", 0, CMD_MENU); RIGHT2; 
 			NEW_BUTTON("", 0, CMD_MENU); 
 
@@ -841,7 +944,7 @@ void Display_touch::setLayout(int l) {
 		label[i].label->setPos(label[i].xPos, label[i].yPos);
 	}
 
-	sendCmd(CMD_LAYOUT_CHANGED, layOut); 
+	// sendCmd(CMD_LAYOUT_CHANGED, layOut); 
 }
 
 int Display_touch::getVal(int cmd) {
@@ -874,6 +977,15 @@ void Display_touch::setVal(int cmd, int val) {
 			break;;
 		}
 	}
+    if (curMenu) {
+        for (int i=0;i<MAX_MENU;i++) {
+            if ((*curMenu)[i].entry) {
+                int cmd = (*curMenu)[i].cmd;
+                button[menuStartIdx + i].button->setActive(cmd != CMD_NONE && getVal(cmd) == (*curMenu)[i].entry->par);
+                button[menuStartIdx + i].button->doUpdate();
+            } 
+        }
+    }
 	return;
 }
 
@@ -899,14 +1011,24 @@ void Display_touch::displaySet(int src, int cmd, int val) {
 	setVal(cmd, val);
 	switch (cmd) {
 		case CMD_MENU:
+            if (!curMenu)
+                break;
 			if ((*curMenu)[val].cmd != CMD_NONE)
 				displaySet(SRC_DISP, (*curMenu)[val].cmd, (*curMenu)[val].entry->par);
 			if ((*curMenu)[val].next) {
 				lastMenu = curMenu;
 				curMenu = (*curMenu)[val].next;
 				for (int i=0;i<MAX_MENU;i++) {
-					button[menuStartIdx + i].buttonText[0] = (*curMenu)[i].entry->name;
-					button[menuStartIdx + i].button->doUpdate();
+                    if ((*curMenu)[i].entry) {
+                        button[menuStartIdx + i].buttonText[0] = (*curMenu)[i].entry->name;
+                        int cmd = (*curMenu)[i].cmd;
+                        button[menuStartIdx + i].button->setActive(cmd != CMD_NONE && getVal(cmd) == (*curMenu)[i].entry->par);
+                        button[menuStartIdx + i].button->doUpdate();
+                    } else {
+                        button[menuStartIdx + i].buttonText[0] = "";
+                        button[menuStartIdx + i].button->setActive(false);
+                        button[menuStartIdx + i].button->doUpdate();
+                    }
 				}
 			}
 			if (val==0) {
@@ -1160,7 +1282,7 @@ void Display_touch::freqChanged(int f) {
 	filterGraph->setFilter(rxFreq, getVal(CMD_FILTER_RX_LO), getVal(CMD_FILTER_RX_HI), getVal(CMD_MODE));
 
 	update = false;
-	timer->start(400);
+	timer->start(200);
 }
 
 void Display_touch::updateOn() {

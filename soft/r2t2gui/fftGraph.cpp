@@ -112,7 +112,7 @@ void FFTGraph::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidg
 		case GRAPH_DUAL:
 		case GRAPH_DUAL2:
 			painter->drawPixmap(-xViewPos,0,*fftPixmap);
-			painter->drawPixmap(-xViewPos,300,*waterfallPixmap);
+			painter->drawPixmap(-xViewPos,130,*waterfallPixmap);
 			break;
 	}
 
@@ -179,9 +179,9 @@ void FFTGraph::fftDataReady(QByteArray &data) {
 		else
 			fftav[i] = ((average_time-1)*fftav[i]+v)/average_time;
 
-		if (i>nFFT/16 && nFFT*15/16)
-			mi = min(fftmax[i],mi);
-		ma = max(fftmax[i],ma);
+		if (i>nFFT/8 && i<nFFT*7/8)
+			mi = min(fftav[i],mi);
+		ma = max(fftav[i],ma);
 	}
 
 	switch (displayMode) {
@@ -204,6 +204,7 @@ void FFTGraph::fftDataReady(QByteArray &data) {
 			}
 			break;
 		case GRAPH_FFT:
+            fft_scale = 2;
 			{
 				QPainter painter(fftPixmap);
 				fftPixmap->fill(colorSpecBack);
@@ -220,6 +221,7 @@ void FFTGraph::fftDataReady(QByteArray &data) {
 			}
 			break;
 		case GRAPH_DUAL:
+            fft_scale = 1;
 			{
 				QPainter painter(waterfallPixmap);
 				waterfallPixmap->scroll(0,1,waterfallPixmap->rect());
@@ -248,6 +250,7 @@ void FFTGraph::fftDataReady(QByteArray &data) {
 			}
 			break;
 		case GRAPH_DUAL2:
+            fft_scale = 1;
 			{
 				QPainter painter(waterfallPixmap);
 				waterfallPixmap->scroll(0,1,waterfallPixmap->rect());

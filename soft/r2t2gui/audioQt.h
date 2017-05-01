@@ -43,4 +43,5 @@ class Audio : public QThread  {
         bool audioRun;
 		int minOutSize;
         int periodSize;
+        int periodTimeMS;
 };

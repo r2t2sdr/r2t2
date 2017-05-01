@@ -107,11 +107,14 @@ void SdrQtRadio::tcpTimeout() {
 void SdrQtRadio::handleSpectrum(int len) {
     // qDebug() << "fft" << len - FFT_BUFFER_HEADER_SIZE;
 	emit fftData(inBuf.mid(FFT_BUFFER_HEADER_SIZE, len - FFT_BUFFER_HEADER_SIZE));
-	emit controlCommand(SRC_SDR, CMD_RSSI, inBuf[6]); 
+    // unsigned char in android ?
+    char crssi = inBuf[6];
+    int8_t rssi =(int8_t) crssi;
+	emit controlCommand(SRC_SDR, CMD_RSSI, rssi); 
     uint32_t fftRate =  (uint8_t)inBuf[12]+((uint8_t)inBuf[11]<<8)+((uint8_t)inBuf[10]<<16)+((uint8_t)inBuf[9]<<24);
 	emit controlCommand(SRC_SDR, CMD_FFT_SAMPLE_RATE, fftRate); 
-
-
+    // uint32_t ifFreq =  (uint8_t)inBuf[14]+((uint8_t)inBuf[13]<<8);
+    // qDebug() << "IF" << Rifreq;
 }
 
 void SdrQtRadio::handleAudio(int len) {

@@ -62,10 +62,13 @@ void SMeter::setMode(int m) {
 	painter.setPen(Qt::black);
 	painter.setBrush(colorSmeterBackground);
 	painter.drawRect(0,0,xSize-1,ySize-1);
-	painter.setFont(QFont("Monospace", ySize/6));
+    QFont font("Monospace");
+    font.setPixelSize(ySize/5);
+	painter.setFont(font);
 
 	switch (mode) {
 		case SMETER_RX:
+            if (0)
 			{
 				int xStep = xSize/20;
 				int xStep1 = xStep*10/6;
@@ -123,17 +126,37 @@ void SMeter::setMode(int m) {
 		default:
 			assert(0);
 	}
-	update();
 }
 
 void SMeter::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
 	char s[64];
 	painter->setPen(Qt::black);
 	painter->drawPixmap(0,0,*backGroundPixmap);
-	painter->setFont(QFont("Monospace", ySize/6));
+    QFont font("Monospace");
+    font.setPixelSize(ySize/5);
+	painter->setFont(font);
 
 	switch (mode) {
 		case SMETER_RX:
+            if (1)
+			{
+				int xStep = xSize/20;
+				int xStep1 = xStep*10/6;
+
+				painter->setPen(colorSmeterTextLo);
+				for (int i=1;i<10;i++) {
+					painter->drawLine(i*xStep,ySize/2,i*xStep,ySize-2);
+					if (i&1)
+						painter->drawText(i*xStep-1-xStep/2,ySize/2-4,QString("%1").arg(i));
+				}
+				painter->setPen(colorSmeterTextHi);
+				for (int i=0;i<6;i++) {
+					painter->drawLine(10*xStep+i*xStep1,ySize/2,10*xStep+i*xStep1,ySize-2);
+					if (i&1)
+						painter->drawText(10*xStep-1+i*xStep1-xStep1/2,ySize/2-4,QString("+%1").arg(i*10+10));
+
+				}
+			}
 			painter->setPen(colorSmeterText);
 			sprintf(s,"%3.0f dBm",rssi);
 			painter->drawText(10,ySize/4-1,QString(s));
@@ -160,6 +183,7 @@ void SMeter::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
 		default:
 			;
 	}
+    update();
 }
 
 QRectF SMeter::boundingRect() const {
