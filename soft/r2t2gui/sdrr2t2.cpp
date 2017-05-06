@@ -20,11 +20,11 @@ SdrR2T2::SdrR2T2 (QString ip, int port) : ip(ip), port(port) {
     r2t2GuiMsgAnswer = new R2T2GuiProto::R2T2GuiMessageAnswer();
 
     tcpSocket = new QTcpSocket(this);
-	// tcpSocket->connectToHost(QHostAddress(ip), port);
-	connect(tcpSocket, SIGNAL(connected()), this, SLOT(connected()));
-	connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-	connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket::SocketError)));
-	connect (tcpSocket, SIGNAL(readyRead()), this, SLOT(readServerTCPData()));
+    // tcpSocket->connectToHost(QHostAddress(ip), port);
+    connect(tcpSocket, SIGNAL(connected()), this, SLOT(connected()));
+    connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket::SocketError)));
+    connect (tcpSocket, SIGNAL(readyRead()), this, SLOT(readServerTCPData()));
 	tcpTimer = new QTimer(this);
     tcpTimer->setSingleShot(true);
 	connect(tcpTimer, SIGNAL(timeout()), this, SLOT(tcpTimeout()));
@@ -50,8 +50,9 @@ void SdrR2T2::setServer(QString serverIP, uint16_t serverPort) {
 void SdrR2T2::connectServer(bool con) {
     if (con) {
         qDebug() << "connect to " << ip << port;
-        if (conn) {
+        if (tcpSocket) {
             tcpSocket->disconnectFromHost();
+            qDebug() << "disconnecting from old connection";
             msleep(200);
         }
         delete tcpSocket;
@@ -62,6 +63,7 @@ void SdrR2T2::connectServer(bool con) {
         connect (tcpSocket, SIGNAL(readyRead()), this, SLOT(readServerTCPData()));
         tcpSocket->connectToHost(QHostAddress(ip), port);
         tcpTimer->start(1000);
+        qDebug() << "trying to connect to " << ip << port;
     } else {
         qDebug() << "diconnect req";
         startRx = true;
@@ -72,7 +74,7 @@ void SdrR2T2::connectServer(bool con) {
 
 void SdrR2T2::sendStartSeq() {
     qDebug() << "send start";
-    cmdmutex.lock();
+//    cmdmutex.lock();
     r2t2GuiMsg->Clear();
     r2t2GuiMsg->set_rxfreq(rxFreq);
     r2t2GuiMsg->set_fftsize(fftSize);
@@ -88,7 +90,7 @@ void SdrR2T2::sendStartSeq() {
     r2t2GuiMsg->set_txfreq(txFreq);
     r2t2GuiMsg->set_command(R2T2GuiProto::R2T2GuiMessage_Command_STARTAUDIO);
     sendR2T2GuiMsg();
-    cmdmutex.unlock();
+//    cmdmutex.unlock();
     if (fftTimeRep > 0)
         timer->start(fftTimeRep);
 }
@@ -98,7 +100,6 @@ void SdrR2T2::connected() {
     timer->stop();
 	qDebug() << "connected";
     inBuf.clear();
-    conn = true;
     if (startRx) 
         sendStartSeq();
     emit controlCommand(SRC_SDR, CMD_CONNECT, 1); 
@@ -111,7 +112,6 @@ void SdrR2T2::error(QAbstractSocket::SocketError /*error*/) {
 void SdrR2T2::disconnected() {
     tcpTimer->stop();
     inBuf.clear();
-    conn = false;
 	qDebug() << "disconnected";
     emit controlCommand(SRC_SDR, CMD_CONNECT, 0); 
 }
@@ -123,52 +123,40 @@ void SdrR2T2::tcpTimeout() {
 }
 
 void SdrR2T2::readServerTCPData() {
-    static int len = 0;
-
-    uint8_t buf[1024*64];
 
     while (tcpSocket->bytesAvailable()) {
-        len += tcpSocket->read((char*)buf+len, sizeof(buf)-len);
-        if (buf[0]!='R' || buf[1]!='2') {
-            qDebug("sync error: magic");
-            len = 0;
-            return;
-        }
+        tcp_buf_len += tcpSocket->read((char*)tcp_buf+tcp_buf_len, sizeof(tcp_buf)-tcp_buf_len);
     }
 
-    if (len >= 32000) {
-        qDebug() << "tcp sync error, resetting";
-        len = 0;
+    if (tcp_buf_len >= 32000) {
+        qDebug() << "tcp sync error: resetting";
+        tcp_buf_len = 0;
     }
-
-    int pktLen = buf[2]+(buf[3]<<8);
-    if (len < pktLen)
-        return;
 
     int pos = 0;
-    while(len > 0) {
+    while(tcp_buf_len > 0) {
 
-        if (buf[0]!='R' || buf[1]!='2') {
-            qDebug("tcp sync error: magic");
-            len = 0;
+        if (tcp_buf[0]!='R' || tcp_buf[1]!='2') {
+            qDebug("tcp sync error: resetting");
+            tcp_buf_len = 0;
             break;
         }
 
-        int pktLen = buf[pos+2]+(buf[pos+3]<<8);
+        int pktLen = tcp_buf[pos+2]+(tcp_buf[pos+3]<<8);
 
-        if (pktLen > len) {
+        if (pktLen > tcp_buf_len) {
             // packet fragmented
-            memcpy (buf, buf+pos, len);
+            memcpy (tcp_buf, tcp_buf+pos, tcp_buf_len);
             break;
         }
 
         if (pktLen > 8192) {
             qDebug() << "invalid packet";
-            len = 0;
+            tcp_buf_len = 0;
             break;
         }
 
-        if (r2t2GuiMsgAnswer->ParseFromArray(&buf[pos+4], pktLen)) {
+        if (r2t2GuiMsgAnswer->ParseFromArray(&tcp_buf[pos+4], pktLen)) {
 
             if (debugLevel == 5) {
                 std::string formated;
@@ -206,11 +194,11 @@ void SdrR2T2::readServerTCPData() {
             if (r2t2GuiMsgAnswer->has_version()) 
                 std::cout << "connected to client version " << r2t2GuiMsgAnswer->version() << std::endl;
 
-            len -= pktLen+4;
+            tcp_buf_len -= pktLen+4;
             pos += pktLen+4;
         } else {
             qDebug() << "parse error";
-            len = 0;
+            tcp_buf_len = 0;
             break; 
         }
 
@@ -220,12 +208,12 @@ void SdrR2T2::readServerTCPData() {
 
 void SdrR2T2::sendR2T2GuiMsg() {
 
-    if (!conn) 
+    if (!tcpSocket->isOpen())
         return;
 
-    mutex.lock();
+//    mutex.lock();
     if (r2t2GuiMsg->ByteSize() == 0) {
-        mutex.unlock();
+//        mutex.unlock();
         return;
     }
 
@@ -245,11 +233,11 @@ void SdrR2T2::sendR2T2GuiMsg() {
     tcpSocket->write((const char*)tcpOutBuf, out.str().size()+4);
 
     r2t2GuiMsg->Clear();
-    mutex.unlock();
+//    mutex.unlock();
 }
 
 void SdrR2T2::startRX() {
-    if (conn)
+    if (tcpSocket->isOpen())
         sendStartSeq();
     else {
         qDebug() << "startRX";
@@ -259,10 +247,10 @@ void SdrR2T2::startRX() {
 
 void SdrR2T2::stopRX() {
     startRx = false;
-    cmdmutex.lock();
+//    cmdmutex.lock();
     r2t2GuiMsg->set_command(R2T2GuiProto::R2T2GuiMessage_Command_STOPAUDIO);
     sendR2T2GuiMsg();
-    cmdmutex.unlock();
+//    cmdmutex.unlock();
 }
 
 void SdrR2T2::setRXFreq(uint32_t f) {
@@ -390,10 +378,10 @@ void SdrR2T2::selectPresel(int) {
 }
 
 void SdrR2T2::fftTime() {
-    cmdmutex.lock();
+//    cmdmutex.lock();
     r2t2GuiMsg->set_command(R2T2GuiProto::R2T2GuiMessage_Command_REQFFT);
     sendR2T2GuiMsg();
-    cmdmutex.unlock();
+//    cmdmutex.unlock();
 }
 
 void SdrR2T2::setRx(int) {

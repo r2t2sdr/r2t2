@@ -67,7 +67,7 @@ class SdrR2T2 : public Sdr  {
         void sendStartSeq();
         QTcpSocket *tcpSocket;
         QTimer *timer, *tcpTimer;
-        QMutex mutex, cmdmutex;
+//        QMutex mutex, cmdmutex;
 		QByteArray inBuf;
         QString ip;
         uint16_t port;
@@ -75,7 +75,6 @@ class SdrR2T2 : public Sdr  {
 		R2T2GuiProto::R2T2GuiMessageAnswer *r2t2GuiMsgAnswer;
 
 		void sendR2T2GuiMsg();
-        bool conn = false;
         bool startRx = false;
         int fftSize = 1024;
         int fftTimeRep = 0;
@@ -95,5 +94,7 @@ class SdrR2T2 : public Sdr  {
         int fftRate = 0;
         int gain = 0;
         int txFreq = 71000000;
+        uint8_t tcp_buf[1024*64];
+        int tcp_buf_len = 0;
 };
 
