@@ -69,15 +69,15 @@ Control::Control(char *ip, char* audiodev, char* audiodevMixer, char* mixerVolum
     audio = new Audio(audiodev, audiodevMixer, mixerVolume, mixerMic, conf->get(CMD_SAMPLE_RATE));
     //connect(audio, SIGNAL(audioTX(QByteArray)), sdr, SLOT(writeR2T2(QByteArray)), Qt::QueuedConnection);
 
-    timer = new QTimer(this);
-    timer->setSingleShot(true);
+    serverListUpdateTimer = new QTimer(this);
+    serverListUpdateTimer->setSingleShot(true);
 
 #ifdef UNIX
     //keyReader = new KeyReader();
 
     //connect(keyReader, SIGNAL(controlCommand(int,int,int)), this, SLOT(controlCommand(int,int,int))); 
 #endif
-    connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    connect(serverListUpdateTimer, SIGNAL(timeout()), this, SLOT(timeout()));
     connect(disp, SIGNAL(command(int, int, int)), this, SLOT(controlCommand(int, int, int)));
     connect(this, SIGNAL(displaySet(int, int, int)), disp, SLOT(displaySet(int, int, int)));
     connect(sdrqt, SIGNAL(audioRX(QByteArray)), audio, SLOT(audioRX(QByteArray)));
@@ -117,7 +117,7 @@ Control::Control(char *ip, char* audiodev, char* audiodevMixer, char* mixerVolum
     sdr->startRX();
     setMode();
 
-    timer->start(1000*120); // 2 min reread server
+    serverListUpdateTimer->start(1000*120); // 2 min reread server
 }
 
 Control::~Control() {
@@ -129,7 +129,7 @@ Control::~Control() {
     delete audio;
     delete sdr;
     delete disp;
-    delete timer;
+    delete serverListUpdateTimer;
 #ifdef UNIX
     //keyReader->restore();
     //keyReader->terminate();
@@ -146,7 +146,7 @@ void Control::cleanup() {
 
 void Control::timeout() {
     readServer();
-    timer->start(1000*120); // 2 min reread server
+    serverListUpdateTimer->start(1000*120); // 2 min reread server
 }
 
 void Control::readServer() {
@@ -344,7 +344,7 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
             break;
         case CMD_CONNECT:
             if (src == SRC_SDR) 
-                timer->start(2000); // read server afer 2s
+                serverListUpdateTimer->start(2000); // read server afer 2s
             else
                 sdr->connectServer(par>0);
             break;

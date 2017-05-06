@@ -66,7 +66,7 @@ class SdrR2T2 : public Sdr  {
     private:
         void sendStartSeq();
         QTcpSocket *tcpSocket;
-        QTimer *timer, *tcpTimer;
+        QTimer *fftTimer, *tcpTimer;
 //        QMutex mutex, cmdmutex;
 		QByteArray inBuf;
         QString ip;

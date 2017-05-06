@@ -20,26 +20,20 @@ SdrR2T2::SdrR2T2 (QString ip, int port) : ip(ip), port(port) {
     r2t2GuiMsgAnswer = new R2T2GuiProto::R2T2GuiMessageAnswer();
 
     tcpSocket = new QTcpSocket(this);
-    // tcpSocket->connectToHost(QHostAddress(ip), port);
-    connect(tcpSocket, SIGNAL(connected()), this, SLOT(connected()));
-    connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket::SocketError)));
-    connect (tcpSocket, SIGNAL(readyRead()), this, SLOT(readServerTCPData()));
-	tcpTimer = new QTimer(this);
+    tcpTimer = new QTimer(this);
     tcpTimer->setSingleShot(true);
-	connect(tcpTimer, SIGNAL(timeout()), this, SLOT(tcpTimeout()));
-    // tcpTimer->start(1000);
-	timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(fftTime()));
+    connect(tcpTimer, SIGNAL(timeout()), this, SLOT(tcpTimeout()));
+    fftTimer = new QTimer(this);
+    connect(fftTimer, SIGNAL(timeout()), this, SLOT(fftTime()));
 }
 
 SdrR2T2::~SdrR2T2() {
     tcpTimer->stop();
-    timer->stop();
+    fftTimer->stop();
     delete r2t2GuiMsg;
     delete r2t2GuiMsgAnswer;
     delete tcpSocket;
-	delete timer;
+    delete fftTimer;
 }
 
 void SdrR2T2::setServer(QString serverIP, uint16_t serverPort) {
@@ -52,10 +46,9 @@ void SdrR2T2::connectServer(bool con) {
         qDebug() << "connect to " << ip << port;
         if (tcpSocket) {
             tcpSocket->disconnectFromHost();
-            qDebug() << "disconnecting from old connection";
             msleep(200);
+            delete tcpSocket;
         }
-        delete tcpSocket;
         tcpSocket = new QTcpSocket(this);
         connect(tcpSocket, SIGNAL(connected()), this, SLOT(connected()));
         connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
@@ -63,11 +56,11 @@ void SdrR2T2::connectServer(bool con) {
         connect (tcpSocket, SIGNAL(readyRead()), this, SLOT(readServerTCPData()));
         tcpSocket->connectToHost(QHostAddress(ip), port);
         tcpTimer->start(1000);
-        qDebug() << "trying to connect to " << ip << port;
     } else {
-        qDebug() << "diconnect req";
+        qDebug() << "disconnect req";
         startRx = true;
-        timer->stop();
+        tcpTimer->stop();
+        fftTimer->stop();
         tcpSocket->disconnectFromHost();
     }
 }
@@ -92,17 +85,17 @@ void SdrR2T2::sendStartSeq() {
     sendR2T2GuiMsg();
 //    cmdmutex.unlock();
     if (fftTimeRep > 0)
-        timer->start(fftTimeRep);
+        fftTimer->start(fftTimeRep);
 }
 
 void SdrR2T2::connected() {
     tcpTimer->stop();
-    timer->stop();
-	qDebug() << "connected";
+    fftTimer->stop();
+    qDebug() << "connected";
     inBuf.clear();
-    if (startRx) 
+    if (startRx)
         sendStartSeq();
-    emit controlCommand(SRC_SDR, CMD_CONNECT, 1); 
+    emit controlCommand(SRC_SDR, CMD_CONNECT, 1);
 }
 
 void SdrR2T2::error(QAbstractSocket::SocketError /*error*/) {
@@ -112,8 +105,8 @@ void SdrR2T2::error(QAbstractSocket::SocketError /*error*/) {
 void SdrR2T2::disconnected() {
     tcpTimer->stop();
     inBuf.clear();
-	qDebug() << "disconnected";
-    emit controlCommand(SRC_SDR, CMD_CONNECT, 0); 
+    qDebug() << "disconnected";
+    emit controlCommand(SRC_SDR, CMD_CONNECT, 0);
 }
 
 void SdrR2T2::tcpTimeout() {
@@ -177,21 +170,21 @@ void SdrR2T2::readServerTCPData() {
                 emit audioRX(QByteArray((char*)outBuf, l*sizeof(uint16_t)));
             }
 
-            if (r2t2GuiMsgAnswer->has_fftdata()) 
+            if (r2t2GuiMsgAnswer->has_fftdata())
                 emit fftData(QByteArray(r2t2GuiMsgAnswer->fftdata().data(), r2t2GuiMsgAnswer->fftdata().size()));
 
             if (r2t2GuiMsgAnswer->has_rssi()) {
-                emit controlCommand(SRC_SDR, CMD_RSSI, (int)r2t2GuiMsgAnswer->rssi()); 
+                emit controlCommand(SRC_SDR, CMD_RSSI, (int)r2t2GuiMsgAnswer->rssi());
             }
 
 #if 0
-            if (r2t2GuiMsgAnswer->has_fftrate()) 
-                emit controlCommand(SRC_SDR, CMD_FFT_SAMPLE_RATE, r2t2GuiMsgAnswer->fftrate()); 
-#endif 
-            if (r2t2GuiMsgAnswer->has_gain()) 
-                emit controlCommand(SRC_SDR, CMD_PREAMP, r2t2GuiMsgAnswer->gain()); 
-            
-            if (r2t2GuiMsgAnswer->has_version()) 
+            if (r2t2GuiMsgAnswer->has_fftrate())
+                emit controlCommand(SRC_SDR, CMD_FFT_SAMPLE_RATE, r2t2GuiMsgAnswer->fftrate());
+#endif
+            if (r2t2GuiMsgAnswer->has_gain())
+                emit controlCommand(SRC_SDR, CMD_PREAMP, r2t2GuiMsgAnswer->gain());
+
+            if (r2t2GuiMsgAnswer->has_version())
                 std::cout << "connected to client version " << r2t2GuiMsgAnswer->version() << std::endl;
 
             tcp_buf_len -= pktLen+4;
@@ -199,7 +192,7 @@ void SdrR2T2::readServerTCPData() {
         } else {
             qDebug() << "parse error";
             tcp_buf_len = 0;
-            break; 
+            break;
         }
 
     }
@@ -316,8 +309,8 @@ void SdrR2T2::setFilter(int lo, int hi) {
 void SdrR2T2::setFFT(int time, int size) {
     fftSize = size;
     fftTimeRep = time;
-    timer->stop();
-    timer->start(fftTimeRep);
+    fftTimer->stop();
+    fftTimer->start(fftTimeRep);
     r2t2GuiMsg->set_fftsize(fftSize);
     sendR2T2GuiMsg();
 }
@@ -362,12 +355,12 @@ void SdrR2T2::setSquelch(int /*v*/) {
 }
 
 void SdrR2T2::terminate() {
-	sdrRun = false;
+    sdrRun = false;
 }
 
 void SdrR2T2::run() {
     while(sdrRun) {
-		msleep(200);
+        msleep(200);
     }
 }
 
