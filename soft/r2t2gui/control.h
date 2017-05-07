@@ -35,8 +35,8 @@ class Control : public QObject  {
 	private:
 		void setMode();
 
-		QTimer *timer;
-		QString r2t2IP;
+        QTimer *serverListUpdateTimer;
+        QString r2t2IP;
 		QUdpSocket *hamLibSocket;
         QNetworkAccessManager *manager;
 		Sdr *sdr, *sdrqt, *sdrr2t2;

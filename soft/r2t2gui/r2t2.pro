@@ -28,7 +28,15 @@ unix {
 	QT += multimedia
 } 
 
-INCLUDEPATH += /usr/local/include/ 
+
+# INCLUDEPATH += /usr/local/include/
+
+# PKG-Config is a more robust way to import libaries on Linux / Mac
+# since the libraries are not always installed at /usr/local/include
+unix {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += protobuf
+}
 
 SOURCES += main.cpp control.cpp sdrr2t2.cpp sdrqtradio.cpp
 SOURCES += display_touch.cpp display_lcd.cpp smeter.cpp clock.cpp
@@ -55,15 +63,19 @@ win32 {
 HEADERS += control.h sdr.h sdrr2t2.h sdrqtradio.h display_lcd.h display_touch.h display_base.h smeter.h clock.h
 HEADERS += textbutton.h numeric.h fftGraph.h filterGraph.h analog.h label.h sdrgraphicsitem.h
 
-unix {
-	#HEADERS += keyreader.h audio.h
-	# HEADERS += audioQt.h
-	HEADERS += audio.h
+unix:!mac {
+        #HEADERS += keyreader.h audio.h
+        # HEADERS += audioQt.h
+        HEADERS += audio.h
+}
+
+mac: {
+        HEADERS += audioQt.h
 }
 
 win32 {
-	# HEADERS += audio_win32.h
-	HEADERS += audioQt.h
+        # HEADERS += audio_win32.h
+        HEADERS += audioQt.h
 }
 
 FORMS    += display_touch.ui
