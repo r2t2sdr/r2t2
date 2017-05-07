@@ -66,7 +66,7 @@ class SdrQtRadio : public Sdr  {
     private:
         void sendStartSeq();
         QTcpSocket *tcpSocket;
-        QTimer *timer,*tcpTimer;
+        QTimer *fftTimer,*tcpTimer;
 		QByteArray inBuf;
         QString ip;
         uint16_t port;
