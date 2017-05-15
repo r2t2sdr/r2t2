@@ -11,10 +11,11 @@ class SdrR2T2 : public Sdr  {
 	Q_OBJECT
 
 	public:
-		SdrR2T2(QString ip, int port);
+        SdrR2T2(QString ip, int port, QObject *parent=0);
 		~SdrR2T2();
 
-		void run();
+    public slots:
+        void init();
 		void setRXFreq(uint32_t f);
 		void setTXFreq(uint32_t f);
 		void setSampleRate(int rate);
@@ -33,9 +34,9 @@ class SdrR2T2 : public Sdr  {
 		void setVolume(double);
 		void setMicGain(double);
 		void setToneTest(bool,  double, double, double, double);
-		void startRX();
-		void stopRX();
-		void setActive(bool);
+        void startRX();
+        void stopRX();
+        void setActive(bool);
 		void setAudioOff(bool);
 		void setTxDelay(int);
 		void setNBLevel(int);
@@ -45,8 +46,6 @@ class SdrR2T2 : public Sdr  {
 		void selectPresel(int);
         void setRx(int);
 
-	public slots:
-        void terminate();
 		void readServerTCPData();
         void setServer(QString ip, uint16_t port);
         void connectServer(bool);
@@ -65,17 +64,15 @@ class SdrR2T2 : public Sdr  {
 
     private:
         void sendStartSeq();
+        void disconnectServer();
         QTcpSocket *tcpSocket;
         QTimer *fftTimer, *tcpTimer;
-//        QMutex mutex, cmdmutex;
-		QByteArray inBuf;
         QString ip;
         uint16_t port;
 		R2T2GuiProto::R2T2GuiMessage *r2t2GuiMsg;
 		R2T2GuiProto::R2T2GuiMessageAnswer *r2t2GuiMsgAnswer;
 
 		void sendR2T2GuiMsg();
-        bool startRx = false;
         int fftSize = 1024;
         int fftTimeRep = 0;
 		int16_t outBuf[8192*2];

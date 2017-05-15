@@ -10,56 +10,52 @@
 #define AUDIO_BUF_SIZE		8192
 
 Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixerMic*/, int rate)  {
-	tx = false;
-	mute = false;
-	noutput_items = AUDIO_BUF_SIZE;
+    tx = false;
+    mute = false;
+    noutput_items = AUDIO_BUF_SIZE;
 
-    QAudioFormat format;
-	format.setSampleRate(rate);
-	format.setChannelCount(1);
-	format.setSampleSize(16);
-	format.setCodec("audio/pcm");
-	format.setByteOrder(QAudioFormat::LittleEndian);
-	format.setSampleType(QAudioFormat::SignedInt);
+    format.setSampleRate(rate);
+    format.setChannelCount(1);
+    format.setSampleSize(16);
+    format.setCodec("audio/pcm");
+    format.setByteOrder(QAudioFormat::LittleEndian);
+    format.setSampleType(QAudioFormat::SignedInt);
 
-	QList<QAudioDeviceInfo> audioDevicesOut =  QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
-	QList<QAudioDeviceInfo> audioDevicesIn =  QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
-	
-	QAudioDeviceInfo infoIn  = audioDevicesIn.at(0);
-	QAudioDeviceInfo infoOut = audioDevicesOut.at(0);
+    audioDevicesOut =  QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
+    audioDevicesIn =  QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+}
 
-	if (!infoIn.isFormatSupported(format)) {
-		qWarning()<<"AudioInput: default format not supported try to use nearest";
-		format = infoIn.nearestFormat(format);
-	}
-	if (!infoOut.isFormatSupported(format)) {
-		qWarning()<<"AudioInput: default format not supported try to use nearest";
-		format = infoOut.nearestFormat(format);
-	}
-	audioOutput = new QAudioOutput(infoOut, format);
-	audioInput = new QAudioInput(infoIn, format);
+void Audio::init(){
+
+    QAudioDeviceInfo infoIn  = audioDevicesIn.at(0);
+    QAudioDeviceInfo infoOut = audioDevicesOut.at(0);
+
+    if (!infoIn.isFormatSupported(format)) {
+        qWarning()<<"AudioInput: default format not supported try to use nearest";
+        format = infoIn.nearestFormat(format);
+    }
+    if (!infoOut.isFormatSupported(format)) {
+        qWarning()<<"AudioInput: default format not supported try to use nearest";
+        format = infoOut.nearestFormat(format);
+    }
+
+    audioOutput = new QAudioOutput(infoOut, format);
+    audioInput = new QAudioInput(infoIn, format);
 	audioInDev = NULL;
-	audioOutDev = NULL;
-	audioOutDev = audioOutput->start();
-    periodSize = audioOutput->periodSize();
-    periodTimeMS = 1000*periodSize/(rate*8)-1;
-	
-	mutex = new QMutex();
-	timer = new QTimer(this);
-
-    // qWarning() << "period" << periodTimeMS << audioOutput->notifyInterval();
-
-    connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
-    // timer->start(periodTimeMS);
+    audioOutDev = NULL;
+    audioOutDev = audioOutput->start();
     audioRun = true;
 }
 
 Audio::~Audio() {
-	timer->stop();
-	audioOutput->stop();
-	delete audioOutput;
-	delete audioInput;
-	delete timer;
+    if (audioOutput){
+        audioOutput->stop();
+        delete audioOutput;
+    }
+    if (audioInput){
+        audioInput->stop();
+        delete audioInput;
+    }
 }
 
 void Audio::audioMute(bool m) {
@@ -82,17 +78,30 @@ void Audio::audioRX(QByteArray out) {
 	if (!audioRun)
 		return;
 
+    if (audioOutput->bytesFree()>=audioOutput->periodSize()) {
+        int len = audioOutDev->write(audioOutBuf);
+        audioOutBuf.remove(0, len);
+        // qWarning() <<  "write" << len << audioOutBuf.size() << audioOutput->bytesFree() << periodSize;
+    }
+
+    if (audioInDev) {
+        QByteArray audioInData =  audioInDev->readAll();
+        if (audioInData.size())
+            emit audioTX(QByteArray(audioInData));
+    }
+
     if (audioOutBuf.size()>AUDIO_BUF_SIZE) {
         qWarning() << "# skip" << audioOutBuf.size();
         return;
     }
-    mutex->lock();
+
 	audioOutBuf.append(out);
-    if (audioOutBuf.size() < AUDIO_BUF_SIZE/2) {
-        audioOutBuf.append(out);
-        qWarning() << "# insert" << out.size() << audioOutput->bytesFree();
-    }
-    mutex->unlock();
+
+//    if (audioOutBuf.size() < AUDIO_BUF_SIZE/2) {
+//        audioOutBuf.append(out);
+//        qWarning() << "# insert" << out.size() << audioOutput->bytesFree();
+//    }
+
 }
 
 void Audio::timeout() {
@@ -100,26 +109,6 @@ void Audio::timeout() {
 
 void Audio::terminate() {
     audioRun = false;
-}
-
-void Audio::run() {
-    while(audioRun) {
-        // qWarning() << "in imeout" << audioOutput->bytesFree() << audioOutput->state();
-        mutex->lock();
-        if (audioOutput->bytesFree()>=periodSize) {
-            int len = audioOutDev->write(audioOutBuf);
-            audioOutBuf.remove(0, len);
-            // qWarning() <<  "write" << len << audioOutBuf.size() << audioOutput->bytesFree() << periodSize;
-        }
-        mutex->unlock();
-
-        if (audioInDev) {
-            QByteArray audioInData =  audioInDev->readAll();
-            if (audioInData.size())
-                emit audioTX(QByteArray(audioInData));
-        }
-        msleep(periodTimeMS);
-    }
 }
 
 void Audio::setVolume(int volume) {

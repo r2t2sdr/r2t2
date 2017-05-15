@@ -10,25 +10,29 @@
 #include "assert.h"
 #include "g711.h"
 
-SdrQtRadio::SdrQtRadio (QString ip, int port) : ip(ip), port(port) {
+SdrQtRadio::SdrQtRadio (QString ip, int port, QObject *parent) : ip(ip), port(port) {
     qDebug() << "initial connect" << ip << port+rx;
-    tcpSocket = new QTcpSocket(this);
-	// tcpSocket->connectToHost(QHostAddress(ip), port+rx);
-	connect(tcpSocket, SIGNAL(connected()), this, SLOT(connected()));
-	connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket::SocketError)));
-	connect (tcpSocket, SIGNAL(readyRead()), this, SLOT(readServerTCPData()));
-	tcpTimer = new QTimer(this);
-    tcpTimer->setSingleShot(true);
-	connect(tcpTimer, SIGNAL(timeout()), this, SLOT(tcpTimeout()));
-    // tcpTimer->start(1000);
-    fftTimer = new QTimer(this);
-    connect(fftTimer, SIGNAL(timeout()), this, SLOT(fftTime()));
 }
 
 SdrQtRadio::~SdrQtRadio() {
     delete tcpSocket;
-    delete fftTimer;
+    delete timer;
+    delete tcpTimer;
+}
+
+void SdrQtRadio::init() {
+    tcpSocket = new QTcpSocket(this);
+    // tcpSocket->connectToHost(QHostAddress(ip), port+rx);
+    connect(tcpSocket, SIGNAL(connected()), this, SLOT(connected()));
+    connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket::SocketError)));
+    connect (tcpSocket, SIGNAL(readyRead()), this, SLOT(readServerTCPData()));
+    tcpTimer = new QTimer(this);
+    tcpTimer->setSingleShot(true);
+    connect(tcpTimer, SIGNAL(timeout()), this, SLOT(tcpTimeout()));
+    // tcpTimer->start(1000);
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(fftTime()));
 }
 
 void SdrQtRadio::setServer(QString serverIP, uint16_t serverPort) {
@@ -41,7 +45,6 @@ void SdrQtRadio::connectServer(bool con) {
         qDebug() << "connect" << ip << port+rx;
         if (conn) {
             tcpSocket->disconnectFromHost();
-            msleep(200);
         }
 
         delete tcpSocket;
@@ -54,7 +57,7 @@ void SdrQtRadio::connectServer(bool con) {
         tcpTimer->start(1000);
     } else {
         startRx = true;
-        fftTimer->stop();
+        timer->stop();
         tcpSocket->disconnectFromHost();
     }
 }
@@ -68,7 +71,7 @@ void SdrQtRadio::sendStartSeq() {
     sendCmd("setEncoding 0");
     sendCmd("startAudioStream 800 8000 1 0");
     if (fftTimeRep > 0)
-        fftTimer->start(fftTimeRep);
+        timer->start(fftTimeRep);
 }
 
 void SdrQtRadio::connected() {
@@ -92,7 +95,7 @@ void SdrQtRadio::error(QAbstractSocket::SocketError /*error*/) {
 void SdrQtRadio::disconnected() {
     inBuf.clear();
     tcpTimer->stop();
-    fftTimer->stop();
+    timer->stop();
     conn = false;
 	qDebug() << "disconnected";
     emit controlCommand(SRC_SDR, CMD_CONNECT, 0); 
@@ -238,7 +241,7 @@ void SdrQtRadio::setFFT(int time, int size) {
     fftSize = size;
     fftTimeRep = time;
     if (fftTimeRep > 0)
-        fftTimer->start(fftTimeRep);
+        timer->start(fftTimeRep);
 }
 
 void SdrQtRadio::setMode(int m) {
@@ -273,16 +276,6 @@ void SdrQtRadio::setNotch(int /*v*/) {
 }
 
 void SdrQtRadio::setSquelch(int /*v*/) {
-}
-
-void SdrQtRadio::terminate() {
-	sdrRun = false;
-}
-
-void SdrQtRadio::run() {
-    while(sdrRun) {
-		msleep(200);
-    }
 }
 
 void SdrQtRadio::setComp(int) {

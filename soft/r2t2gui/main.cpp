@@ -85,8 +85,9 @@ int main(int argc, char *argv[])
 	}
 
     QApplication a(argc, argv);
+    qRegisterMetaType < uint32_t >("uint32_t");
 	Control *ctl = new Control(ip, audiodev, mixerdev, mixervol, mixermic, DEFAULT_SAMPLE_RATE, qtRadioMode);
-	QObject::connect(&a, SIGNAL(aboutToQuit()), ctl, SLOT(cleanup()));
+    QObject::connect(&a, SIGNAL(aboutToQuit()), ctl, SLOT(cleanup()));
 	a.exec();
 
 	return 0;

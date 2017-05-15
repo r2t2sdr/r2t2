@@ -4,15 +4,16 @@
 #include <QThread>
 #include <stdint.h>
 
-class Sdr : public QThread  {
+class Sdr : public QObject  {
 	Q_OBJECT
 
 	public:
 		// Sdr(QString ip, int port);
 		//Sdr();
-		virtual ~Sdr() {};
+        virtual ~Sdr() {}
 
-		virtual void run()=0;
+    public slots:
+        virtual void init()=0;
 		virtual void setRXFreq(uint32_t f)=0;
 		virtual void setTXFreq(uint32_t f)=0;
 		virtual void setSampleRate(int rate)=0;
@@ -43,8 +44,6 @@ class Sdr : public QThread  {
 		virtual void selectPresel(int)=0;
         virtual void setRx(int)=0;
 
-	public slots:
-        virtual void terminate()=0;
 		virtual void readServerTCPData()=0;
         virtual void setServer(QString ip, uint16_t port)=0;
         virtual void connectServer(bool)=0;

@@ -18,14 +18,13 @@ extern bool defaults;
 
 const char *SrcString[] = {"Display","Sdr", "Control", "Key", "DisplayKey"};
 
-
 Control::Control(char *ip, char* audiodev, char* audiodevMixer, char* mixerVolume, char* mixerMic, int sampleRate, bool qtRadioMode) :qtRadioMode(qtRadioMode)  {
 
     qDebug() << "R2T2 Version " << VERSION;
     initReady = false;
 
     manager = new QNetworkAccessManager(this);
-    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)), Qt::QueuedConnection);
 
     txChanged = 0;
     settings =  new QSettings("sdr","r2t2");
@@ -46,27 +45,36 @@ Control::Control(char *ip, char* audiodev, char* audiodevMixer, char* mixerVolum
     conf->set(CMD_SAMPLE_RATE, sampleRate);
     conf->set(CMD_TX_FREQ, conf->get(CMD_RX_FREQ));
 
-    if (touchscreen)
-        qApp->setOverrideCursor(QCursor( Qt::BlankCursor ));
-    disp = new Display_touch(settings);
-    //disp->start();
+    audioThread = new QThread;
 
-    sdrqt = new SdrQtRadio(r2t2IP, QT_SERVER_PORT);
+    audio = new Audio(audiodev, audiodevMixer, mixerVolume, mixerMic, conf->get(CMD_SAMPLE_RATE));
+    audio->moveToThread(audioThread);
+    connect(audioThread, SIGNAL(started()), audio, SLOT(init()));
+    audioThread->start(QThread::TimeCriticalPriority);
+
+    radioThread = new QThread;
+
+    sdrqt = new SdrQtRadio(r2t2IP, QT_SERVER_PORT, 0);
     sdrqt->setSampleRate(conf->get(CMD_SAMPLE_RATE));
-    sdrqt->setFFT(conf->get(CMD_FFT_TIME), conf->get(CMD_FFT_SIZE));
-    sdrqt->start();
+    sdrqt->moveToThread(radioThread);
+    connect(radioThread, SIGNAL(started()), sdrqt, SLOT(init()));
 
-    sdrr2t2 = new SdrR2T2(r2t2IP, R2T2_SERVER_PORT);
+    sdrr2t2 = new SdrR2T2(r2t2IP, R2T2_SERVER_PORT, 0);
     sdrr2t2->setSampleRate(conf->get(CMD_SAMPLE_RATE));
-    sdrr2t2->setFFT(conf->get(CMD_FFT_TIME), conf->get(CMD_FFT_SIZE));
-    sdrr2t2->start();
+    sdrr2t2->moveToThread(radioThread);
+    connect(radioThread, SIGNAL(started()), sdrr2t2, SLOT(init()));
+    radioThread->start();
 
     if (qtRadioMode)
         sdr = sdrqt; 
     else
         sdr = sdrr2t2; 
 
-    audio = new Audio(audiodev, audiodevMixer, mixerVolume, mixerMic, conf->get(CMD_SAMPLE_RATE));
+    if (touchscreen)
+        qApp->setOverrideCursor(QCursor( Qt::BlankCursor ));
+    disp = new Display_touch(settings);
+    disp->start();
+
     //connect(audio, SIGNAL(audioTX(QByteArray)), sdr, SLOT(writeR2T2(QByteArray)), Qt::QueuedConnection);
 
     serverListUpdateTimer = new QTimer(this);
@@ -77,15 +85,42 @@ Control::Control(char *ip, char* audiodev, char* audiodevMixer, char* mixerVolum
 
     //connect(keyReader, SIGNAL(controlCommand(int,int,int)), this, SLOT(controlCommand(int,int,int))); 
 #endif
-    connect(serverListUpdateTimer, SIGNAL(timeout()), this, SLOT(timeout()));
-    connect(disp, SIGNAL(command(int, int, int)), this, SLOT(controlCommand(int, int, int)));
-    connect(this, SIGNAL(displaySet(int, int, int)), disp, SLOT(displaySet(int, int, int)));
-    connect(sdrqt, SIGNAL(audioRX(QByteArray)), audio, SLOT(audioRX(QByteArray)));
-    connect(sdrqt, SIGNAL(fftData(QByteArray)), disp, SLOT(fftData(QByteArray)), Qt::QueuedConnection);
-    connect(sdrqt, SIGNAL(controlCommand(int,int,int)), this, SLOT(controlCommand(int,int,int)));
-    connect(sdrr2t2, SIGNAL(audioRX(QByteArray)), audio, SLOT(audioRX(QByteArray)));
+    connect(serverListUpdateTimer, SIGNAL(timeout()), this, SLOT(timeout()), Qt::QueuedConnection);
+    connect(disp, SIGNAL(command(int, int, int)), this, SLOT(controlCommand(int, int, int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(displaySet(int, int, int)), disp, SLOT(displaySet(int, int, int)), Qt::QueuedConnection);
+//    connect(sdrqt, SIGNAL(audioRX(QByteArray)), audio, SLOT(audioRX(QByteArray)), Qt::QueuedConnection);
+//    connect(sdrqt, SIGNAL(fftData(QByteArray)), disp, SLOT(fftData(QByteArray)), Qt::QueuedConnection);
+//    connect(sdrqt, SIGNAL(controlCommand(int,int,int)), this, SLOT(controlCommand(int,int,int)), Qt::QueuedConnection);
+    connect(sdrr2t2, SIGNAL(audioRX(QByteArray)), audio, SLOT(audioRX(QByteArray)), Qt::QueuedConnection);
     connect(sdrr2t2, SIGNAL(fftData(QByteArray)), disp, SLOT(fftData(QByteArray)), Qt::QueuedConnection);
-    connect(sdrr2t2, SIGNAL(controlCommand(int,int,int)), this, SLOT(controlCommand(int,int,int)));
+    connect(sdrr2t2, SIGNAL(controlCommand(int,int,int)), this, SLOT(controlCommand(int,int,int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setRXFreq(uint32_t)), sdrr2t2, SLOT(setRXFreq(uint32_t)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTXFreq(uint32_t)), sdrr2t2, SLOT(setTXFreq(uint32_t)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setSampleRate(int)), sdrr2t2, SLOT(setSampleRate(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setAnt(int)), sdrr2t2, SLOT(setAnt(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setPresel(int)), sdrr2t2, SLOT(setPresel(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setAttenuator(int)), sdrr2t2, SLOT(setAttenuator(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTXLevel(int)), sdrr2t2, SLOT(setTXLevel(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setPtt(bool)), sdrr2t2, SLOT(setPtt(bool)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTXRate(int)), sdrr2t2, SLOT(setTXRate(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setFilter(int,int)), sdrr2t2, SLOT(setFilter(int,int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setMode(int)), sdrr2t2, SLOT(setMode(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setGain(int)), sdrr2t2, SLOT(setGain(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setAGC(int)), sdrr2t2, SLOT(setAGC(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setFFT(int,int)), sdrr2t2, SLOT(setFFT(int,int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setFFTRate(int)), sdrr2t2, SLOT(setFFTRate(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setVolume(double)), sdrr2t2, SLOT(setVolume(double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setMicGain(double)), sdrr2t2, SLOT(setMicGain(double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setToneTest(bool,double,double,double,double)), sdrr2t2, SLOT(setToneTest(bool,double,double,double,double)), Qt::QueuedConnection);
+//    connect(this, SIGNAL(startRX()), sdrr2t2, SLOT(startRX()), Qt::QueuedConnection);
+//    connect(this, SIGNAL(stopRX()), sdrr2t2, SLOT(stopRX()), Qt::QueuedConnection);
+    connect(this, SIGNAL(setActive(bool)), sdrr2t2, SLOT(setActive(bool)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setAudioOff(bool)), sdrr2t2, SLOT(setAudioOff(bool)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTxDelay(int)), sdrr2t2, SLOT(setTxDelay(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setSquelch(int)), sdrr2t2, SLOT(setSquelch(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setComp(int)), sdrr2t2, SLOT(setComp(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setPresel(int)), sdrr2t2, SLOT(setPresel(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setRx(int)), sdrr2t2, SLOT(setRx(int)), Qt::QueuedConnection);
 
 #ifdef UNIX
     //keyReader->start();
@@ -93,8 +128,6 @@ Control::Control(char *ip, char* audiodev, char* audiodevMixer, char* mixerVolum
     hamLibSocket = new QUdpSocket(this);
     hamLibSocket->bind(13222, QUdpSocket::ShareAddress);
     connect(hamLibSocket, SIGNAL(readyRead()), this, SLOT(readHamLibUDPData()));
-
-    audio->start(QThread::TimeCriticalPriority);
 
     hpRxBufPos=0;
     sender=0;
@@ -110,11 +143,10 @@ Control::Control(char *ip, char* audiodev, char* audiodevMixer, char* mixerVolum
 
     readServer();
 
-    sdr->setTXRate(conf->get(CMD_SAMPLE_RATE));
-    sdr->setSampleRate(conf->get(CMD_SAMPLE_RATE));
-    sdr->setActive(true);
-    sdr->setAudioOff(false);
-    sdr->startRX();
+    emit setTXRate(conf->get(CMD_SAMPLE_RATE));
+    emit setSampleRate(conf->get(CMD_SAMPLE_RATE));
+    emit setActive(true);
+    emit setAudioOff(false);
     setMode();
 
     serverListUpdateTimer->start(1000*120); // 2 min reread server
@@ -122,12 +154,12 @@ Control::Control(char *ip, char* audiodev, char* audiodevMixer, char* mixerVolum
 
 Control::~Control() {
     writeSettings();
-    audio->terminate();
-    audio->wait();
-    sdr->terminate();
-    sdr->wait();
-    delete audio;
-    delete sdr;
+    audioThread->quit();
+    radioThread->quit();
+    radioThread->wait(200);
+    audioThread->wait(200);
+    delete audioThread;
+    delete radioThread;
     delete disp;
     delete serverListUpdateTimer;
 #ifdef UNIX
@@ -141,7 +173,7 @@ Control::~Control() {
 }
 
 void Control::cleanup() {
-    delete this;
+    deleteLater();
 }
 
 void Control::timeout() {
@@ -206,15 +238,15 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
 
     switch ((CtlCmd)cmd) {
         case CMD_EXIT:	// CTL_C
-            sdr->setPtt(false);	
-            sdr->setNBLevel(255);	
+            emit setPtt(false);
+            emit setNBLevel(255);
             QCoreApplication::exit();
             break;
         case CMD_RX_FREQ:
-            sdr->setRXFreq(conf->get(CMD_RX_FREQ));	
+            emit setRXFreq(conf->get(CMD_RX_FREQ));
             break;
         case CMD_TX_FREQ:
-            sdr->setTXFreq(conf->get(CMD_TX_FREQ));	
+            emit setTXFreq(conf->get(CMD_TX_FREQ));
             break;
         case CMD_MODE:
             setMode();
@@ -228,7 +260,7 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
         case CMD_TX:
             txChanged = 50;
             if (src != SRC_SDR)
-                sdr->setPtt(conf->get(CMD_TX));	
+                emit setPtt(conf->get(CMD_TX));
             audio->setTX(conf->get(CMD_TX));
             break;
         case CMD_VOLUME:
@@ -239,33 +271,33 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
             break;
         case CMD_PREAMP:
             if (src != SRC_SDR) 
-                sdr->setAttenuator(conf->get(CMD_PREAMP));	
+                emit setAttenuator(conf->get(CMD_PREAMP));
             break;
         case CMD_ANT:
-            sdr->setAnt(conf->get(CMD_ANT));	
+            emit setAnt(conf->get(CMD_ANT));
             break;
         case CMD_AGC:
-            sdr->setAGC(conf->get(CMD_AGC));
+            emit setAGC(conf->get(CMD_AGC));
             break;
         case CMD_TX_POWER:
-            sdr->setTXLevel(conf->get(CMD_TX_POWER));
+            emit setTXLevel(conf->get(CMD_TX_POWER));
             break;
         case CMD_FFT_SAMPLE_RATE:
-            sdr->setFFTRate(conf->get(CMD_FFT_SAMPLE_RATE));
+            emit setFFTRate(conf->get(CMD_FFT_SAMPLE_RATE));
             break;
         case CMD_GAIN:
             if (conf->get(CMD_GAIN)==0)
-                sdr->setGain(0);
+                emit setGain(0);
             else
-                sdr->setGain(exp(conf->get(CMD_GAIN)/5));
+                emit setGain(exp(conf->get(CMD_GAIN)/5));
             break;
         case CMD_FREQ_STEP_UP:
             conf->set(CMD_RX_FREQ, conf->get(CMD_RX_FREQ) + conf->get(CMD_STEP));
-            sdr->setRXFreq(conf->get(CMD_RX_FREQ));	
+            emit setRXFreq(conf->get(CMD_RX_FREQ));
             break;
         case CMD_FREQ_STEP_DOWN:
             conf->set(CMD_RX_FREQ, conf->get(CMD_RX_FREQ) - conf->get(CMD_STEP));
-            sdr->setRXFreq(conf->get(CMD_RX_FREQ));	
+            emit setRXFreq(conf->get(CMD_RX_FREQ));
             break;
         case CMD_TWO_TONE_TEST:
             {
@@ -295,27 +327,27 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
                     default:
                         f1=f3;l1=1;f2=0;l2=0;
                 }
-                sdr->setToneTest(conf->get(CMD_TWO_TONE_TEST)>0, f1,l1,f2,l2);
+                emit setToneTest(conf->get(CMD_TWO_TONE_TEST)>0, f1,l1,f2,l2);
             }
             break;
         case CMD_TX_DELAY:
-            sdr->setTxDelay(conf->get(CMD_TX_DELAY));
+            emit setTxDelay(conf->get(CMD_TX_DELAY));
             break;
         case CMD_NB_LEVEL:
-            sdr->setNBLevel(conf->get(CMD_NB_LEVEL));
+            emit setNBLevel(conf->get(CMD_NB_LEVEL));
             break;
         case CMD_SAMPLE_RATE:
-            sdr->setSampleRate(conf->get(CMD_SAMPLE_RATE));
+            emit setSampleRate(conf->get(CMD_SAMPLE_RATE));
             break;
         case CMD_NOTCH:
-            sdr->setNotch(conf->get(CMD_NOTCH));
+            emit setNotch(conf->get(CMD_NOTCH));
             break;
         case CMD_SQUELCH:
-            sdr->setSquelch(conf->get(CMD_SQUELCH));
+            emit setSquelch(conf->get(CMD_SQUELCH));
             break;
         case CMD_FFT_SIZE:
         case CMD_FFT_TIME:
-            sdr->setFFT(conf->get(CMD_FFT_TIME), conf->get(CMD_FFT_SIZE));
+            emit setFFT(conf->get(CMD_FFT_TIME), conf->get(CMD_FFT_SIZE));
             break;
         case CMD_LAYOUT_CHANGED:
             if (initReady) 
@@ -323,10 +355,10 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
                     controlCommand(SRC_CTL, i, conf->get(i), true);
             break;
         case CMD_AUDIO_COMP:
-            sdr->setComp(conf->get(CMD_AUDIO_COMP));
+            emit setComp(conf->get(CMD_AUDIO_COMP));
             break;
         case CMD_PRESEL:
-            sdr->selectPresel(conf->get(CMD_PRESEL));
+            emit selectPresel(conf->get(CMD_PRESEL));
             break;
         case CMD_CONNECT_SERVER:
             if (par < 0)
@@ -346,14 +378,14 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
             if (src == SRC_SDR) 
                 serverListUpdateTimer->start(2000); // read server afer 2s
             else
-                sdr->connectServer(par>0);
+                QMetaObject::invokeMethod(sdr, "connectServer", Qt::QueuedConnection, Q_ARG(bool, par>0));
             break;
         case CMD_QTRADIO_MODE:
             if (par == qtRadioMode)
                 return;
             qtRadioMode = par;
-            sdr->connectServer(0);
-            if (qtRadioMode) 
+            QMetaObject::invokeMethod(sdr, "connectServer", Qt::QueuedConnection, Q_ARG(bool, false));
+            if (qtRadioMode)
                 sdr = sdrqt; 
             else
                 sdr = sdrr2t2;
@@ -362,7 +394,7 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
             readServer();
             break;
         case CMD_QTRADIO_RX:
-            sdr->setRx(par);
+            emit setRx(par);
             break;
         case CMD_IN_LEVEL:
         case CMD_TXPOWER_PEEK_LEVEL:
@@ -392,25 +424,25 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
 }
 
 void Control::setMode() {
-    sdr->setMode(conf->get(CMD_MODE));
+    emit setMode(conf->get(CMD_MODE));
     switch(conf->get(CMD_MODE)) {
         case MODE_LSB:
-            sdr->setRXFreq(conf->get(CMD_RX_FREQ));	
-            sdr->setFilter(-conf->get(CMD_FILTER_RX_HI), -conf->get(CMD_FILTER_RX_LO));
+            emit setRXFreq(conf->get(CMD_RX_FREQ));
+            emit setFilter(-conf->get(CMD_FILTER_RX_HI), -conf->get(CMD_FILTER_RX_LO));
             break;
         case MODE_USB:
-            sdr->setRXFreq(conf->get(CMD_RX_FREQ));	
-            sdr->setFilter(conf->get(CMD_FILTER_RX_LO), conf->get(CMD_FILTER_RX_HI));
+            emit setRXFreq(conf->get(CMD_RX_FREQ));
+            emit setFilter(conf->get(CMD_FILTER_RX_LO), conf->get(CMD_FILTER_RX_HI));
             break;
         case MODE_CW:
-            sdr->setRXFreq(conf->get(CMD_RX_FREQ));	
-            sdr->setFilter(-conf->get(CMD_FILTER_RX_LO)/2, conf->get(CMD_FILTER_RX_LO)/2);
+            emit setRXFreq(conf->get(CMD_RX_FREQ));
+            emit setFilter(-conf->get(CMD_FILTER_RX_LO)/2, conf->get(CMD_FILTER_RX_LO)/2);
             break;
         case MODE_DSB:
         case MODE_AM:
         case MODE_FM:
-            sdr->setRXFreq(conf->get(CMD_RX_FREQ));	
-            sdr->setFilter(-conf->get(CMD_FILTER_RX_HI), conf->get(CMD_FILTER_RX_HI));
+            emit setRXFreq(conf->get(CMD_RX_FREQ));
+            emit setFilter(-conf->get(CMD_FILTER_RX_HI), conf->get(CMD_FILTER_RX_HI));
             break;
     }
 }

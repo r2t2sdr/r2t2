@@ -5,16 +5,16 @@
 #include "config.h"
 #include <alsa/asoundlib.h>
 
-class Audio : public QThread  {
+class Audio : public QObject  {
 	Q_OBJECT
 	public:
 		Audio(char*, char*, char*, char*, int rate);
 		~Audio();
-		void run();
 
 	signals:
 		void audioTX(QByteArray);
 	public slots:
+        void init();
 		void audioRX(QByteArray);
 		void setTX(bool);
 		void audioMute(bool);
@@ -41,7 +41,6 @@ class Audio : public QThread  {
 		int noutput_items;
 		bool mute;
 		QTimer *timer;
-		QMutex *mutex;
 		bool tx;
 		long volumeMax, volumeMin;
 		long micMax, micMin;

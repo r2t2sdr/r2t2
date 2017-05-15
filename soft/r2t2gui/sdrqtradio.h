@@ -10,10 +10,11 @@ class SdrQtRadio : public Sdr  {
 	Q_OBJECT
 
 	public:
-		SdrQtRadio(QString ip, int port);
+        SdrQtRadio(QString ip, int port, QObject *parent);
 		~SdrQtRadio();
 
-		void run();
+    public slots:
+        void init();
 		void setRXFreq(uint32_t f);
 		void setTXFreq(uint32_t f);
 		void setSampleRate(int rate);
@@ -44,8 +45,6 @@ class SdrQtRadio : public Sdr  {
 		void selectPresel(int);
         void setRx(int);
 
-	public slots:
-        void terminate();
 		void readServerTCPData();
         void setServer(QString ip, uint16_t port);
         void connectServer(bool);

@@ -478,13 +478,12 @@ MenuEntry menuMain[MAX_MENU] = {
 Display_touch::Display_touch(QSettings *settings, QWidget* /*parent*/) : Display_base(), settings(settings) , ui(new Ui::Display_touch){
 
 	initReady = false;
-	timer = new QTimer();
+//	timer = new QTimer();
 
 	fftSize=FFT_SIZE;
 	fftSampRate = RX_CLOCK; 
 	rxFreq = 7100000;
 	txFreq = 7100000;
-	update = true;
 	inputMode = false;
 	inputVal = 0;
 	txrx = true;
@@ -492,6 +491,7 @@ Display_touch::Display_touch(QSettings *settings, QWidget* /*parent*/) : Display
 	div2 = 40;
 	ptt = 0;
 	smtr = NULL;
+    pauseFFT = false;
 	fullScreen = 0;
 	volume = 0;
 	encSens = 5;
@@ -600,11 +600,12 @@ Display_touch::Display_touch(QSettings *settings, QWidget* /*parent*/) : Display
 
 	setLayout(layOut);
 
-	connect(timer, SIGNAL(timeout()), this, SLOT(updateOn()));
-	connect(smtr, SIGNAL(pressed(int,int)), this, SLOT(smtrPressed(int,int)));
-	connect(rxfreq, SIGNAL(changed(int)), this, SLOT(setFreq(int)));
-	connect(txfreq, SIGNAL(changed(int)), this, SLOT(setTXFreq(int)));
-	connect(filterGraph, SIGNAL(freqChanged(int)), this, SLOT(setFreq(int)));
+//    connect(timer, SIGNAL(timeout()), this, SLOT(updateOn()));
+    connect(smtr, SIGNAL(pressed(int,int)), this, SLOT(smtrPressed(int,int)), Qt::QueuedConnection);
+    connect(rxfreq, SIGNAL(changed(int)), this, SLOT(setFreq(int)), Qt::QueuedConnection);
+    connect(txfreq, SIGNAL(changed(int)), this, SLOT(setTXFreq(int)), Qt::QueuedConnection);
+    connect(filterGraph, SIGNAL(freqChanged(int)), this, SLOT(setFreq(int)), Qt::QueuedConnection);
+    connect(filterGraph, SIGNAL(pauseFFTUpdates(bool)), this, SLOT(pauseFFTUpdates(bool)));
 
 	initReady = true;
 #ifdef ANDROID
@@ -1038,7 +1039,7 @@ void Display_touch::displaySet(int src, int cmd, int val) {
 			break;
         case CMD_CONNECT_SERVER:
             displaySet(SRC_DISP, CMD_CONNECT_INFO, val); 
-            displaySet(SRC_DISP, CMD_CONNECT, connected); 
+            displaySet(SRC_DISP, CMD_CONNECT, connected);
             break;
 		case CMD_RX_FREQ:
 			freqChanged(val);
@@ -1257,8 +1258,8 @@ void Display_touch::setFFTSize(int val) {
 }
 
 void Display_touch::fftData(QByteArray fftData) {
-	if (!update)
-		return;
+    if (pauseFFT)
+        return;
 	fftGraph->fftDataReady(fftData);
 }
 
@@ -1280,14 +1281,10 @@ void Display_touch::freqChanged(int f) {
 	rxfreq->setVal(rxFreq);
 	filterGraph->setFreq(rxFreq);
 	filterGraph->setFilter(rxFreq, getVal(CMD_FILTER_RX_LO), getVal(CMD_FILTER_RX_HI), getVal(CMD_MODE));
-
-	update = false;
-	timer->start(200);
 }
 
-void Display_touch::updateOn() {
-	timer->stop();
-	update = true;
+void Display_touch::pauseFFTUpdates(bool p) {
+    pauseFFT = p;
 }
 
 void Display_touch::buttonPressed(int id, int val) {

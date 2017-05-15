@@ -40,8 +40,8 @@ class FFTGraph: public QObject, public SdrGraphicsItem  {
 	double v1[MAX_FFT];
 	QColor colorTab[256];
 	QPixmap *fftPixmap;
-	QPixmap *waterfallPixmap;
-	QSettings *settings;
+    QPixmap *waterfallPixmap;
+    QSettings *settings;
 	int xViewPos;
 
 	int nFFT;

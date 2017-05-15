@@ -29,6 +29,8 @@ SMeter::SMeter(QSettings *settings) : settings(settings) {
 	colorSmeterText = QColor(getSettings(settings,"display/colorSmeterText","#ffffff"));
 	colorPowerPeekBarValue = QColor(getSettings(settings,"display/colorPowerPeekBarValue","#d08000"));
 	colorPowerAvBarValue = QColor(getSettings(settings,"display/colorPowerAvBarValue","#f0f000"));
+
+    setCacheMode(QGraphicsItem::ItemCoordinateCache);
 }
 
 SMeter::~SMeter() {
