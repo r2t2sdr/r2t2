@@ -23,6 +23,7 @@ Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixe
 
     audioDevicesOut =  QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
     audioDevicesIn =  QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+
 }
 
 void Audio::init(){
@@ -40,11 +41,20 @@ void Audio::init(){
     }
 
     audioOutput = new QAudioOutput(infoOut, format);
+    audioOutput->setBufferSize(AUDIO_BUF_SIZE);
+    connect(audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioOutStateChanged(QAudio::State)));
+    connect(audioOutput, SIGNAL(notify()), this, SLOT(writeAudioOut()));
+    audioOutput->setNotifyInterval(AUDIO_TIMEOUT);
+    audioOutDev = audioOutput->start();
+    // start writing silence to the audio sink
+    audioOutBuf = QByteArray(5000, '\x0');
+    audioOutDev->write(audioOutBuf);
+
+    // TBD start reading from Microphone
     audioInput = new QAudioInput(infoIn, format);
 	audioInDev = NULL;
-    audioOutDev = NULL;
-    audioOutDev = audioOutput->start();
     audioRun = true;
+
 }
 
 Audio::~Audio() {
@@ -78,43 +88,61 @@ void Audio::audioRX(QByteArray out) {
 	if (!audioRun)
 		return;
 
-    if (audioOutput->bytesFree()>=audioOutput->periodSize()) {
-        int len = audioOutDev->write(audioOutBuf);
-        audioOutBuf.remove(0, len);
-        // qWarning() <<  "write" << len << audioOutBuf.size() << audioOutput->bytesFree() << periodSize;
-    }
-
-    if (audioInDev) {
-        QByteArray audioInData =  audioInDev->readAll();
-        if (audioInData.size())
-            emit audioTX(QByteArray(audioInData));
+    if (audioOutBuf.length() + out.length() < AUDIO_BUF_SIZE - out.length()){
+        audioOutBuf.append(out);
     }
 
     if (audioOutBuf.size()>AUDIO_BUF_SIZE) {
-        qWarning() << "# skip" << audioOutBuf.size();
+        qWarning() << "# audio buffer overflow" << audioOutBuf.size() << "bytes";
         return;
     }
-
-	audioOutBuf.append(out);
-
-//    if (audioOutBuf.size() < AUDIO_BUF_SIZE/2) {
-//        audioOutBuf.append(out);
-//        qWarning() << "# insert" << out.size() << audioOutput->bytesFree();
-//    }
-
 }
 
-void Audio::timeout() {
+void Audio::audioOutStateChanged(QAudio::State state)
+{
+    if (audioOutput->error() != QAudio::NoError){
+        qDebug() << "audio output state:" << state << "error:" << audioOutput->error();
+    }
 }
 
-void Audio::terminate() {
-    audioRun = false;
+void Audio::readAudioIn(){
+        if (audioInDev) {
+            QByteArray audioInData =  audioInDev->readAll();
+            if (audioInData.size())
+                emit audioTX(QByteArray(audioInData));
+        }
+}
+
+void Audio::writeAudioOut()
+{
+    if (audioOutBuf.length() > 0){
+        int len = audioOutDev->write(audioOutBuf);
+        audioOutBuf.remove(0, len);
+        return;
+    }
+    // write silence if audioOutbuf is empty to avoid underrun
+    if (audioOutDev){
+        QByteArray buf(2000, '\x0');
+        audioOutDev->write(buf);
+    }
 }
 
 void Audio::setVolume(int volume) {
-    audioOutput->setVolume(1.0*volume/256);
+    if (!audioOutput){
+        qDebug() << "audioOutput not initialized";
+        return;
+    }
+    if (audioOutput->state() == QAudio::ActiveState){
+        audioOutput->setVolume(1.0*volume/256);
+    }
 }
 
 void Audio::setMic(int volume) {
-    audioInput->setVolume(1.0*volume/256);
+    if (!audioInput){
+        qDebug() << "audioInput not initialized";
+        return;
+    }
+    if (audioInput->state() == QAudio::ActiveState){
+         audioInput->setVolume(1.0*volume/256);
+    }
 }

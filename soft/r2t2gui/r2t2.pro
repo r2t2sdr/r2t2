@@ -65,8 +65,8 @@ HEADERS += textbutton.h numeric.h fftGraph.h filterGraph.h analog.h label.h sdrg
 
 unix:!mac {
         #HEADERS += keyreader.h audio.h
-        # HEADERS += audioQt.h
-        HEADERS += audio.h
+         HEADERS += audioQt.h
+#        HEADERS += audio.h
 }
 
 mac: {

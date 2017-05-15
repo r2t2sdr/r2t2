@@ -19,11 +19,12 @@ class Audio : public QObject  {
 		void audioRX(QByteArray);
 		void setTX(bool);
 		void audioMute(bool);
-        void terminate();
 		void setVolume(int volume);
 		void setMic(int mic);
-	private slots:
-		void timeout();
+private slots:
+        void writeAudioOut();
+        void readAudioIn();
+        void audioOutStateChanged(QAudio::State state);
 
 	private:
         QAudioFormat format;
@@ -31,13 +32,11 @@ class Audio : public QObject  {
         QList<QAudioDeviceInfo> audioDevicesIn;
         QAudioOutput *audioOutput;
         QAudioInput *audioInput;
-		QBuffer *audioOutBuffer, *audioInBuffer;
         QIODevice *audioOutDev, *audioInDev;
-		QByteArray audioOutBuf;
+        QByteArray audioOutBuf;
 
         int noutput_items;
         bool tx,mute;
-		QTimer *timer;
         bool audioRun;
 		int minOutSize;
         int periodTimeMS;

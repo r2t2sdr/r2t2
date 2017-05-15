@@ -52,6 +52,9 @@ class Control : public QObject  {
         void setComp(int);
         void selectPresel(int);
         void setRx(int);
+        void setTX(bool);
+        void setVolume(int);
+        void setMic(int);
 
 
 	private slots:

@@ -88,9 +88,10 @@ Control::Control(char *ip, char* audiodev, char* audiodevMixer, char* mixerVolum
     connect(serverListUpdateTimer, SIGNAL(timeout()), this, SLOT(timeout()), Qt::QueuedConnection);
     connect(disp, SIGNAL(command(int, int, int)), this, SLOT(controlCommand(int, int, int)), Qt::QueuedConnection);
     connect(this, SIGNAL(displaySet(int, int, int)), disp, SLOT(displaySet(int, int, int)), Qt::QueuedConnection);
-//    connect(sdrqt, SIGNAL(audioRX(QByteArray)), audio, SLOT(audioRX(QByteArray)), Qt::QueuedConnection);
-//    connect(sdrqt, SIGNAL(fftData(QByteArray)), disp, SLOT(fftData(QByteArray)), Qt::QueuedConnection);
-//    connect(sdrqt, SIGNAL(controlCommand(int,int,int)), this, SLOT(controlCommand(int,int,int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTX(bool)), audio, SLOT(setTX(bool)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setMic(int)), audio, SLOT(setMic(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setVolume(int)), audio, SLOT(setVolume(int)), Qt::QueuedConnection);
+
     connect(sdrr2t2, SIGNAL(audioRX(QByteArray)), audio, SLOT(audioRX(QByteArray)), Qt::QueuedConnection);
     connect(sdrr2t2, SIGNAL(fftData(QByteArray)), disp, SLOT(fftData(QByteArray)), Qt::QueuedConnection);
     connect(sdrr2t2, SIGNAL(controlCommand(int,int,int)), this, SLOT(controlCommand(int,int,int)), Qt::QueuedConnection);
@@ -121,6 +122,43 @@ Control::Control(char *ip, char* audiodev, char* audiodevMixer, char* mixerVolum
     connect(this, SIGNAL(setComp(int)), sdrr2t2, SLOT(setComp(int)), Qt::QueuedConnection);
     connect(this, SIGNAL(setPresel(int)), sdrr2t2, SLOT(setPresel(int)), Qt::QueuedConnection);
     connect(this, SIGNAL(setRx(int)), sdrr2t2, SLOT(setRx(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTX(bool)), audio, SLOT(setTX(bool)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setMic(int)), audio, SLOT(setMic(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setVolume(int)), audio, SLOT(setVolume(int)), Qt::QueuedConnection);
+
+    connect(sdrqt, SIGNAL(audioRX(QByteArray)), audio, SLOT(audioRX(QByteArray)), Qt::QueuedConnection);
+    connect(sdrqt, SIGNAL(fftData(QByteArray)), disp, SLOT(fftData(QByteArray)), Qt::QueuedConnection);
+    connect(sdrqt, SIGNAL(controlCommand(int,int,int)), this, SLOT(controlCommand(int,int,int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setRXFreq(uint32_t)), sdrqt, SLOT(setRXFreq(uint32_t)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTXFreq(uint32_t)), sdrqt, SLOT(setTXFreq(uint32_t)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setSampleRate(int)), sdrqt, SLOT(setSampleRate(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setAnt(int)), sdrqt, SLOT(setAnt(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setPresel(int)), sdrqt, SLOT(setPresel(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setAttenuator(int)), sdrqt, SLOT(setAttenuator(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTXLevel(int)), sdrqt, SLOT(setTXLevel(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setPtt(bool)), sdrqt, SLOT(setPtt(bool)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTXRate(int)), sdrqt, SLOT(setTXRate(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setFilter(int,int)), sdrqt, SLOT(setFilter(int,int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setMode(int)), sdrqt, SLOT(setMode(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setGain(int)), sdrqt, SLOT(setGain(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setAGC(int)), sdrqt, SLOT(setAGC(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setFFT(int,int)), sdrqt, SLOT(setFFT(int,int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setFFTRate(int)), sdrqt, SLOT(setFFTRate(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setVolume(double)), sdrqt, SLOT(setVolume(double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setMicGain(double)), sdrqt, SLOT(setMicGain(double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setToneTest(bool,double,double,double,double)), sdrqt, SLOT(setToneTest(bool,double,double,double,double)), Qt::QueuedConnection);
+//    connect(this, SIGNAL(startRX()), sdrqt, SLOT(startRX()), Qt::QueuedConnection);
+//    connect(this, SIGNAL(stopRX()), sdrqt, SLOT(stopRX()), Qt::QueuedConnection);
+    connect(this, SIGNAL(setActive(bool)), sdrqt, SLOT(setActive(bool)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setAudioOff(bool)), sdrqt, SLOT(setAudioOff(bool)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTxDelay(int)), sdrqt, SLOT(setTxDelay(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setSquelch(int)), sdrqt, SLOT(setSquelch(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setComp(int)), sdrqt, SLOT(setComp(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setPresel(int)), sdrqt, SLOT(setPresel(int)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setRx(int)), sdrqt, SLOT(setRx(int)), Qt::QueuedConnection);
+
+
+
 
 #ifdef UNIX
     //keyReader->start();
@@ -261,13 +299,13 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
             txChanged = 50;
             if (src != SRC_SDR)
                 emit setPtt(conf->get(CMD_TX));
-            audio->setTX(conf->get(CMD_TX));
+            emit setTX(conf->get(CMD_TX));
             break;
         case CMD_VOLUME:
-            audio->setVolume(conf->get(CMD_VOLUME));
+            emit setVolume(conf->get(CMD_VOLUME));
             break;
         case CMD_MIC:
-            audio->setMic(conf->get(CMD_MIC));
+            emit setMic(conf->get(CMD_MIC));
             break;
         case CMD_PREAMP:
             if (src != SRC_SDR) 
