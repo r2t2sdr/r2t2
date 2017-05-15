@@ -364,6 +364,9 @@ void Control::controlCommand(int src, int cmd, int par, bool initial) {
         case CMD_QTRADIO_RX:
             sdr->setRx(par);
             break;
+        case CMD_NOISE_FILTER:
+            sdr->setNoiseFilter(par);
+            break;
         case CMD_IN_LEVEL:
         case CMD_TXPOWER_PEEK_LEVEL:
         case CMD_TXPOWER_AV_LEVEL:

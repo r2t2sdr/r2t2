@@ -81,6 +81,7 @@ void SdrR2T2::sendStartSeq() {
     // not send, if not pressed
     // r2t2GuiMsg->set_gain(gain);
     r2t2GuiMsg->set_txfreq(txFreq);
+    r2t2GuiMsg->set_noise(noise);
     r2t2GuiMsg->set_command(R2T2GuiProto::R2T2GuiMessage_Command_STARTAUDIO);
     sendR2T2GuiMsg();
 //    cmdmutex.unlock();
@@ -378,4 +379,10 @@ void SdrR2T2::fftTime() {
 }
 
 void SdrR2T2::setRx(int) {
+}
+
+void SdrR2T2::setNoiseFilter(int v) {
+    noise = v;
+    r2t2GuiMsg->set_noise(noise);
+    sendR2T2GuiMsg();
 }

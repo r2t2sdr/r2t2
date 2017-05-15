@@ -21,7 +21,7 @@
 
 #define MAX_RX 	16	
 
-class R2T2RadioListener : QObject  {
+class R2T2RadioListener : public QObject  {
 	Q_OBJECT
 	public:
 		R2T2RadioListener(QSettings *settings, QString addr, quint16 port, quint16 listenPort, uint32_t sampleRate);
@@ -29,17 +29,22 @@ class R2T2RadioListener : QObject  {
 
 	public slots:
 
+    signals:
+        void triggerWatchdog(int);
+
+
 	private slots:
         void newConnection();
         void disconnected();
         void postAnswer(QNetworkReply *answer);
         void updatePublic();
+        void sendWatchdog();
 
 	private:
 		QSettings *settings;
         QString addr;
         QNetworkAccessManager *networkManager; 
-		QTimer *timer;
+		QTimer *timer, *watchTimer;
         quint16 port;
         QTcpServer *tcpServer;
         R2T2ClientQtRadio *r2t2ClientQtRadio;

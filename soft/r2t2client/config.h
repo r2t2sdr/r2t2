@@ -1,7 +1,7 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
-#define VERSION "1.0"
+#define VERSION "1.1.0"
 
 #define QTRADIO_SERVER_PORT 11000	
 #define QTRADIO_DSP_PORT	8000
@@ -32,5 +32,6 @@
 #define amplFFTOffset      18
 
 #define CW_OFFSET           600
+#define MIN_CUT_OFF_FREQ    100
 
 #endif

@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define MAX_RX 			8 
+#define MAX_RX 			16
 #define MAX_TX			1
 #define MAX_RX_SAMPLES 	2048
 #define MAX_TX_SAMPLES 	(8*1024)

@@ -43,6 +43,7 @@ class SdrQtRadio : public Sdr  {
 		void setComp(int);
 		void selectPresel(int);
         void setRx(int);
+        void setNoiseFilter(int);
 
 	public slots:
         void terminate();

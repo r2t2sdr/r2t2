@@ -16,7 +16,7 @@ Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixe
 
     QAudioFormat format;
 	format.setSampleRate(rate);
-	format.setChannelCount(1);
+    format.setChannelCount(1);
 	format.setSampleSize(16);
 	format.setCodec("audio/pcm");
 	format.setByteOrder(QAudioFormat::LittleEndian);
@@ -27,6 +27,23 @@ Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixe
 	
 	QAudioDeviceInfo infoIn  = audioDevicesIn.at(0);
 	QAudioDeviceInfo infoOut = audioDevicesOut.at(0);
+
+#if 0
+    int n=0;
+    qDebug() << "\navaiable audio output devices:";
+    foreach (const QAudioDeviceInfo &deviceInfo, audioDevicesOut) {
+        qDebug() << n++ << "Device name: " << deviceInfo.deviceName();
+        foreach (const int freq, deviceInfo.supportedSampleRates())
+            qDebug() << freq;
+    }
+    qDebug() << "\nusing audio output :" << infoOut.deviceName();
+
+    qDebug() << "\navaiable audio input devices:";
+    foreach (const QAudioDeviceInfo &deviceInfo, audioDevicesIn) {
+        qDebug() << "Device name: " << deviceInfo.deviceName();
+    }
+    qDebug() << "\nusing audio in:" << infoIn.deviceName();
+#endif
 
 	if (!infoIn.isFormatSupported(format)) {
 		qWarning()<<"AudioInput: default format not supported try to use nearest";
@@ -47,7 +64,7 @@ Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixe
 	mutex = new QMutex();
 	timer = new QTimer(this);
 
-    // qWarning() << "period" << periodTimeMS << audioOutput->notifyInterval();
+    qWarning() << "period" << periodTimeMS << audioOutput->notifyInterval();
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
     // timer->start(periodTimeMS);
@@ -104,7 +121,7 @@ void Audio::terminate() {
 
 void Audio::run() {
     while(audioRun) {
-        // qWarning() << "in imeout" << audioOutput->bytesFree() << audioOutput->state();
+        // qWarning() << "in timeout" << audioOutput->bytesFree() << audioOutput->state();
         mutex->lock();
         if (audioOutput->bytesFree()>=periodSize) {
             int len = audioOutDev->write(audioOutBuf);

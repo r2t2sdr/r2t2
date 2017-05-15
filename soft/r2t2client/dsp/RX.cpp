@@ -14,7 +14,7 @@ RX::RX(std::string name, uint32_t sampleRate) : ProcessBlock(name, 2, 2), sample
 	firDecim = new FIRDecim("fir_decim", decimation, 0.25);
 	rotate1 = new Rotate("rotate1", 0);
 	rotate2 = new Rotate("rotate2", 0);
-	fft = new FFT("fft", 2048);
+	fft = new FFT("fftWaterfall", 2048, false, BlackmanNuttall, 1);
     split = new Split("split");
     nfSplit = new Split("nfSplit");
     fftInterpol = new FFTInterpol("interpol", 2048);
@@ -22,6 +22,9 @@ RX::RX(std::string name, uint32_t sampleRate) : ProcessBlock(name, 2, 2), sample
     sMeter = new SMeter("smeter");
     notch = new Notch("notch");
     null = new Null("Null");
+	fftFilter1 = new FFT_real ("fft1", 1024, Hanning, 2);
+	fftFilter2 = new FFTi_real("fft2", 1024, Hanning, 2);
+    noiseFilter = new NoiseFilter("noiseFilter");
 
 	ProcessBlock::connect(0, split, 0);
 	ProcessBlock::connect(1, fft, 0);
@@ -33,17 +36,28 @@ RX::RX(std::string name, uint32_t sampleRate) : ProcessBlock(name, 2, 2), sample
     rotate1->connect(0, firDecim, 0);
     firDecim->connect(0, rotate2, 0); 
 	rotate2->connect(0, nfSplit, 0);
+
 	nfSplit->connect(0, ssbDemod, 0);
     ssbDemod->connect(0, agc, 0); 
-    agc->connect(0, g711Encode, 0); 
+    // agc->connect(0, g711Encode, 0); 
+    
+    agc->connect(0, fftFilter1, 0); 
+    fftFilter1->connect(0, noiseFilter, 0);
+    noiseFilter->connect(0, fftFilter2, 0);
+    fftFilter2->connect(0, g711Encode, 0);
 
 	nfSplit->connect(1, sMeter, 0);
 
     setMode(RX_LSB);
     setFilter(-3000,3000);
+
+    running = true;
 }
 
 RX::~RX() {
+    mutex.lock();
+    running = false;
+    mutex.unlock();
 	delete amDemod;
 	delete ssbDemod;
 	delete g711Encode;
@@ -58,6 +72,9 @@ RX::~RX() {
     delete sMeter;
     delete notch;
     delete null;
+    delete fftFilter1;
+    delete fftFilter2;
+    delete noiseFilter;
 }
 
 int RX::setFFTSize(int size) {
@@ -72,6 +89,7 @@ void RX::setAGCDec(int n) {
 }
 
 void RX::setNotch(bool n) {
+    return;
     if (n) {
         agc->connect(0, notch, 0);
         notch->connect(0, g711Encode, 0); 
@@ -90,8 +108,9 @@ void RX::setFFTAudio(bool audio) {
 }
 
 void RX::setFilter(int32_t low, int32_t high) {
-	if (low > high) {
+	if (low >= high) {
 		qDebug() << "file low >= high: " << low << high << ", ignoring";
+        return;
 	}
 	if (abs(low) >= (int32_t)sampleRate/2)  {
 		// qDebug() << "Filter low freq out of range: " << low;
@@ -101,7 +120,13 @@ void RX::setFilter(int32_t low, int32_t high) {
 		// qDebug() << "Filter high freq out of range: " << high; 
 		high = (int32_t)sampleRate/2-1;
 	}
-    firDecim->setCutOffFreq((float)(abs(high-low))/sampleRate/2);
+
+	float cutOffFreq = (float)(abs(high-low))/sampleRate/2;
+	if (cutOffFreq < 100.0/sampleRate)
+		cutOffFreq = 100.0/sampleRate;
+	if (cutOffFreq > 0.5)
+		cutOffFreq = 0.5;
+    firDecim->setCutOffFreq(cutOffFreq);
     rxOffset = (high+low)/2;
 	rotate1->setFreq(-1.0*rxOffset/sampleRate);
     if (rxMode==RX_CWL || rxMode == RX_CWU)
@@ -135,9 +160,19 @@ void RX::setMode(RXMode mode) {
 
 }
 
+void RX::setNoise(int v) {
+    noiseFilter->setLevel(v);
+}
+
 int RX::receive(std::shared_ptr<ProcessBuffer> buf, uint32_t input, int recursion) {
+    int n=0;
 	startGlobTime();
-	return inputProcess(buf, input, recursion);
+
+    mutex.lock();
+    if (running) 
+        n = inputProcess(buf, input, recursion);
+    mutex.unlock();
+    return n;
 }
 
 int RX::connect(uint32_t output, ProcessBlock *dest, uint32_t input) {

@@ -2,5 +2,5 @@
 
 export CROSS_COMPILE=arm-xilinx-linux-gnueabi-
 export LANG=C
-source /opt/Xilinx/Vivado/2015.2/settings64.sh
-source /opt/Xilinx/SDK/2015.2/settings64.sh
+source /opt/Xilinx/Vivado/2017.1/settings64.sh
+source /opt/Xilinx/SDK/2017.1/settings64.sh

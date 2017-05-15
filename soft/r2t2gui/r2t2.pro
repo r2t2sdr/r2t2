@@ -50,8 +50,7 @@ LIBS += -lprotobuf
 
 unix {
 	#SOURCES += keyreader.cpp audio.cpp
-	#SOURCES += audioQt.cpp
-	#SOURCES += audio.cpp
+	# SOURCES += audio.cpp
 	SOURCES += audioQt.cpp
 }
 
@@ -63,10 +62,10 @@ win32 {
 HEADERS += control.h sdr.h sdrr2t2.h sdrqtradio.h display_lcd.h display_touch.h display_base.h smeter.h clock.h
 HEADERS += textbutton.h numeric.h fftGraph.h filterGraph.h analog.h label.h sdrgraphicsitem.h
 
-unix:!mac {
-        #HEADERS += keyreader.h audio.h
-        # HEADERS += audioQt.h
-        HEADERS += audio.h
+unix {
+	#HEADERS += keyreader.h
+	HEADERS += audioQt.h
+	# HEADERS += audio.h
 }
 
 mac: {

@@ -151,6 +151,8 @@ namespace gr {
                                 memcpy(outBuf+outBufPos, r2t2Msg->rxdata().data(), r2t2Msg->rxdata().size()); 
                                 outBufPos+=r2t2Msg->rxdata().size();
 
+                                //if (noutput_items > 512)
+                                //    noutput_items=512;
                                 if (outBufPos >= noutput_items*sizeof(gr_complex)) {
                                     memcpy(out, outBuf, noutput_items*sizeof(gr_complex));
                                     if (outBufPos - noutput_items*sizeof(gr_complex) > 0) 

@@ -1,6 +1,7 @@
 #ifndef _RX_H_
 #define _RX_H_
 
+#include <QMutex>
 #include <stdint.h>
 #include "ProcessBlock.h"
 #include "AMDemod.h"
@@ -10,11 +11,14 @@
 #include "FIRDecim.h"
 #include "Rotate.h"
 #include "FFT.h"
+#include "FFT_real.h"
+#include "FFTi_real.h"
 #include "FFTInterpol.h"
 #include "Split.h"
 #include "AGC.h"
 #include "SMeter.h"
 #include "Notch.h"
+#include "NoiseFilter.h"
 #include "Null.h"
 
 enum RXMode {
@@ -46,8 +50,10 @@ class RX: public ProcessBlock
         void setFilter(int32_t lo, int32_t high);
         void setNotch(bool);
         void setFFTAudio(bool);
+        void setNoise(int);
 
 	private:
+
 		AMDemod *amDemod; 
 		SSBDemod *ssbDemod; 
 		FMDemod *fmDemod; 
@@ -55,17 +61,22 @@ class RX: public ProcessBlock
 		FIRDecim *firDecim;
 		Rotate *rotate1, *rotate2;
         FFT *fft;
+        FFT_real *fftFilter1; 
+        FFTi_real *fftFilter2;
         FFTInterpol *fftInterpol;
         Split *split, *nfSplit;
 		AGC *agc;
         SMeter *sMeter;
         Notch *notch;
+        NoiseFilter *noiseFilter;
         Null *null;
 
+        QMutex mutex;
         RXMode rxMode;
         int32_t rxOffset;
         uint32_t sampleRate;
         uint32_t decimation;
+        bool running;
 };
 
 #endif

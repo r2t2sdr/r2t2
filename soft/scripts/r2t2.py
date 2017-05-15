@@ -24,14 +24,20 @@ port = 8008
 
 ip = os.environ["REMOTE_ADDR"]
 
+if call == None:
+    print ("Content-type: text/html")
+    print ()
+    print ("ok")
+    quit() 
 
 lock = LockFile(r2t2lock)
 while not lock.i_am_locking():
     try:
-        lock.acquire(timeout=1)    # wait up to 1 seconds
-    except LockTimeout:
-        lock.break_lock()
-        lock.acquire()
+        lock.acquire(timeout=5)    # wait up to 5 seconds
+    except:
+        quit()
+        #lock.break_lock()
+        #lock.acquire()
 
 #formatstr = 'TIME:{}\nCALL:{}\nIP:{}\nLOCATION:{}\nBAND:{}\nRIG:{}\nANT:{}\n\nstatus:{}\n'
 #s = formatstr.format(time.strftime("%Y-%m-%d %H:%M:%S"),call, ip, location, band, rig, ant, status)

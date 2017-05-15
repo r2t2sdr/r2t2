@@ -42,6 +42,7 @@ class Sdr : public QThread  {
 		virtual void setComp(int)=0;
 		virtual void selectPresel(int)=0;
         virtual void setRx(int)=0;
+        virtual void setNoiseFilter(int)=0;
 
 	public slots:
         virtual void terminate()=0;

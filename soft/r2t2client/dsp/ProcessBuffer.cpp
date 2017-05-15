@@ -67,7 +67,7 @@ int ProcessBuffer::setType(const std::type_info &t) {
 }
 
 uint32_t ProcessBuffer::append(ProcessBuffer* ibuf) {
-	if (size() + ibuf->size() >= getCapacity()) {
+	if (size() + ibuf->size() > getCapacity()) {
 		printf ("%i %i %i\n",(int)size(), ibuf->size(), getCapacity());
 		assert(0);
 		return size();
@@ -82,16 +82,21 @@ void ProcessBuffer::clear() {
 }
 
 uint32_t ProcessBuffer::processed(uint32_t len) {
-	uint32_t l = len*typeSize;
-	if (len > bufSize) {
-		assert(0);
-		bufSize = 0;
-		return 0;
-	}
+    uint32_t l = len*typeSize;
+    if (len > bufSize) {
+        assert(0);
+        bufSize = 0;
+        return 0;
+    }
+    if (capacity < l) {
+        assert(0);
+        bufSize = 0;
+        return 0;
+    }
 
-	memmove(buf, buf+l, capacity-l);
-	bufSize -= l;
-	return size();
+    memmove(buf, buf+l, capacity-l);
+    bufSize -= l;
+    return size();
 }
 
 uint32_t ProcessBuffer::size() {

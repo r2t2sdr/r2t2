@@ -390,6 +390,9 @@ void R2T2ClientStandard::readGuiTCPData() {
                     filterLo = r2t2GuiMsg->filterlo();
                     rx->setFilter(filterLo, filterHi);
                 }
+                if (r2t2GuiMsg->has_noise())
+                    rx->setNoise(r2t2GuiMsg->noise());
+
                 if (r2t2GuiMsg->has_filterhi()) {
                     filterHi = r2t2GuiMsg->filterhi();
                     rx->setFilter(filterLo, filterHi);
@@ -510,7 +513,6 @@ void R2T2ClientStandard::disconnected() {
 void R2T2ClientStandard::sendR2T2Msg() {
 
     if (r2t2ServerMsg->ByteSize() == 0) {
-        mutex.unlock();
         return;
     }
 
