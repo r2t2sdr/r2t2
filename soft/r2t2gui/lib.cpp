@@ -133,5 +133,7 @@ void keepScreenOn(bool on) {
       env->ExceptionClear();
     }
   });
+#else 
+  ARG_UNUSED(on);
 #endif
 }

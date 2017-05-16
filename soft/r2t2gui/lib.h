@@ -9,6 +9,8 @@
 #define MSG2 3
 #define MSG3 4
 
+#define ARG_UNUSED(x) (void)(x)
+
 extern int debugLevel;
 extern int bandMin[];
 extern int bandMax[];
