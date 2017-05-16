@@ -86,7 +86,7 @@ class Display_touch : public Display_base
 		void smtrPressed(int,int);
 		void storeBand();
 		void storeMemory(int);
-		void updateOn();
+        void pauseFFTUpdates(bool);
 		void writeSettings();
 		void setFreq(int);
 		void setTXFreq(int);
@@ -105,14 +105,14 @@ class Display_touch : public Display_base
 		Numeric *input;
 		Clock *clock;
 		QGraphicsScene *scene;
-		QTimer *timer;
+//		QTimer *timer;
 		SMeter *smtr;
 		Ui::Display_touch *ui;
 		analog_t analog[NBUTTON];
 		label_t label[NBUTTON];
 		text_button_t button[NBUTTON];
 		int cmdStore[CMD_LAST];
-		bool update;
+        bool pauseFFT;
 		double buf[MAX_FFT];
 		double cicCorr[MAX_FFT+1];
 		int fftSampRate; 

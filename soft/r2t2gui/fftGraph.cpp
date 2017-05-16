@@ -1,6 +1,7 @@
 #include "fftGraph.h"
 
 #include <QGraphicsScene>
+#include <QApplication>
 #include <QPainter>
 #include <QStyleOption>
 #include <QDebug>
@@ -8,20 +9,25 @@
 #include <math.h>
 #include <stdlib.h>
 #include "lib.h"
+#include <QTime>
 
 using namespace std;
 
 FFTGraph::FFTGraph(QSettings *settings, int x, int y) : settings(settings), xSize(x), ySize(y) {
 	int i;
 
-	setFlags(QGraphicsItem::ItemClipsToShape);
+    setFlags(QGraphicsItem::ItemClipsToShape);
+
+    this->setAcceptHoverEvents(false);
+    this->setAcceptedMouseButtons(Qt::NoButton);
+    this->setAcceptTouchEvents(false);
 
 	displayMode = GRAPH_WATERFALL;
 	nFFT = FFT_SIZE;
 	xViewPos = (nFFT-xSize)/2;
 	fftPixmap = new QPixmap(nFFT, ySize);
 	fftPixmap->fill(QColor(getSettings(settings,"display/colorFFTBackground","#000000")));
-	waterfallPixmap = new QPixmap(nFFT, ySize);
+    waterfallPixmap = new QPixmap(nFFT, ySize);
 	waterfallPixmap->fill(QColor(getSettings(settings,"display/colorFFTBackground","#000000")));
 	mi = -1.5; 
 	tmi = mi; 
@@ -102,19 +108,21 @@ void FFTGraph::settingsChanged(int mode) {
 
 
 void FFTGraph::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
-	switch (displayMode) {
-		case GRAPH_WATERFALL:
-			painter->drawPixmap(-xViewPos,0,*waterfallPixmap);
-			break;
-		case GRAPH_FFT:
-			painter->drawPixmap(-xViewPos,0,*fftPixmap);
-			break;
-		case GRAPH_DUAL:
-		case GRAPH_DUAL2:
-			painter->drawPixmap(-xViewPos,0,*fftPixmap);
-			painter->drawPixmap(-xViewPos,130,*waterfallPixmap);
-			break;
-	}
+//    qDebug() << "drawing FFT/Waterfall";
+
+    switch (displayMode) {
+        case GRAPH_WATERFALL:
+            painter->drawPixmap(-xViewPos,0,*waterfallPixmap);
+            break;
+        case GRAPH_FFT:
+            painter->drawPixmap(-xViewPos,0,*fftPixmap);
+            break;
+        case GRAPH_DUAL:
+        case GRAPH_DUAL2:
+            painter->drawPixmap(-xViewPos,0,*fftPixmap);
+            painter->drawPixmap(-xViewPos,130,*waterfallPixmap);
+            break;
+    }
 
 }
 
@@ -165,24 +173,28 @@ void FFTGraph::fftDataReady(QByteArray &data) {
 	int i;
 	double v;
 
+    if (data.length() == 0) {
+        return;
+    }
+
 	mi = 0;
 	ma = -100;
 
-	for(i=0; i < nFFT; i++) {
-		v = -(uint8_t)data[i];
-		v1[i] = v;
-		if (fftmax[i]>v)
-			fftmax[i] = v;
-		fftmax[i] = ((average_time_max-1)*fftmax[i]+v)/average_time_max;
-		if (fftav[i]==0)
-			fftav[i] = v;
-		else
-			fftav[i] = ((average_time-1)*fftav[i]+v)/average_time;
+    for(i=0; i < nFFT; i++) {
+        v = -(uint8_t)data[i];
+        v1[i] = v;
+        if (fftmax[i]>v)
+            fftmax[i] = v;
+        fftmax[i] = ((average_time_max-1)*fftmax[i]+v)/average_time_max;
+        if (fftav[i]==0)
+            fftav[i] = v;
+        else
+            fftav[i] = ((average_time-1)*fftav[i]+v)/average_time;
 
-		if (i>nFFT/8 && i<nFFT*7/8)
-			mi = min(fftav[i],mi);
-		ma = max(fftav[i],ma);
-	}
+        if (i>nFFT/8 && i<nFFT*7/8)
+            mi = min(fftav[i],mi);
+        ma = max(fftav[i],ma);
+    }
 
 	switch (displayMode) {
 		case GRAPH_WATERFALL:
@@ -201,6 +213,7 @@ void FFTGraph::fftDataReady(QByteArray &data) {
 					scale = 256/(ma-mi);
 					setAuto = false;
 				}
+//                qDebug() << "Waterfall Pixmap size:" << waterfallPixmap->size();
 			}
 			break;
 		case GRAPH_FFT:

@@ -29,8 +29,7 @@ FilterGraph::FilterGraph(QSettings *settings, int x, int y) : settings(settings)
 
 	filterPixmap = QPixmap(xSize/8, ySize);
 	settingsChanged();
-
-	this->setAcceptHoverEvents(true);
+    setCacheMode(QGraphicsItem::ItemCoordinateCache);
 }
 
 FilterGraph::~FilterGraph() {
@@ -42,6 +41,11 @@ void FilterGraph::setSize(int x, int y) {
 	xViewPos = (fftSize-xSize)/2;
 	filterPixmap =  QPixmap(abs(filterLoMarkerPos-filterHiMarkerPos), ySize);
 	filterPixmap.fill(colorSpecBackground);
+
+    markerBackgroundPos = QRect(0, 0, xSize, 25);
+    markerBackgroundColor = QColor(90, 90, 90, 160);
+    markerBackground = QPixmap(xSize, 25);
+    markerBackground.fill(markerBackgroundColor);
 }
 
 void FilterGraph::settingsChanged() {
@@ -70,6 +74,12 @@ void FilterGraph::setDisplayMode(int m) {
 }
 
 void FilterGraph::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) {
+
+    // draw dark, transparent rectangle for better reading of frequency markers
+    painter->drawPixmap(markerBackgroundPos, markerBackground);
+    painter->setPen(QColor(120, 120, 120));
+    painter->drawLine(0, 25, xSize, 25);
+
     QFont font("Monospace");
     font.setPixelSize(16);
 	painter->setFont(font);
@@ -94,6 +104,8 @@ void FilterGraph::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QW
 		painter->drawLine(x-xViewPos,0,x-xViewPos,20);
 		painter->drawText(x-xViewPos+2,17,QString ("%1").arg(int((marker+500)/1000)));
 	}
+
+
 
 	switch (dispMode) {
 		case GRAPH_FFT:
@@ -179,13 +191,31 @@ void FilterGraph::setSampleRate(int sf) {
 
 void FilterGraph::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 	startMovePos = event->pos().x();
-	startMoveFreq = centerFreq;
-//	freq = centerFreq + (event->pos().x() + xViewPos - xSize/2) * (sampleRate/2) / (xSize/2);
-//	emit freqChanged(freq);
+    startMoveFreq = centerFreq;
+
+    emit pauseFFTUpdates(true);
+
+//    int freq = centerFreq;
+//    int freq;
+//    int deltaX = event->pos().x() - xViewPos;
+//    if (deltaX < 0) {
+//        freq = centerFreq + (xViewPos -deltaX - xSize/2) * (sampleRate/2) / (xSize/2);
+//    } else {
+//        freq = centerFreq + (xViewPos +deltaX - xSize/2) * (sampleRate/2) / (xSize/2);
+//    }
+//    qDebug() << "posX:" << xViewPos;
+//    qDebug() << "ev X:" << event->pos().x();
+//    emit freqChanged(freq);
+}
+
+void FilterGraph::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
+
+    emit pauseFFTUpdates(false);
 }
 
 void FilterGraph::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-	int f;
+
+    int f;
 	//if (event->pos().y()<ySize/3) {
 		f = startMoveFreq - (event->pos().x() - startMovePos) * sampleRate / fftSize;
 	//} else if (event->pos().y()<ySize*2/3) {
@@ -195,6 +225,7 @@ void FilterGraph::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 	//}
 	centerFreq = checkRange(f,0,RX_CLOCK/2);
 	emit freqChanged(centerFreq);
+//    qDebug("GUI Freq changed to: %d", centerFreq);
 }
 
 void FilterGraph::wheelEvent(QGraphicsSceneWheelEvent *event) {
@@ -205,7 +236,8 @@ void FilterGraph::wheelEvent(QGraphicsSceneWheelEvent *event) {
 }
 
 void FilterGraph::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
-	mousePos =  event->pos();
+    qDebug() << "Hover event";
+//	mousePos =  event->pos();
 }
 
 void FilterGraph::setFreqStep(int step) {

@@ -23,6 +23,39 @@ class Control : public QObject  {
 
 	signals:
 		void displaySet(int,int,int);
+        void setRXFreq(uint32_t f);
+        void setTXFreq(uint32_t f);
+        void setSampleRate(int rate);
+        void setAnt(int);
+        void setPresel(int);
+        void setAttenuator(int);
+        void setTXLevel(int l);
+        void setPtt(bool on);
+        void setTXRate(int);
+        void setFilter(int lo, int hi);
+        void setMode(int);
+        void setGain(int);
+        void setAGC(int);
+        void setFFT(int time,int size);
+        void setFFTRate(int rate);
+        void setVolume(double);
+        void setMicGain(double);
+        void setToneTest(bool,  double, double, double, double);
+        void startRX();
+        void stopRX();
+        void setActive(bool);
+        void setAudioOff(bool);
+        void setTxDelay(int);
+        void setNBLevel(int);
+        void setNotch(int);
+        void setSquelch(int);
+        void setComp(int);
+        void selectPresel(int);
+        void setRx(int);
+        void setTX(bool);
+        void setVolume(int);
+        void setMic(int);
+
 
 	private slots:
 		void timeout();
@@ -40,6 +73,7 @@ class Control : public QObject  {
 		QUdpSocket *hamLibSocket;
         QNetworkAccessManager *manager;
 		Sdr *sdr, *sdrqt, *sdrr2t2;
+        QThread *radioThread, *audioThread;
 #ifdef UNIX
 		//KeyReader *keyReader;
 #endif

@@ -1,4 +1,4 @@
-QT       += core gui network widgets
+QT       += core gui network widgets multimedia
 
 TARGET = r2t2 
 
@@ -15,7 +15,6 @@ win32 {
 	LIBS +=  -lwinmm
 	SVNDEV = 0
 	DEFINES += SVNREV="0" 
-	QT += multimedia
 }
 
 unix {
@@ -23,11 +22,7 @@ unix {
 	CONFIG   += console
 	SVNDEV = $$system(svnversion)
 	DEFINES += SVNREV=\'\"$$SVNDEV\"\'
-	#LIBS += -lasound
-	#LIBS += -lwiringPi
-	QT += multimedia
 } 
-
 
 # INCLUDEPATH += /usr/local/include/
 
@@ -45,37 +40,14 @@ SOURCES += lib.cpp label.cpp sdrgraphicsitem.cpp
 SOURCES += g711.cpp
 SOURCES += r2t2gui.pb.cc
 SOURCES += conf.cpp
+SOURCES += audioQt.cpp
 
 LIBS += -lprotobuf
 
-unix {
-	#SOURCES += keyreader.cpp audio.cpp
-	# SOURCES += audio.cpp
-	SOURCES += audioQt.cpp
-}
-
-win32 {
-	SOURCES += audioQt.cpp
-	# SOURCES += audio_win32.cpp
-}
 
 HEADERS += control.h sdr.h sdrr2t2.h sdrqtradio.h display_lcd.h display_touch.h display_base.h smeter.h clock.h
 HEADERS += textbutton.h numeric.h fftGraph.h filterGraph.h analog.h label.h sdrgraphicsitem.h
-
-unix {
-	#HEADERS += keyreader.h
-	HEADERS += audioQt.h
-	# HEADERS += audio.h
-}
-
-mac: {
-        HEADERS += audioQt.h
-}
-
-win32 {
-        # HEADERS += audio_win32.h
-        HEADERS += audioQt.h
-}
+HEADERS += audioQt.h
 
 FORMS    += display_touch.ui
 

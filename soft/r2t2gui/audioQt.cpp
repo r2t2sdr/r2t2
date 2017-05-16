@@ -10,25 +10,26 @@
 #define AUDIO_BUF_SIZE		8192
 
 Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixerMic*/, int rate)  {
-	tx = false;
-	mute = false;
-	noutput_items = AUDIO_BUF_SIZE;
+    tx = false;
+    mute = false;
+    noutput_items = AUDIO_BUF_SIZE;
 
-    QAudioFormat format;
-	format.setSampleRate(rate);
+    format.setSampleRate(rate);
     format.setChannelCount(1);
-	format.setSampleSize(16);
-	format.setCodec("audio/pcm");
-	format.setByteOrder(QAudioFormat::LittleEndian);
-	format.setSampleType(QAudioFormat::SignedInt);
+    format.setSampleSize(16);
+    format.setCodec("audio/pcm");
+    format.setByteOrder(QAudioFormat::LittleEndian);
+    format.setSampleType(QAudioFormat::SignedInt);
 
-	QList<QAudioDeviceInfo> audioDevicesOut =  QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
-	QList<QAudioDeviceInfo> audioDevicesIn =  QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
-	
-	QAudioDeviceInfo infoIn  = audioDevicesIn.at(0);
-	QAudioDeviceInfo infoOut = audioDevicesOut.at(0);
+    audioDevicesOut =  QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
+    audioDevicesIn =  QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+}
 
-#if 0
+void Audio::init(){
+    QAudioDeviceInfo infoIn  = audioDevicesIn.at(0);
+    QAudioDeviceInfo infoOut = audioDevicesOut.at(0);
+
+  #if 0
     int n=0;
     qDebug() << "\navaiable audio output devices:";
     foreach (const QAudioDeviceInfo &deviceInfo, audioDevicesOut) {
@@ -44,39 +45,41 @@ Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixe
     }
     qDebug() << "\nusing audio in:" << infoIn.deviceName();
 #endif
+  
+    if (!infoIn.isFormatSupported(format)) {
+        qWarning()<<"AudioInput: default format not supported try to use nearest";
+        format = infoIn.nearestFormat(format);
+    }
+    if (!infoOut.isFormatSupported(format)) {
+        qWarning()<<"AudioInput: default format not supported try to use nearest";
+        format = infoOut.nearestFormat(format);
+    }
 
-	if (!infoIn.isFormatSupported(format)) {
-		qWarning()<<"AudioInput: default format not supported try to use nearest";
-		format = infoIn.nearestFormat(format);
-	}
-	if (!infoOut.isFormatSupported(format)) {
-		qWarning()<<"AudioInput: default format not supported try to use nearest";
-		format = infoOut.nearestFormat(format);
-	}
-	audioOutput = new QAudioOutput(infoOut, format);
-	audioInput = new QAudioInput(infoIn, format);
-	audioInDev = NULL;
-	audioOutDev = NULL;
-	audioOutDev = audioOutput->start();
-    periodSize = audioOutput->periodSize();
-    periodTimeMS = 1000*periodSize/(rate*8)-1;
-	
-	mutex = new QMutex();
-	timer = new QTimer(this);
+    audioOutput = new QAudioOutput(infoOut, format);
+    audioOutput->setBufferSize(AUDIO_BUF_SIZE);
+    connect(audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioOutStateChanged(QAudio::State)));
+    connect(audioOutput, SIGNAL(notify()), this, SLOT(writeAudioOut()));
+    audioOutput->setNotifyInterval(AUDIO_TIMEOUT);
+    audioOutDev = audioOutput->start();
+    // start writing silence to the audio sink
+    audioOutBuf = QByteArray(5000, '\x0');
+    audioOutDev->write(audioOutBuf);
 
-    qWarning() << "period" << periodTimeMS << audioOutput->notifyInterval();
-
-    connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
-    // timer->start(periodTimeMS);
+    // TBD start reading from Microphone
+    audioInput = new QAudioInput(infoIn, format);
+	  audioInDev = NULL;
     audioRun = true;
 }
 
 Audio::~Audio() {
-	timer->stop();
-	audioOutput->stop();
-	delete audioOutput;
-	delete audioInput;
-	delete timer;
+    if (audioOutput){
+        audioOutput->stop();
+        delete audioOutput;
+    }
+    if (audioInput){
+        audioInput->stop();
+        delete audioInput;
+    }
 }
 
 void Audio::audioMute(bool m) {
@@ -99,50 +102,61 @@ void Audio::audioRX(QByteArray out) {
 	if (!audioRun)
 		return;
 
+    if (audioOutBuf.length() + out.length() < AUDIO_BUF_SIZE - out.length()){
+        audioOutBuf.append(out);
+    }
+
     if (audioOutBuf.size()>AUDIO_BUF_SIZE) {
-        qWarning() << "# skip" << audioOutBuf.size();
+        qWarning() << "# audio buffer overflow" << audioOutBuf.size() << "bytes";
         return;
     }
-    mutex->lock();
-	audioOutBuf.append(out);
-    if (audioOutBuf.size() < AUDIO_BUF_SIZE/2) {
-        audioOutBuf.append(out);
-        qWarning() << "# insert" << out.size() << audioOutput->bytesFree();
+}
+
+void Audio::audioOutStateChanged(QAudio::State state)
+{
+    if (audioOutput->error() != QAudio::NoError){
+        qDebug() << "audio output state:" << state << "error:" << audioOutput->error();
     }
-    mutex->unlock();
 }
 
-void Audio::timeout() {
-}
-
-void Audio::terminate() {
-    audioRun = false;
-}
-
-void Audio::run() {
-    while(audioRun) {
-        // qWarning() << "in timeout" << audioOutput->bytesFree() << audioOutput->state();
-        mutex->lock();
-        if (audioOutput->bytesFree()>=periodSize) {
-            int len = audioOutDev->write(audioOutBuf);
-            audioOutBuf.remove(0, len);
-            // qWarning() <<  "write" << len << audioOutBuf.size() << audioOutput->bytesFree() << periodSize;
-        }
-        mutex->unlock();
-
+void Audio::readAudioIn(){
         if (audioInDev) {
             QByteArray audioInData =  audioInDev->readAll();
             if (audioInData.size())
                 emit audioTX(QByteArray(audioInData));
         }
-        msleep(periodTimeMS);
+}
+
+void Audio::writeAudioOut()
+{
+    if (audioOutBuf.length() > 0){
+        int len = audioOutDev->write(audioOutBuf);
+        audioOutBuf.remove(0, len);
+        return;
+    }
+    // write silence if audioOutbuf is empty to avoid underrun
+    if (audioOutDev){
+        QByteArray buf(2000, '\x0');
+        audioOutDev->write(buf);
     }
 }
 
 void Audio::setVolume(int volume) {
-    audioOutput->setVolume(1.0*volume/256);
+    if (!audioOutput){
+        qDebug() << "audioOutput not initialized";
+        return;
+    }
+    if (audioOutput->state() == QAudio::ActiveState){
+        audioOutput->setVolume(1.0*volume/256);
+    }
 }
 
 void Audio::setMic(int volume) {
-    audioInput->setVolume(1.0*volume/256);
+    if (!audioInput){
+        qDebug() << "audioInput not initialized";
+        return;
+    }
+    if (audioInput->state() == QAudio::ActiveState){
+         audioInput->setVolume(1.0*volume/256);
+    }
 }
