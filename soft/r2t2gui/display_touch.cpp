@@ -499,6 +499,8 @@ Display_touch::Display_touch(QSettings *settings, QWidget* /*parent*/) : Display
 	encDelta = 0;
     connected = false;
 
+    keepScreenOn(true);
+
 	for(int i=0;i<arraysize(mem);i++) {
 		mem[i].name = QString("mem %1").arg(i+1);
 		mem[i].mode = MODE_LSB;

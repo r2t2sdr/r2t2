@@ -1,4 +1,8 @@
 #include <QDebug>
+#ifdef ANDROID
+#include <QtAndroidExtras>
+#include <QAndroidJniObject>
+#endif
 #include <QSettings>
 #include "lib.h"
 
@@ -105,4 +109,29 @@ QString getSettings(QSettings* settings, QString key, QString def) {
 	QString s = settings->value(key,def).toString();
 	settings->setValue(key,s);
 	return s;
+}
+
+void keepScreenOn(bool on) {
+#ifdef ANDROID
+  QtAndroid::runOnAndroidThread([on]{
+    QAndroidJniObject activity = QtAndroid::androidActivity();
+    if (activity.isValid()) {
+      QAndroidJniObject window =
+          activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
+
+      if (window.isValid()) {
+        const int FLAG_KEEP_SCREEN_ON = 128;
+        if (on) {
+          window.callMethod<void>("addFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
+        } else {
+          window.callMethod<void>("clearFlags", "(I)V", FLAG_KEEP_SCREEN_ON);
+        }
+      }
+    }
+    QAndroidJniEnvironment env;
+    if (env->ExceptionCheck()) {
+      env->ExceptionClear();
+    }
+  });
+#endif
 }

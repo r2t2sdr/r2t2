@@ -24,3 +24,4 @@ int checkRange(int,int,int);
 int getBand(int);
 int getSettings(QSettings* settings, QString key, int def);
 QString getSettings(QSettings* settings, QString key, QString def);
+void keepScreenOn(bool);
