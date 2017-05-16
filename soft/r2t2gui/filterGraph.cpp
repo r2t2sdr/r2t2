@@ -208,8 +208,7 @@ void FilterGraph::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 //    emit freqChanged(freq);
 }
 
-void FilterGraph::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
-
+void FilterGraph::mouseReleaseEvent(QGraphicsSceneMouseEvent * /*event*/){
     emit pauseFFTUpdates(false);
 }
 
@@ -235,7 +234,7 @@ void FilterGraph::wheelEvent(QGraphicsSceneWheelEvent *event) {
 	emit freqChanged(centerFreq);
 }
 
-void FilterGraph::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
+void FilterGraph::hoverMoveEvent(QGraphicsSceneHoverEvent * /*event*/) {
     qDebug() << "Hover event";
 //	mousePos =  event->pos();
 }

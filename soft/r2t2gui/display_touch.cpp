@@ -1260,8 +1260,8 @@ void Display_touch::setFFTSize(int val) {
 }
 
 void Display_touch::fftData(QByteArray fftData) {
-    if (pauseFFT)
-        return;
+	if (pauseFFT)
+		return;
 	fftGraph->fftDataReady(fftData);
 }
 

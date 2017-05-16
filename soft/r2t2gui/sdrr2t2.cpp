@@ -15,7 +15,7 @@
 #include "assert.h"
 #include "g711.h"
 
-SdrR2T2::SdrR2T2 (QString ip, int port, QObject *parent) : ip(ip), port(port) {
+SdrR2T2::SdrR2T2 (QString ip, int port, QObject * /*parent*/) : ip(ip), port(port) {
     qDebug() << "sdr start " << ip << port;
 }
 

@@ -4,7 +4,7 @@ TARGET = r2t2
 
 CONFIG += qt debug_and_release
 
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -std=c++0x -Werror
 TEMPLATE = app
 
 CONFIG(release, debug|release): DEFINES += NDEBUG
