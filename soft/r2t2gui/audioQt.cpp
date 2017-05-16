@@ -23,14 +23,29 @@ Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixe
 
     audioDevicesOut =  QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
     audioDevicesIn =  QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
-
 }
 
 void Audio::init(){
-
     QAudioDeviceInfo infoIn  = audioDevicesIn.at(0);
     QAudioDeviceInfo infoOut = audioDevicesOut.at(0);
 
+  #if 0
+    int n=0;
+    qDebug() << "\navaiable audio output devices:";
+    foreach (const QAudioDeviceInfo &deviceInfo, audioDevicesOut) {
+        qDebug() << n++ << "Device name: " << deviceInfo.deviceName();
+        foreach (const int freq, deviceInfo.supportedSampleRates())
+            qDebug() << freq;
+    }
+    qDebug() << "\nusing audio output :" << infoOut.deviceName();
+
+    qDebug() << "\navaiable audio input devices:";
+    foreach (const QAudioDeviceInfo &deviceInfo, audioDevicesIn) {
+        qDebug() << "Device name: " << deviceInfo.deviceName();
+    }
+    qDebug() << "\nusing audio in:" << infoIn.deviceName();
+#endif
+  
     if (!infoIn.isFormatSupported(format)) {
         qWarning()<<"AudioInput: default format not supported try to use nearest";
         format = infoIn.nearestFormat(format);
@@ -52,9 +67,8 @@ void Audio::init(){
 
     // TBD start reading from Microphone
     audioInput = new QAudioInput(infoIn, format);
-	audioInDev = NULL;
+	  audioInDev = NULL;
     audioRun = true;
-
 }
 
 Audio::~Audio() {

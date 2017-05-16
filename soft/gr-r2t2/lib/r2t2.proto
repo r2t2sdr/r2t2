@@ -1,4 +1,6 @@
+syntax = "proto2";
 package R2T2Proto;
+
 
 message R2T2Message {
     enum Command {

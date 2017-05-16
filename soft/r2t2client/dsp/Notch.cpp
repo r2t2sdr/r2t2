@@ -73,6 +73,7 @@ double Notch::processNotch(double in) {
 	temp2 = sth2*in+cth2*xst2;
 	double error = mu*(in + temp2); // notch filter output times step size.
 	theta = theta - error*xst1; // coefficient update.
+    qDebug() << theta;
 
 #if 0
 	double freqnew;

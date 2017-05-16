@@ -1,9 +1,10 @@
 set project_name r2t2
 
-open_project ../$project_name.xpr
+open_project ../project/$project_name.xpr
 
 reset_project
-generate_target all [get_files  ../r2t2.srcs/sources_1/bd/ps/ps.bd]
+make_wrapper -files [get_files ../bd/ps.bd] -top
+generate_target all [get_files  ../bd/ps/ps.bd]
 
 reset_run synth_1
 if {[get_property PROGRESS [get_runs synth_1]] != "100%"} {

@@ -1,4 +1,0 @@
-config NET_RADIUM
-	tristate "Radium network fpga driver"
-	---help---
-	  This option enables the Radium network driver for communication with fpga

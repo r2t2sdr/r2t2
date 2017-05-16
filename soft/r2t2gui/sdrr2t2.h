@@ -45,6 +45,7 @@ class SdrR2T2 : public Sdr  {
 		void setComp(int);
 		void selectPresel(int);
         void setRx(int);
+        void setNoiseFilter(int);
 
 		void readServerTCPData();
         void setServer(QString ip, uint16_t port);
@@ -93,5 +94,6 @@ class SdrR2T2 : public Sdr  {
         int txFreq = 71000000;
         uint8_t tcp_buf[1024*64];
         int tcp_buf_len = 0;
+        int noise = 0;
 };
 

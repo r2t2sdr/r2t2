@@ -444,6 +444,13 @@ class R2T2GuiMessage : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 notch() const;
   void set_notch(::google::protobuf::int32 value);
 
+  // optional int32 noise = 15;
+  bool has_noise() const;
+  void clear_noise();
+  static const int kNoiseFieldNumber = 15;
+  ::google::protobuf::int32 noise() const;
+  void set_noise(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:R2T2GuiProto.R2T2GuiMessage)
  private:
   void set_has_command();
@@ -474,6 +481,8 @@ class R2T2GuiMessage : public ::google::protobuf::Message /* @@protoc_insertion_
   void clear_has_version();
   void set_has_notch();
   void clear_has_notch();
+  void set_has_noise();
+  void clear_has_noise();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
@@ -492,6 +501,7 @@ class R2T2GuiMessage : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 filterlo_;
   ::google::protobuf::int32 filterhi_;
   ::google::protobuf::int32 notch_;
+  ::google::protobuf::int32 noise_;
   friend struct  protobuf_r2t2gui_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -1128,6 +1138,30 @@ inline void R2T2GuiMessage::set_notch(::google::protobuf::int32 value) {
   set_has_notch();
   notch_ = value;
   // @@protoc_insertion_point(field_set:R2T2GuiProto.R2T2GuiMessage.notch)
+}
+
+// optional int32 noise = 15;
+inline bool R2T2GuiMessage::has_noise() const {
+  return (_has_bits_[0] & 0x00004000u) != 0;
+}
+inline void R2T2GuiMessage::set_has_noise() {
+  _has_bits_[0] |= 0x00004000u;
+}
+inline void R2T2GuiMessage::clear_has_noise() {
+  _has_bits_[0] &= ~0x00004000u;
+}
+inline void R2T2GuiMessage::clear_noise() {
+  noise_ = 0;
+  clear_has_noise();
+}
+inline ::google::protobuf::int32 R2T2GuiMessage::noise() const {
+  // @@protoc_insertion_point(field_get:R2T2GuiProto.R2T2GuiMessage.noise)
+  return noise_;
+}
+inline void R2T2GuiMessage::set_noise(::google::protobuf::int32 value) {
+  set_has_noise();
+  noise_ = value;
+  // @@protoc_insertion_point(field_set:R2T2GuiProto.R2T2GuiMessage.noise)
 }
 
 // -------------------------------------------------------------------

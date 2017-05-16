@@ -81,6 +81,7 @@ Entry entry[CMD_LAST][MAX_ENTRY] = {
 	/* "AUDIO_COMP */			{{"off",0},{"6-6 dB",1},{"12-12 dB",2},{"20-20 dB",3},{"6-12 dB",4},{"12-20 dB",5}},
 	/* "QTRADIO_MODE */			{{"off",0},{"on",1}},
 	/* "QTRADIO_RX */			{{"0",0},{"1",1},{"2",2},{"3",3},{"4",4},{"5",5},{"6",6},{"7",7}},
+	/* "NOISE_FILTER */			{{"off",0},{"on",1}},
 	/* "INIT_END */				{},
 	/* "EXIT */					{{"exit",0}},
 	/* "MENU */					{},
@@ -881,7 +882,7 @@ void Display_touch::setLayout(int l) {
 			RIGHT2;UP2;UP2;UP2;
 			NEW_BUTTON("QtRadio", 0, CMD_QTRADIO_MODE); DOWN2;
 			NEW_BUTTON("Qt RX", 0, CMD_QTRADIO_RX); DOWN2;
-            DOWN2;
+			NEW_BUTTON("Noise", 0, CMD_NOISE_FILTER); DOWN2;
 
 			menuStartIdx = bIdx;
 
@@ -1189,6 +1190,7 @@ void Display_touch::displaySet(int src, int cmd, int val) {
         case CMD_TX_DELAY:
 		case CMD_TX_POWER:
 		case CMD_QTRADIO_RX:
+		case CMD_NOISE_FILTER:
 			break;
 		default:
 			PDEBUG(ERR1, "Display: unhandled command: %s, par %i",CmdString[cmd],val);

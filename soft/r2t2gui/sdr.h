@@ -43,6 +43,7 @@ class Sdr : public QObject  {
 		virtual void setComp(int)=0;
 		virtual void selectPresel(int)=0;
         virtual void setRx(int)=0;
+        virtual void setNoiseFilter(int)=0;
 
 		virtual void readServerTCPData()=0;
         virtual void setServer(QString ip, uint16_t port)=0;

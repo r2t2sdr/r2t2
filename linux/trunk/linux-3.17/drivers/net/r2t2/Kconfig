@@ -1,4 +1,0 @@
-config R2T2 
-	tristate "R2T2 support"
-	---help---
-	  Add support for DB1CC/DL2STG R2T2 device

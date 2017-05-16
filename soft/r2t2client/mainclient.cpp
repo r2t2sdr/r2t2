@@ -10,6 +10,7 @@
 #include "r2t2radiolistener.h"
 #include "dsp/ProcessBuffer.h"
 #include "lib.h"
+#include "watchdog.h"
 
 static uint32_t clk = 122880000;
 QString addr("localhost");
@@ -36,6 +37,7 @@ void usage(char *prog)
 int main(int argc, char *argv[])
 {
     int i;
+
 
     while ((i = getopt(argc, argv, "+hp:v:c:p:a:f:d:s:")) != EOF) {
         switch (i) {
@@ -68,28 +70,36 @@ int main(int argc, char *argv[])
                 break;
         }
     }
-
+    R2T2RadioListener *radioListener = NULL; 
+    Watchdog *watchdog = new Watchdog();
 	QSettings *settings = new QSettings("/root/r2t2client.ini", QSettings::IniFormat);
 
     qRegisterMetaType<std::shared_ptr<ProcessBuffer>>("std::shared_ptr<ProcessBuffer>");
     QCoreApplication a(argc, argv);
     if (device == 1) {
 		qDebug() << "start r2t2client version " << VERSION << "in qtradio mode";
-        new R2T2RadioListener(settings, addr, port, QTRADIO_SERVER_PORT, sampleRate);
+        radioListener = new R2T2RadioListener(settings, addr, port, QTRADIO_SERVER_PORT, sampleRate);
 	} else if (device == 2) {
 		qDebug() << "start r2t2client version " << VERSION << "in qtradio dsp mode";
-        new R2T2RadioListener(settings, addr, port, QTRADIO_DSP_PORT, sampleRate);
+        radioListener = new R2T2RadioListener(settings, addr, port, QTRADIO_DSP_PORT, sampleRate);
 	} else if (device == 3) {
 		qDebug() << "start r2t2client version " << VERSION << "in console mode";
         new R2T2ClientConsole(settings, addr, port, NULL, fileName, sampleRate);
 	} else {
 		qDebug() << "start r2t2client version " << VERSION << "in r2t2 mode";
-        new R2T2RadioListener(settings, addr, port, R2T2_PORT, sampleRate);
+        radioListener = new R2T2RadioListener(settings, addr, port, R2T2_PORT, sampleRate);
 	}
+
+    if (radioListener)
+        QObject::connect(radioListener, SIGNAL(triggerWatchdog(int)), watchdog, SLOT(trigger(int)));
+    watchdog->start();
 
     a.exec();
 
 	delete settings;
+    delete watchdog;
+    if (radioListener)
+        delete radioListener;
 
     return 0;
 }

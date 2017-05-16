@@ -18,12 +18,11 @@ class Audio : public QObject  {
 		void audioRX(QByteArray);
 		void setTX(bool);
 		void audioMute(bool);
-#ifdef USE_MIXER
 		void setVolume(int volume);
 		void setMic(int mic);
-#endif
 	private slots:
 		void timeout();
+        void terminate();
 
 	private:
 		snd_pcm_t *PlaybackHandle;

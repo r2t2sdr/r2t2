@@ -52,6 +52,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2GuiMessage, filterhi_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2GuiMessage, version_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2GuiMessage, notch_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2GuiMessage, noise_),
   3,
   0,
   2,
@@ -66,6 +67,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   12,
   1,
   13,
+  14,
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2GuiMessageAnswer, _has_bits_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(R2T2GuiMessageAnswer, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -89,8 +91,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
-  { 0, 18, sizeof(R2T2GuiMessage)},
-  { 32, 44, sizeof(R2T2GuiMessageAnswer)},
+  { 0, 19, sizeof(R2T2GuiMessage)},
+  { 34, 46, sizeof(R2T2GuiMessageAnswer)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -143,7 +145,7 @@ void InitDefaults() {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] = {
-      "\n\rr2t2gui.proto\022\014R2T2GuiProto\"\333\004\n\016R2T2Gu"
+      "\n\rr2t2gui.proto\022\014R2T2GuiProto\"\352\004\n\016R2T2Gu"
       "iMessage\0225\n\007command\030\001 \001(\0162$.R2T2GuiProto"
       ".R2T2GuiMessage.Command\022\016\n\006txData\030\002 \001(\014\022"
       "\016\n\006rxFreq\030\003 \001(\004\022\016\n\006txFreq\030\004 \001(\004\022\017\n\007fftRa"
@@ -152,22 +154,22 @@ void AddDescriptorsImpl() {
       "in\030\010 \001(\005\022\017\n\007antenna\030\t \001(\r\022-\n\003agc\030\n \001(\0162 "
       ".R2T2GuiProto.R2T2GuiMessage.AGC\022\020\n\010filt"
       "erLo\030\013 \001(\005\022\020\n\010filterHi\030\014 \001(\005\022\017\n\007version\030"
-      "\r \001(\t\022\r\n\005notch\030\016 \001(\005\"K\n\007Command\022\010\n\004NONE\020"
-      "\000\022\016\n\nSTARTAUDIO\020\001\022\r\n\tSTOPAUDIO\020\002\022\n\n\006REQF"
-      "FT\020\003\022\013\n\007GETINFO\020\004\"s\n\004Mode\022\007\n\003LSB\020\000\022\007\n\003US"
-      "B\020\001\022\007\n\003DSB\020\002\022\007\n\003CWL\020\003\022\007\n\003CWU\020\004\022\006\n\002FM\020\005\022\006"
-      "\n\002AM\020\006\022\010\n\004DIGU\020\007\022\010\n\004SPEC\020\010\022\010\n\004DIGL\020\t\022\007\n\003"
-      "SAM\020\n\022\007\n\003DRM\020\013\";\n\003AGC\022\t\n\005fixed\020\000\022\010\n\004slow"
-      "\020\001\022\007\n\003mid\020\002\022\010\n\004fast\020\003\022\014\n\010veryfast\020\004\"\332\001\n\024"
-      "R2T2GuiMessageAnswer\022;\n\007command\030\001 \001(\0162*."
-      "R2T2GuiProto.R2T2GuiMessageAnswer.Comman"
-      "d\022\016\n\006rxData\030\002 \001(\014\022\017\n\007fftData\030\003 \001(\014\022\021\n\ttx"
-      "DataAck\030\004 \001(\r\022\014\n\004rssi\030\005 \001(\001\022\017\n\007version\030\006"
-      " \001(\t\022\017\n\007fftRate\030\007 \001(\r\022\014\n\004gain\030\010 \001(\005\"\023\n\007C"
-      "ommand\022\010\n\004NONE\020\000"
+      "\r \001(\t\022\r\n\005notch\030\016 \001(\005\022\r\n\005noise\030\017 \001(\005\"K\n\007C"
+      "ommand\022\010\n\004NONE\020\000\022\016\n\nSTARTAUDIO\020\001\022\r\n\tSTOP"
+      "AUDIO\020\002\022\n\n\006REQFFT\020\003\022\013\n\007GETINFO\020\004\"s\n\004Mode"
+      "\022\007\n\003LSB\020\000\022\007\n\003USB\020\001\022\007\n\003DSB\020\002\022\007\n\003CWL\020\003\022\007\n\003"
+      "CWU\020\004\022\006\n\002FM\020\005\022\006\n\002AM\020\006\022\010\n\004DIGU\020\007\022\010\n\004SPEC\020"
+      "\010\022\010\n\004DIGL\020\t\022\007\n\003SAM\020\n\022\007\n\003DRM\020\013\";\n\003AGC\022\t\n\005"
+      "fixed\020\000\022\010\n\004slow\020\001\022\007\n\003mid\020\002\022\010\n\004fast\020\003\022\014\n\010"
+      "veryfast\020\004\"\332\001\n\024R2T2GuiMessageAnswer\022;\n\007c"
+      "ommand\030\001 \001(\0162*.R2T2GuiProto.R2T2GuiMessa"
+      "geAnswer.Command\022\016\n\006rxData\030\002 \001(\014\022\017\n\007fftD"
+      "ata\030\003 \001(\014\022\021\n\ttxDataAck\030\004 \001(\r\022\014\n\004rssi\030\005 \001"
+      "(\001\022\017\n\007version\030\006 \001(\t\022\017\n\007fftRate\030\007 \001(\r\022\014\n\004"
+      "gain\030\010 \001(\005\"\023\n\007Command\022\010\n\004NONE\020\000"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 856);
+      descriptor, 871);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "r2t2gui.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -318,6 +320,7 @@ const int R2T2GuiMessage::kFilterLoFieldNumber;
 const int R2T2GuiMessage::kFilterHiFieldNumber;
 const int R2T2GuiMessage::kVersionFieldNumber;
 const int R2T2GuiMessage::kNotchFieldNumber;
+const int R2T2GuiMessage::kNoiseFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 R2T2GuiMessage::R2T2GuiMessage()
@@ -343,8 +346,8 @@ R2T2GuiMessage::R2T2GuiMessage(const R2T2GuiMessage& from)
     version_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.version_);
   }
   ::memcpy(&rxfreq_, &from.rxfreq_,
-    reinterpret_cast<char*>(&notch_) -
-    reinterpret_cast<char*>(&rxfreq_) + sizeof(notch_));
+    reinterpret_cast<char*>(&noise_) -
+    reinterpret_cast<char*>(&rxfreq_) + sizeof(noise_));
   // @@protoc_insertion_point(copy_constructor:R2T2GuiProto.R2T2GuiMessage)
 }
 
@@ -352,8 +355,8 @@ void R2T2GuiMessage::SharedCtor() {
   _cached_size_ = 0;
   txdata_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   version_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&rxfreq_, 0, reinterpret_cast<char*>(&notch_) -
-    reinterpret_cast<char*>(&rxfreq_) + sizeof(notch_));
+  ::memset(&rxfreq_, 0, reinterpret_cast<char*>(&noise_) -
+    reinterpret_cast<char*>(&rxfreq_) + sizeof(noise_));
 }
 
 R2T2GuiMessage::~R2T2GuiMessage() {
@@ -405,9 +408,9 @@ void R2T2GuiMessage::Clear() {
     ::memset(&rxfreq_, 0, reinterpret_cast<char*>(&mode_) -
       reinterpret_cast<char*>(&rxfreq_) + sizeof(mode_));
   }
-  if (_has_bits_[8 / 32] & 16128u) {
-    ::memset(&gain_, 0, reinterpret_cast<char*>(&notch_) -
-      reinterpret_cast<char*>(&gain_) + sizeof(notch_));
+  if (_has_bits_[8 / 32] & 32512u) {
+    ::memset(&gain_, 0, reinterpret_cast<char*>(&noise_) -
+      reinterpret_cast<char*>(&gain_) + sizeof(noise_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -620,6 +623,19 @@ bool R2T2GuiMessage::MergePartialFromCodedStream(
         break;
       }
 
+      // optional int32 noise = 15;
+      case 15: {
+        if (tag == 120u) {
+          set_has_noise();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &noise_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0 ||
@@ -724,6 +740,11 @@ void R2T2GuiMessage::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(14, this->notch(), output);
   }
 
+  // optional int32 noise = 15;
+  if (has_noise()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(15, this->noise(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -816,6 +837,11 @@ void R2T2GuiMessage::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(14, this->notch(), target);
   }
 
+  // optional int32 noise = 15;
+  if (has_noise()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(15, this->noise(), target);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -889,7 +915,7 @@ size_t R2T2GuiMessage::ByteSizeLong() const {
     }
 
   }
-  if (_has_bits_[8 / 32] & 16128u) {
+  if (_has_bits_[8 / 32] & 32512u) {
     // optional int32 gain = 8;
     if (has_gain()) {
       total_size += 1 +
@@ -929,6 +955,13 @@ size_t R2T2GuiMessage::ByteSizeLong() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->notch());
+    }
+
+    // optional int32 noise = 15;
+    if (has_noise()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->noise());
     }
 
   }
@@ -986,7 +1019,7 @@ void R2T2GuiMessage::MergeFrom(const R2T2GuiMessage& from) {
       set_mode(from.mode());
     }
   }
-  if (from._has_bits_[8 / 32] & 16128u) {
+  if (from._has_bits_[8 / 32] & 32512u) {
     if (from.has_gain()) {
       set_gain(from.gain());
     }
@@ -1004,6 +1037,9 @@ void R2T2GuiMessage::MergeFrom(const R2T2GuiMessage& from) {
     }
     if (from.has_notch()) {
       set_notch(from.notch());
+    }
+    if (from.has_noise()) {
+      set_noise(from.noise());
     }
   }
 }
@@ -1045,6 +1081,7 @@ void R2T2GuiMessage::InternalSwap(R2T2GuiMessage* other) {
   std::swap(filterlo_, other->filterlo_);
   std::swap(filterhi_, other->filterhi_);
   std::swap(notch_, other->notch_);
+  std::swap(noise_, other->noise_);
   std::swap(_has_bits_[0], other->_has_bits_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -1471,6 +1508,30 @@ void R2T2GuiMessage::set_notch(::google::protobuf::int32 value) {
   set_has_notch();
   notch_ = value;
   // @@protoc_insertion_point(field_set:R2T2GuiProto.R2T2GuiMessage.notch)
+}
+
+// optional int32 noise = 15;
+bool R2T2GuiMessage::has_noise() const {
+  return (_has_bits_[0] & 0x00004000u) != 0;
+}
+void R2T2GuiMessage::set_has_noise() {
+  _has_bits_[0] |= 0x00004000u;
+}
+void R2T2GuiMessage::clear_has_noise() {
+  _has_bits_[0] &= ~0x00004000u;
+}
+void R2T2GuiMessage::clear_noise() {
+  noise_ = 0;
+  clear_has_noise();
+}
+::google::protobuf::int32 R2T2GuiMessage::noise() const {
+  // @@protoc_insertion_point(field_get:R2T2GuiProto.R2T2GuiMessage.noise)
+  return noise_;
+}
+void R2T2GuiMessage::set_noise(::google::protobuf::int32 value) {
+  set_has_noise();
+  noise_ = value;
+  // @@protoc_insertion_point(field_set:R2T2GuiProto.R2T2GuiMessage.noise)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

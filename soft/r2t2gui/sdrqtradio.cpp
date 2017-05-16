@@ -291,3 +291,6 @@ void SdrQtRadio::fftTime() {
 void SdrQtRadio::setRx(int v) {
     rx = v;
 }
+
+void SdrQtRadio::setNoiseFilter(int) {
+}

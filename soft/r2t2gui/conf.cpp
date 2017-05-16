@@ -35,6 +35,7 @@ Conf::Conf (QSettings *settings, uint32_t maxIdx): settings(settings), maxIdx(ma
     set(CMD_PRESEL, 0, 0, 10);
     set(CMD_QTRADIO_RX, 0, 0, 7);
     set(CMD_RSSI, -100, -256, 256);
+    set(CMD_NOISE_FILTER, 0, 0,255);
     set(CMD_RX_FREQ, 7100000, 0, 61440000);
     set(CMD_SAMPLE_RATE, DEFAULT_SAMPLE_RATE, 8000, 16000);
     set(CMD_STEP, 100, 1, 1000000);

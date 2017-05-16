@@ -6,15 +6,19 @@
 #include "lib.h"
 #include "config.h"
 
-FFT::FFT(std::string name, int size, bool inv) : ProcessBlock(name, 1, 1), size(size), inverse(inv) {
+
+FFT::FFT(std::string name, int size, bool inv, FFTWindow win, int inBufferFactor, int outBufferFactor) : 
+    ProcessBlock(name, 1, 1), 
+    size(size), 
+    inverse(inv), 
+    fftWindow(win), 
+    inBufferFactor(inBufferFactor),
+    outBufferFactor(outBufferFactor) 
+{
 
 	setInputType(0, typeid(cfloat_t));
 	kissState = kiss_fft_alloc(size, inverse, 0, 0);
-	window.clear();
-	for (int i=0;i<size;i++) 
-		//window.push_back(0.5  - 0.5  * cos (2 * M_PI / size * i));  // Hanning window
-		// window.push_back(0.35875  - 0.48829*cos(2*M_PI/size*i) + 0.14128*cos(4*M_PI/size*i) - 0.01168*cos(6*M_PI/size*i));  // Blackman Herris
-		window.push_back(0.3625819  - 0.4891775*cos(2*M_PI/size*i) + 0.1365995*cos(4*M_PI/size*i) - 0.0106411*cos(6*M_PI/size*i));  // Blackman Nuttall 
+    setWindow(fftWindow);
     work = 1;
 }
 
@@ -41,48 +45,89 @@ int FFT::setSize(int s) {
 
 	kiss_fft_cleanup();
 	kissState = kiss_fft_alloc(size, inverse, 0, 0);
-    window.clear();
-	for (int i=0;i<size;i++) 
-		// window.push_back(0.5  - 0.5  * cos (2 * M_PI / size * i));  // Hanning window
-		// window.push_back(0.35875  - 0.48829*cos(2*M_PI/size*i) + 0.14128*cos(4*M_PI/size*i) - 0.01168*cos(6*M_PI/size*i));  // Blackman Herris
-		window.push_back(0.3625819  - 0.4891775*cos(2*M_PI/size*i) + 0.1365995*cos(4*M_PI/size*i) - 0.0106411*cos(6*M_PI/size*i));  // Blackman Nuttall 
+    setWindow(fftWindow);
 	work = 1;
     return size;
 }
+        
+void FFT::setWindow(FFTWindow win) {
+    fftWindow = win;
+    calcWindow(fftWindow, window, size, inverse);
+}
 
-int FFT::process(cfloat_t* in0, int in0Cnt, cfloat_t* out) {
+int FFT::process(cfloat_t* in0, int in0Cnt, cfloat_t* out, int outCnt) {
 
-	if (in0Cnt < size)
-		return 0;
-	volk_32fc_32f_multiply_32fc((cfloat*)in0, (cfloat*)in0, &window[0], size);
-	kiss_fft(kissState, (kiss_fft_cpx*)in0, (kiss_fft_cpx*)out);
-	return size;
+
+    if (in0Cnt < size)
+        return 0;
+    if (outCnt == in0Cnt) {
+        if (fftWindow == None) {
+            kiss_fft(kissState, (kiss_fft_cpx*)in0, (kiss_fft_cpx*)out);
+        } else {
+			if (inverse) {
+				kiss_fft(kissState, (kiss_fft_cpx*)in0, (kiss_fft_cpx*)out);
+				volk_32fc_32f_multiply_32fc((cfloat*)out, (cfloat*)out, &window[0], size);
+			} else {
+				volk_32fc_32f_multiply_32fc((cfloat*)out, (cfloat*)in0, &window[0], size);
+				kiss_fft(kissState, (kiss_fft_cpx*)out, (kiss_fft_cpx*)out);
+			}
+        }
+    } else {
+        int offset = (in0Cnt - outCnt)/2;
+        if (fftWindow == None) {
+            kiss_fft(kissState, (kiss_fft_cpx*)in0, (kiss_fft_cpx*)tmpOut);
+            memcpy(out, tmpOut + offset, outCnt*sizeof(cfloat_t));
+        } else {
+            if (inverse) {
+                kiss_fft(kissState, (kiss_fft_cpx*)in0, (kiss_fft_cpx*)tmpOut);
+#if 1
+				for (int i=offset;i<size-offset;i++) {
+					tmpOut[i].re *= window[i]; 
+					tmpOut[i].im *= window[i]; 
+				}
+#else
+				// crash in volk ??
+                // volk_32fc_32f_multiply_32fc((cfloat*)&tmpOut[0], (cfloat*)&tmpOut[0], &window[0], size);
+#endif
+                memcpy(out, tmpOut + offset, outCnt*sizeof(cfloat_t));
+            } else {
+                volk_32fc_32f_multiply_32fc((cfloat*)tmpOut, (cfloat*)in0, &window[0], size);
+                kiss_fft(kissState, (kiss_fft_cpx*)tmpOut, (kiss_fft_cpx*)tmpOut);
+                memcpy(out, tmpOut + offset, outCnt*sizeof(cfloat_t));
+            }
+        }
+    }
+    return outCnt;
 }
 
 
 int FFT::receive(std::shared_ptr<ProcessBuffer> buf, uint32_t input, int recursion) {
-	int minBuf = preReceive(buf, input, recursion);
-	if (minBuf<0) {
-		return 0;
+    int minBuf = preReceive(buf, input, recursion);
+    if (minBuf<0) {
+        return 0;
     }
 
-	if (inBuf[0]->size() < (unsigned int)size) {
-		return 0;
+    if (inBuf[0]->size() < (unsigned int)size) {
+        return 0;
     }
 
-	if (!work) {
-		inBuf[0].reset();
-		return 0;
-	}
+    if (!work) {
+        inBuf[0].reset();
+        return 0;
+    }
 
-    auto outBuf = std::make_shared<ProcessBuffer> (size, typeid(cfloat_t));
+    int outSize = size/outBufferFactor;
 
-    int nElements = process((cfloat_t*)**(inBuf[0]), inBuf[0]->size(), (cfloat_t*)**(outBuf));
+    while (inBuf[0]->size() >= (unsigned int)size) {
+        auto outBuf = std::make_shared<ProcessBuffer> (outSize, typeid(cfloat_t));
 
-	inBuf[0]->processed(nElements);
-	outBuf->setSize(nElements);
+        int nElements = process((cfloat_t*)**(inBuf[0]), size, (cfloat_t*)**(outBuf), outSize);
 
-	setGlobTime(name.data());
-	send(outBuf, 0, recursion+1);
-	return 0;
+        inBuf[0]->processed(size/inBufferFactor);
+        outBuf->setSize(nElements);
+
+        setGlobTime(name.data());
+        send(outBuf, 0, recursion+1);
+    }
+    return 0;
 }

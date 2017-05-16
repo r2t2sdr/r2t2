@@ -26,6 +26,10 @@ R2T2RadioListener::R2T2RadioListener(QSettings *settings, QString addr, quint16 
 	connect(timer, SIGNAL(timeout()), this, SLOT(updatePublic()));
 	timer->start(240*1000);
 
+	watchTimer = new QTimer(this);
+	connect(watchTimer, SIGNAL(timeout()), this, SLOT(sendWatchdog()));
+	watchTimer->start(5*1000);
+
     qDebug() << "listening on port " << qtRadioPort;
     connect(tcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));
 }
@@ -123,3 +127,6 @@ void R2T2RadioListener::newConnection() {
     connect (tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 }
 
+void R2T2RadioListener::sendWatchdog() {
+    emit triggerWatchdog(0);
+}

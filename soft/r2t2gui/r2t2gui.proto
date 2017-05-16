@@ -48,6 +48,7 @@ message R2T2GuiMessage {
     optional int32 filterHi         = 12;
     optional string version         = 13;
     optional int32 notch            = 14;
+    optional int32 noise            = 15;
 }
 
 

@@ -190,4 +190,10 @@ void Audio::setVolume(int volume) {
 void Audio::setMic(int mic) {
 	snd_mixer_selem_set_playback_volume_all(elemMic, mic * micMax / 256);
 }
+#else
+void Audio::setVolume(int) {}
+void Audio::setMic(int) {}
 #endif
+
+void Audio::terminate() {
+}

@@ -8,6 +8,7 @@ message R2T2GuiMessage {
         STARTAUDIO	= 1;
         STOPAUDIO	= 2; 
 		REQFFT 	    = 3;
+		GETINFO	    = 4;
     };
 
     enum Mode {
@@ -47,6 +48,7 @@ message R2T2GuiMessage {
     optional int32 filterHi         = 12;
     optional string version         = 13;
     optional int32 notch            = 14;
+    optional int32 noise            = 15;
 }
 
 

@@ -15,7 +15,7 @@ AGC::AGC(std::string name) : ProcessBlock(name, 1, 1) {
     att = 1-0.01;
 	dec = 1+0.0001;
 	gain = 100000;
-	ref = 0.5;
+	ref = 0.8;
 	peek = 0;
 }
 
@@ -35,14 +35,17 @@ void AGC::setAtt(int n) {
 int AGC::process(float* in0, int in0Cnt) {
 //	qDebug() << "in " << *in0;
 	for (int i=0;i<in0Cnt;i++) {
+
 		float in = in0[i]*gain;
 		in0[i] = in; 
 
 		float absIn = fabs(in);
 		if (absIn>ref)
-			gain *= att;
+			gain *= ref/absIn;
+			// gain *= att;
 		if (absIn<ref)
 			gain *= dec;
+
 	}
 	return in0Cnt;
 }

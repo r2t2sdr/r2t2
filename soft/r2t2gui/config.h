@@ -111,6 +111,7 @@ typedef std::complex<double>        gr_complex;
 	X(CMD_AUDIO_COMP,"AUDIO_COMP") \
 	X(CMD_QTRADIO_MODE,"QTRADIO_MODE") \
 	X(CMD_QTRADIO_RX,"QTRADIO_RX") \
+	X(CMD_NOISE_FILTER,"NOISE_FILTER") \
 	X(CMD_INIT_END,"INIT_END") \
 	X(CMD_EXIT,"EXIT") \
 	X(CMD_MENU,"MENU") \

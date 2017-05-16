@@ -1,2 +1,0 @@
-SUBSYSTEMS=="usb",ATTRS{idVendor}=="fffe",ATTRS{idProduct}=="0007",SYMLINK+="ozy",MODE="666"
-
