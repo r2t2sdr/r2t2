@@ -1,4 +1,3 @@
-#include <QTimer>
 #include <QBuffer>
 #include <QThread>
 #include <QtMultimedia/QAudioOutput>
@@ -21,12 +20,17 @@ class Audio : public QObject  {
 		void audioMute(bool);
 		void setVolume(int volume);
 		void setMic(int mic);
-private slots:
+    private slots:
         void writeAudioOut();
         void readAudioIn();
         void audioOutStateChanged(QAudio::State state);
 
 	private:
+        enum AudioRxState {
+            AUDIO_RX_STATE_IDLE,
+            AUDIO_RX_STATE_PLAY
+        };
+        AudioRxState audioRxState;
         QAudioFormat format;
         QList<QAudioDeviceInfo> audioDevicesOut;
         QList<QAudioDeviceInfo> audioDevicesIn;
@@ -36,8 +40,7 @@ private slots:
         QByteArray audioOutBuf;
 
         int noutput_items;
+        int packetSize;
         bool tx,mute;
         bool audioRun;
-		int minOutSize;
-        int periodTimeMS;
 };

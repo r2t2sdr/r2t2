@@ -1,5 +1,6 @@
 #include <QTime>
 #include <QDebug>
+#include <QThread>
 #include <stdio.h>
 #include <assert.h>
 #include "config.h"
@@ -8,11 +9,13 @@
 
 #define AUDIO_TIMEOUT		10
 #define AUDIO_BUF_SIZE		8192
+#define AUDIO_TIMING_CORR   32
 
 Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixerMic*/, int rate)  {
     tx = false;
     mute = false;
     noutput_items = AUDIO_BUF_SIZE;
+    packetSize = 0;
 
     format.setSampleRate(rate);
     format.setChannelCount(1);
@@ -23,13 +26,15 @@ Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixe
 
     audioDevicesOut =  QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
     audioDevicesIn =  QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+
+    init();
 }
 
 void Audio::init(){
     QAudioDeviceInfo infoIn  = audioDevicesIn.at(0);
     QAudioDeviceInfo infoOut = audioDevicesOut.at(0);
 
-  #if 0
+#if 0
     int n=0;
     qDebug() << "\navaiable audio output devices:";
     foreach (const QAudioDeviceInfo &deviceInfo, audioDevicesOut) {
@@ -45,7 +50,7 @@ void Audio::init(){
     }
     qDebug() << "\nusing audio in:" << infoIn.deviceName();
 #endif
-  
+
     if (!infoIn.isFormatSupported(format)) {
         qWarning()<<"AudioInput: default format not supported try to use nearest";
         format = infoIn.nearestFormat(format);
@@ -58,16 +63,19 @@ void Audio::init(){
     audioOutput = new QAudioOutput(infoOut, format);
     audioOutput->setBufferSize(AUDIO_BUF_SIZE);
     connect(audioOutput, SIGNAL(stateChanged(QAudio::State)), this, SLOT(audioOutStateChanged(QAudio::State)));
+#ifndef ANDROID
     connect(audioOutput, SIGNAL(notify()), this, SLOT(writeAudioOut()));
+#endif
     audioOutput->setNotifyInterval(AUDIO_TIMEOUT);
     audioOutDev = audioOutput->start();
     // start writing silence to the audio sink
-    audioOutBuf = QByteArray(5000, '\x0');
+    audioOutBuf = QByteArray(AUDIO_BUF_SIZE/2, '\x0');
     audioOutDev->write(audioOutBuf);
 
     // TBD start reading from Microphone
     audioInput = new QAudioInput(infoIn, format);
-	  audioInDev = NULL;
+    audioInDev = NULL;
+    audioRxState = AUDIO_RX_STATE_IDLE;
     audioRun = true;
 }
 
@@ -83,33 +91,52 @@ Audio::~Audio() {
 }
 
 void Audio::audioMute(bool m) {
-	mute = m;
+    mute = m;
 }
 
 void Audio::setTX(bool /*m*/) {
-// no tx, crash in win32 in audioInDev->readAll()
+    // no tx, crash in win32 in audioInDev->readAll()
 #if 0
-	if (m)
-		audioInDev = audioInput->start();
-	else {
-		audioInput->stop();
-		audioInDev = NULL;
-	}
+    if (m)
+        audioInDev = audioInput->start();
+    else {
+        audioInput->stop();
+        audioInDev = NULL;
+    }
 #endif
 }
 
 void Audio::audioRX(QByteArray out) {
-	if (!audioRun)
-		return;
+    if (!audioRun)
+        return;
 
-    if (audioOutBuf.length() + out.length() < AUDIO_BUF_SIZE - out.length()){
-        audioOutBuf.append(out);
+    packetSize = out.length();
+    // qWarning() << "append" << packetSize << audioOutBuf.size();
+
+    if (audioRxState == AUDIO_RX_STATE_PLAY) {
+        if (audioOutBuf.length() < packetSize/2) {
+            // insert samples to correct sample rates
+            out.append(out.right(AUDIO_TIMING_CORR));
+            qWarning() << "insert at" << audioOutBuf.length();
+        } else if (audioOutBuf.length() >packetSize*2) {
+            // remove samples to correct sample rates
+            out.chop(AUDIO_TIMING_CORR);
+            qWarning() << "skip at" << audioOutBuf.length();
+        }
     }
+        
+    audioOutBuf.append(out);
 
     if (audioOutBuf.size()>AUDIO_BUF_SIZE) {
         qWarning() << "# audio buffer overflow" << audioOutBuf.size() << "bytes";
+        audioOutBuf.truncate(AUDIO_BUF_SIZE);
         return;
     }
+#ifdef ANDROID
+    int len = audioOutDev->write(audioOutBuf);
+    audioOutBuf.remove(0, len);
+#endif
+
 }
 
 void Audio::audioOutStateChanged(QAudio::State state)
@@ -120,24 +147,44 @@ void Audio::audioOutStateChanged(QAudio::State state)
 }
 
 void Audio::readAudioIn(){
-        if (audioInDev) {
-            QByteArray audioInData =  audioInDev->readAll();
-            if (audioInData.size())
-                emit audioTX(QByteArray(audioInData));
-        }
+    if (audioInDev) {
+        QByteArray audioInData =  audioInDev->readAll();
+        if (audioInData.size())
+            emit audioTX(QByteArray(audioInData));
+    }
 }
 
 void Audio::writeAudioOut()
 {
-    if (audioOutBuf.length() > 0){
-        int len = audioOutDev->write(audioOutBuf);
-        audioOutBuf.remove(0, len);
+    int len;
+
+    if (!audioOutDev)
         return;
-    }
-    // write silence if audioOutbuf is empty to avoid underrun
-    if (audioOutDev){
-        QByteArray buf(2000, '\x0');
-        audioOutDev->write(buf);
+
+    switch (audioRxState) {
+        case AUDIO_RX_STATE_IDLE:
+            if (packetSize > 0 && audioOutBuf.length() >= packetSize*2) {
+                qDebug() << "state play" << audioOutBuf.length();
+                int len = audioOutDev->write(audioOutBuf);
+                audioOutBuf.remove(0, len);
+                audioRxState = AUDIO_RX_STATE_PLAY;
+                break;
+            }
+            // write silence if audioOutbuf is empty to avoid underrun
+            audioOutDev->write(QByteArray(AUDIO_BUF_SIZE/4, '\x0'));
+            break;
+
+        case AUDIO_RX_STATE_PLAY:
+            if (audioOutBuf.length() == 0) {
+                audioOutDev->write(QByteArray(AUDIO_BUF_SIZE/4, '\x0'));
+                packetSize = 0;
+                qDebug() << "state idle";
+                audioRxState = AUDIO_RX_STATE_IDLE;
+                break;
+            }
+            len = audioOutDev->write(audioOutBuf);
+            audioOutBuf.remove(0, len);
+            break;
     }
 }
 
@@ -157,6 +204,6 @@ void Audio::setMic(int volume) {
         return;
     }
     if (audioInput->state() == QAudio::ActiveState){
-         audioInput->setVolume(1.0*volume/256);
+        audioInput->setVolume(1.0*volume/256);
     }
 }
