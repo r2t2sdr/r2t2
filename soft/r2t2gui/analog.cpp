@@ -51,7 +51,7 @@ void Analog::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
 	painter->setFont(font);
 	QFontMetrics fm = painter->fontMetrics();
 	painter->setPen(colorAnalogName);
-	painter->drawText((a->xSize-fm.width(a->name))/2, a->ySize-8, a->name);
+	painter->drawText((a->xSize-fm.horizontalAdvance(a->name))/2, a->ySize-8, a->name);
 }
 
 QRectF Analog::boundingRect() const {

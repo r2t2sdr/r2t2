@@ -213,7 +213,7 @@ void SdrR2T2::sendR2T2GuiMsg() {
     if (!tcpSocket->isOpen())
         return;
 
-    if (r2t2GuiMsg->ByteSize() == 0) {
+    if (r2t2GuiMsg->ByteSizeLong() == 0) {
         return;
     }
 

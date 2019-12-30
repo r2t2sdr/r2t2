@@ -109,7 +109,7 @@ void TextButton::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWi
     font.setPixelSize(b->ySize*2/5);
 	painter->setFont(font);
 	QFontMetrics fm = painter->fontMetrics();
-	QPoint center = QPoint(( b->xSize-fm.width(text))/2, ( b->ySize+fm.height())/2-5 );
+	QPoint center = QPoint(( b->xSize-fm.horizontalAdvance(text))/2, ( b->ySize+fm.height())/2-5 );
 
 	painter->setPen(Qt::white);
 	painter->setBrush(colorButtonFrame);
@@ -123,7 +123,7 @@ void TextButton::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWi
 	painter->setPen(colorButtonText);
 	painter->drawText(center,text);
 	painter->setPen(colorButtonName);
-	painter->drawText(b->xSize/2-(fm.width(b->name))/2, b->ySize-2, b->name);
+	painter->drawText(b->xSize/2-(fm.horizontalAdvance(b->name))/2, b->ySize-2, b->name);
 
 	if (b->buttonText.size() > 0 && b->buttonText.at(0)==QString("ANALOG")) {
 		painter->setBrush(colorButtonPosOff);

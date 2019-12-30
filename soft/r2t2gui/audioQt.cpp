@@ -31,8 +31,8 @@ Audio::Audio(char* /*dev*/, char* /*mixerDev*/, char* /*mixerVol*/, char* /*mixe
 }
 
 void Audio::init(){
-    QAudioDeviceInfo infoIn  = audioDevicesIn.at(0);
-    QAudioDeviceInfo infoOut = audioDevicesOut.at(0);
+    QAudioDeviceInfo infoIn  = audioDevicesIn.at(1);
+    QAudioDeviceInfo infoOut = audioDevicesOut.at(1);
 
 #if 0
     int n=0;

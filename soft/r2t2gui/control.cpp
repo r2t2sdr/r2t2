@@ -168,7 +168,7 @@ Control::Control(char *ip, char* audiodev, char* audiodevMixer, char* mixerVolum
     connect(hamLibSocket, SIGNAL(readyRead()), this, SLOT(readHamLibUDPData()));
 
     hpRxBufPos=0;
-    sender=0;
+    sender=QHostAddress("0.0.0.0");
     senderPort=0;
     cCnt=0;
 

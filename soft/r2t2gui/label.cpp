@@ -45,7 +45,7 @@ void Label::paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget 
 	painter->drawText(2,l->ySize-4,l->name+":");
 	painter->setPen(colorLabelText);
 	if (l->val < MAX_ENTRY && entry[l->cmd][l->val].name != NULL)
-		painter->drawText(fm.width(l->name+":  "), l->ySize-4, QString("%1").arg(entry[l->cmd][l->val].name));
+		painter->drawText(fm.horizontalAdvance(l->name+":  "), l->ySize-4, QString("%1").arg(entry[l->cmd][l->val].name));
 	else
 		painter->drawText(l->xSize/2-4, l->ySize-4, QString("%1").arg(l->val));
 }
